@@ -81,7 +81,7 @@ use Illuminate\Support\Facades\DB;
             <select name="order_column" id="">
                 <option value=""></option>
                 @foreach( $orderFields as $value => $label )
-                    <option value="{{ $value }}" @if $value value c request>
+                    <option value="{{ $value }}" >
                        {{ $label }}
                     </option>
                 @endforeach
