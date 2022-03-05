@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form action="{{ route(\App\Http\Controllers\LoginController::AUTHENTICATE_ACTION) }}" method="POST">
+<form action="{{ route(\App\Http\Controllers\RegisterController::AUTHENTICATE_ACTION) }}" method="POST">
     @csrf
     <div class="form-group">
         <label for="email">Email address</label>

@@ -1,0 +1,6 @@
+.filter-applied {
+    /*border: 2px solid green;*/
+    background-color: green;
+    border-radius: 2px;
+    padding: 3px;
+}

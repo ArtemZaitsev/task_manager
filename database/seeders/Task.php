@@ -19,7 +19,7 @@ class Task extends Seeder
             'person_id' => '1',
             'start_date' => '2021-07-22 10:40:02',
             'end_date' => '2021-08-22 10:40:02',
-            'status' => \App\Models\Task::STATUS_NEW,
+            'status' => \App\Models\Task::STATUS_NOT_DONE,
 
         ]);
     }

@@ -42,7 +42,7 @@ class TaskDelController extends Controller
             }
         });
 
-        return redirect()->route('tasks.list')->with('success',__('task_del_success'));
+        return redirect()->route('tasks.list')->with('success',__('messages.task_del_success'));
 
     }
 }

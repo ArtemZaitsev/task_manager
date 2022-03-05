@@ -8,6 +8,7 @@ return [
     'task_status_5' => 'Refuse',
 
     'task_add_success' => 'Задача успешно добавлена',
+    'task_edit_success' => 'Задача успешно отредактирована',
 
     \App\Http\Controllers\Filters\DateFilter::MODE_TODAY => 'Сегодня',
     \App\Http\Controllers\Filters\DateFilter::MODE_RANGE => 'Диапазон',
