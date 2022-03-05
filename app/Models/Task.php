@@ -13,6 +13,52 @@ class Task extends Model
     const STATUS_IN_PROGRESS = 3;
     const STATUS_INFO = 4;
     const STATUS_REFUSE = 5;
+    const STATUS_BLOCKED = 6;
+
+    const ALL_STATUSES = [
+        self::STATUS_BLOCKED => 'Заблокирована',
+        self::STATUS_NOT_DONE => 'Не выполнено',
+        self::STATUS_DONE => 'Закрыта',
+        self::STATUS_IN_PROGRESS => 'В процессе',
+        self::STATUS_INFO => 'Информационная',
+        self::STATUS_REFUSE => 'Снята',
+    ];
+
+
+    const EXECUTE_TODAY = 1;
+    const EXECUTE_THIS_WEEK = 2;
+    const EXECUTE_NEXT_WEEK = 3;
+    const EXECUTE_THIS_MONTH = 4;
+    const EXECUTE_NEXT_MONTH = 5;
+
+    const ALL_EXECUTIONS = [
+        self::EXECUTE_TODAY => '01. Сегодня',
+        self::EXECUTE_THIS_WEEK => '02. На этой неделе',
+        self::EXECUTE_NEXT_WEEK => '03. На следующей неделе',
+        self::EXECUTE_THIS_MONTH => '04. В этом месяце',
+        self::EXECUTE_NEXT_MONTH => '05. В следующем месяце',
+    ];
+
+    const PRIORITY_HIGH = 1;
+    const PRIORITY_MIDDLE = 2;
+    const PRIORITY_LOW = 3;
+
+
+    const All_PRIORITY = [
+        self::PRIORITY_HIGH => 'высокий',
+        self::PRIORITY_MIDDLE => 'средний',
+        self::PRIORITY_LOW => 'низкий',
+    ];
+
+    const TYPE_PLAN = 1;
+    const TYPE_NOT_PLAN = 2;
+
+
+
+    const All_TYPE = [
+        self::TYPE_PLAN => 'плановая',
+        self::TYPE_NOT_PLAN => 'внеплановая',
+    ];
 
     protected $fillable = ['name', 'start_date', 'end_date', 'user_id'];
     protected $casts = [
