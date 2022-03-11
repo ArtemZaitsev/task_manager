@@ -10,22 +10,21 @@
             </div>
         @endif
 
-        <a class="btn btn-danger m-1" href="{{ route
-                        (\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">Выход</a>
-
-        <a href="{{ $exportUrl }}" class="btn btn-warning m-1">Excel</a>
 
         <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
                         btn-success m-1">Очистить</a>
-        <br>
         <a class="btn btn-success m-3" href="{{ route('task.showFormAdd') }}">
             Создать
         </a>
         <a class="btn btn-info m-3" href="{{ route('task.setupColumns.show') }}">
             Настроить столбцы
         </a>
+        <a href="{{ $exportUrl }}" class="btn btn-warning m-1">Excel</a>
+        <a class="btn btn-danger m-1 " href="{{ route
+                        (\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">Выход</a>
+
         <table class="table table-bordered table-hover">
-            <thead class="thead-dark sticky-top" style="background-color: #d1f4ff ; ">
+            <thead class="thead-dark " style="background-color: #d1f4ff ; position: sticky; top:0; z-index: 1">
             <form method="GET">
                 <tr>
                     <th scope="col" class="text-center ">
@@ -148,10 +147,10 @@
                         'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                         ])
                     </th>
-                    {{--                    todo изменить --}}
+
                     <th scope="col" class="text-center">
                         @include('filters.entity_filter', [
-                        'filter_name' => 'user',
+                        'filter_name' => 'coperformer',
                         'filter_data' => $users,
                         'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                         ])
@@ -337,12 +336,9 @@
                         <?php \App\Http\Controllers\Task\TaskController::sortColumn('user', request()) ?>
                     </a>
                 </th>
-                {{--                todo соисполнители--}}
+
                 <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'user', request())  }}">Соисполнители
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('user', request()) ?>
-                    </a>
+                    Соисполнители
                 </th>
                 <th scope="col" class="text-center">
                     <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
@@ -489,7 +485,7 @@
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         @foreach($task->coperformers as $coperformer)
                             {{ $coperformer->label }}
-                          @if(!$loop->last)
+                            @if(!$loop->last)
                                 <br>
                             @endif
                         @endforeach

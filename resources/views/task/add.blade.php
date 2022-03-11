@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title') Редактирование задачи @endsection
+@section('title') Создание задачи @endsection
 @section('content')
 
     <div class="container">
@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label for="setting_date">Дата постановки</label>
                 <input name="setting_date" class="form-control {{ $errors->has('setting_date') ? 'error' : '' }}"
-                       id="setting_date" type="datetime-local"
+                       id="setting_date" type="date"
                        value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('setting_date',)) }}">
                 @if ($errors->has('setting_date'))
                     <div class="error">
@@ -29,6 +29,8 @@
 
                 @endif
             </div>
+
+
 
             <div class="form-group">
                 <label for="task_creator">Постановщик</label>
@@ -131,25 +133,24 @@
             </div>
 
             <div class="form-group">
-                <label for="startDate">Дата начала</label>
-                <input name="start_date" class="form-control {{ $errors->has('startDate') ? 'error' : '' }}"
-                       id="startDate" type="datetime-local"
-                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('start_date',)) }}">
+                <label for="start_date">Дата начала</label>
+                <input name="start_date" class="form-control {{ $errors->has('start_date') ? 'error' : '' }}"
+                       id="start_date" type="date"
+                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('start_date')) }}" required>
                 @if ($errors->has('start_date'))
                     <div class="error">
-                        {{ $errors->first('startDate') }}
+                        {{ $errors->first('start_date') }}
                     </div>
-
                 @endif
             </div>
             <div class="form-group">
-                <label for="endDate">Дата окончания</label>
-                <input name="end_date" class="form-control {{ $errors->has('endDate') ? 'error' : '' }}"
-                       id="endDate" type="datetime-local"
-                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date')) }}">
+                <label for="end_date">Дата окончания</label>
+                <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'error' : '' }}"
+                       id="end_date" type="date"
+                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date')) }}" required>
                 @if ($errors->has('end_date'))
                     <div class="error">
-                        {{ $errors->first('endDate') }}
+                        {{ $errors->first('end_date') }}
                     </div>
                 @endif
             </div>

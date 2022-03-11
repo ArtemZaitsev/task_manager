@@ -131,6 +131,17 @@ class TaskFetcher
             $this->applyMultipleValuesFilter($execute, $tasksQuery, 'user_id');
         }
 
+        if ($query->has('coperformer')) {
+            $coperformer = $query->get('coperformer');
+            if (!empty($coperformer)) {
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($coperformer) {
+                    $query->select('tl8.task_id')
+                        ->from('task_coperformer', 'tl8')
+                        ->whereIn('tl8.user_id',  $coperformer );
+                });
+            }
+        }
+
         if ($query->has('execute')) {
             $execute = $query->get('execute');
             $this->applyMultipleValuesFilter($execute, $tasksQuery, 'execute');
@@ -151,7 +162,7 @@ class TaskFetcher
             $taskLogStatus = $this->clearArray($taskLogStatus);
 
             if (!empty($taskLogStatus)) {
-                $tasksQuery->whereIn('id', function ($query) use ($taskLogStatus) {
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($taskLogStatus) {
                     $query->select('tl3.task_id')
                         ->from((new TaskLog())->getTable(), 'tl3')
                         ->whereIn('tl3.status', $taskLogStatus);
@@ -162,9 +173,9 @@ class TaskFetcher
         if ($query->has('date_refresh_plan')) {
             $dateRefreshPlan = $query->get('date_refresh_plan');
             if (!empty($dateRefreshPlan) && DateFilter::filterEnabled($dateRefreshPlan)) {
-                $tasksQuery->whereIn('id', function ($query) use ($dateRefreshPlan) {
-                    $query->select('tl1.task_id')
-                        ->from((new TaskLog())->getTable(), 'tl1');
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($dateRefreshPlan) {
+                    $query->select('tl4.task_id')
+                        ->from((new TaskLog())->getTable(), 'tl4');
                     $this->applyDateFilter($dateRefreshPlan, $query, 'date_refresh_plan');
                 });
             }
@@ -173,9 +184,9 @@ class TaskFetcher
         if ($query->has('date_refresh_fact')) {
             $dateRefreshFact = $query->get('date_refresh_fact');
             if (!empty($dateRefreshFact) && DateFilter::filterEnabled($dateRefreshFact)) {
-                $tasksQuery->whereIn('id', function ($query) use ($dateRefreshFact) {
-                    $query->select('tl1.task_id')
-                        ->from((new TaskLog())->getTable(), 'tl1');
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($dateRefreshFact) {
+                    $query->select('tl5.task_id')
+                        ->from((new TaskLog())->getTable(), 'tl5');
                     $this->applyDateFilter($dateRefreshFact, $query, 'date_refresh_fact');
                 });
             }
@@ -186,10 +197,10 @@ class TaskFetcher
             $trouble = $query->get('trouble');
             $trouble = trim($trouble);
             if (!empty($trouble)) {
-                $tasksQuery->whereIn('id', function ($query) use ($trouble) {
-                    $query->select('tl1.task_id')
-                        ->from((new TaskLog())->getTable(), 'tl1')
-                        ->where('tl1.trouble', 'like', '%' . $trouble . '%');
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($trouble) {
+                    $query->select('tl6.task_id')
+                        ->from((new TaskLog())->getTable(), 'tl6')
+                        ->where('tl6.trouble', 'like', '%' . $trouble . '%');
                 });
             }
         }
@@ -198,10 +209,10 @@ class TaskFetcher
             $whatToDo = $query->get('what_to_do');
             $whatToDo = trim($whatToDo);
             if (!empty($whatToDo)) {
-                $tasksQuery->whereIn('id', function ($query) use ($whatToDo) {
-                    $query->select('tl2.task_id')
-                        ->from((new TaskLog())->getTable(), 'tl2')
-                        ->where('tl2.what_to_do', 'like', '%' . $whatToDo . '%');
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($whatToDo) {
+                    $query->select('tl7.task_id')
+                        ->from((new TaskLog())->getTable(), 'tl7')
+                        ->where('tl7.what_to_do', 'like', '%' . $whatToDo . '%');
                 });
             }
         }
@@ -361,11 +372,9 @@ class TaskFetcher
         $this->applySort($query, $tasksQuery);
 
 
-        //todo проверить задана ли сортировка по подгруппе или фильтр. если так, то добавить
-        // джойны в запрос и тогда в самой сортировке не добавлять и аналогично с фильтрами по группе и направлению
 
 
-        $tasks = $tasksQuery->paginate(20);
+        $tasks = $tasksQuery->paginate(30);
         return $tasks;
     }
 

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use function view;
 
 
-class   TaskController extends BaseController
+class TaskController extends BaseController
 {
     const ACTION_LIST = 'tasks.list';
 
