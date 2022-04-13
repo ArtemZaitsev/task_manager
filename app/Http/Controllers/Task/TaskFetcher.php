@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\BuisinessLogick\PlanerService;
 use App\Http\Controllers\Filters\DateFilter;
+use App\Models\Direction;
+use App\Models\Group;
+use App\Models\Product;
+use App\Models\Project;
+use App\Models\Subgroup;
 use App\Models\Task;
 use App\Models\TaskLog;
+use Doctrine\DBAL\Query\QueryBuilder;
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\InputBag;
 
 class TaskFetcher
@@ -19,21 +28,44 @@ class TaskFetcher
         'status' => 'Статус',
     ];
 
+    private PlanerService $planerService;
+
+    public function __construct(){
+      $this->planerService = new PlanerService();
+    }
+
     private function applyFilters(InputBag $query, Builder $tasksQuery)
     {
         if ($query->has('project')) {
-            $execute = $query->get('project');
-            $this->applyMultipleValuesFilter($execute, $tasksQuery, 'projects.id');
+            $project = $query->get('project');
+            if (!empty($project)) {
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($project) {
+                    $query->select('tproj.task_id')
+                        ->from('task_project', 'tproj')
+                        ->whereIn('tproj.project_id', $project);
+                });
+            }
         }
         if ($query->has('family')) {
-            $execute = $query->get('family');
-            $this->applyMultipleValuesFilter($execute, $tasksQuery, 'families.id');
+            $family = $query->get('family');
+            if (!empty($family)) {
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($family) {
+                    $query->select('tf.task_id')
+                        ->from('task_family', 'tf')
+                        ->whereIn('tf.family_id', $family);
+                });
+            }
         }
         if ($query->has('product')) {
-            $execute = $query->get('product');
-            $this->applyMultipleValuesFilter($execute, $tasksQuery, 'products.id');
+            $product = $query->get('product');
+            if (!empty($product)) {
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($product) {
+                    $query->select('tprod.task_id')
+                        ->from('task_product', 'tprod')
+                        ->whereIn('tprod.product_id', $product);
+                });
+            }
         }
-
         if ($query->has('direction')) {
             $execute = $query->get('direction');
             $this->applyMultipleValuesFilter($execute, $tasksQuery, 'directions.id');
@@ -132,12 +164,12 @@ class TaskFetcher
         }
 
         if ($query->has('coperformer')) {
-            $coperformer = $query->get('coperformer');
-            if (!empty($coperformer)) {
-                $tasksQuery->whereIn('tasks.id', function ($query) use ($coperformer) {
+            $project = $query->get('coperformer');
+            if (!empty($project)) {
+                $tasksQuery->whereIn('tasks.id', function ($query) use ($project) {
                     $query->select('tl8.task_id')
                         ->from('task_coperformer', 'tl8')
-                        ->whereIn('tl8.user_id',  $coperformer );
+                        ->whereIn('tl8.user_id', $project);
                 });
             }
         }
@@ -275,106 +307,31 @@ class TaskFetcher
         $tasksQuery = Task::with('user')
             ->with('logs');
 
+        $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
+        $tasksQuery->select('tasks.*');
 
-//        структура данных называется set
-        $whatJoin = [
-        ];
+        $this->filterByPermissions($tasksQuery);
+
 
         if ($query->get('sort') === 'subgroup' || count($query->get('subgroup') ?? []) > 0) {
-            if (!isset($whatJoin['users'])) {
-                $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
-                $whatJoin['users'] = true;
-            }
-            if (!isset($whatJoin['subgroups'])) {
-                $tasksQuery->leftJoin('subgroups', 'subgroups.id', '=', 'users.subgroup_id');
-                $whatJoin['subgroups'] = true;
-            }
+            $tasksQuery->leftJoin('subgroups', 'subgroups.id', '=', 'users.subgroup_id');
             $tasksQuery->select('tasks.*');
         }
 
         if ($query->get('sort') === 'group' || count($query->get('group') ?? []) > 0) {
-
-            if (!isset($whatJoin['users'])) {
-                $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
-                $whatJoin['users'] = true;
-            }
-            if (!isset($whatJoin['subgroups'])) {
-                $tasksQuery->leftJoin('subgroups', 'subgroups.id', '=', 'users.subgroup_id');
-                $whatJoin['subgroups'] = true;
-            }
-            if (!isset($whatJoin['groups'])) {
-                $tasksQuery->leftJoin('groups', 'groups.id', '=', 'subgroups.group_id');
-                $whatJoin['groups'] = true;
-            }
+            $tasksQuery->leftJoin('groups', 'groups.id', '=', 'users.group_id');
             $tasksQuery->select('tasks.*');
         }
         if ($query->get('sort') === 'direction' || count($query->get('direction') ?? []) > 0) {
-
-            if (!isset($whatJoin['users'])) {
-                $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
-                $whatJoin['users'] = true;
-            }
-            if (!isset($whatJoin['subgroups'])) {
-                $tasksQuery->leftJoin('subgroups', 'subgroups.id', '=', 'users.subgroup_id');
-                $whatJoin['subgroups'] = true;
-            }
-            if (!isset($whatJoin['groups'])) {
-                $tasksQuery->leftJoin('groups', 'groups.id', '=', 'subgroups.group_id');
-                $whatJoin['groups'] = true;
-            }
-            if (!isset($whatJoin['directions'])) {
-                $tasksQuery->leftJoin('directions', 'directions.id', '=', 'groups.direction_id');
-                $whatJoin['directions'] = true;
-            }
+            $tasksQuery->leftJoin('directions', 'directions.id', '=', 'users.direction_id');
             $tasksQuery->select('tasks.*');
         }
-
-        if ($query->get('sort') === 'product' || count($query->get('product') ?? []) > 0) {
-
-            if (!isset($whatJoin['products'])) {
-                $tasksQuery->leftJoin('products', 'products.id', '=', 'tasks.product_id');
-                $whatJoin['products'] = true;
-            }
-            $tasksQuery->select('tasks.*');
-        }
-        if ($query->get('sort') === 'family' || count($query->get('family') ?? []) > 0) {
-
-            if (!isset($whatJoin['products'])) {
-                $tasksQuery->leftJoin('products', 'products.id', '=', 'tasks.product_id');
-                $whatJoin['products'] = true;
-            }
-            if (!isset($whatJoin['families'])) {
-                $tasksQuery->leftJoin('families', 'families.id', '=', 'products.family_id');
-                $whatJoin['families'] = true;
-            }
-            $tasksQuery->select('tasks.*');
-        }
-        if ($query->get('sort') === 'project' || count($query->get('project') ?? []) > 0) {
-
-            if (!isset($whatJoin['products'])) {
-                $tasksQuery->leftJoin('products', 'products.id', '=', 'tasks.product_id');
-                $whatJoin['products'] = true;
-            }
-            if (!isset($whatJoin['families'])) {
-                $tasksQuery->leftJoin('families', 'families.id', '=', 'products.family_id');
-                $whatJoin['families'] = true;
-            }
-            if (!isset($whatJoin['projects'])) {
-                $tasksQuery->leftJoin('projects', 'projects.id', '=', 'families.project_id');
-                $whatJoin['projects'] = true;
-            }
-
-            $tasksQuery->select('tasks.*');
-        }
-
 
         $this->applyFilters($query, $tasksQuery);
         $this->applySort($query, $tasksQuery);
 
 
-
-
-        $tasks = $tasksQuery->paginate(30);
+        $tasks = $tasksQuery->paginate(300);
         return $tasks;
     }
 
@@ -428,6 +385,72 @@ class TaskFetcher
             }
         }
         return $array;
+    }
+
+    private function filterByPermissions(Builder $tasksQuery)
+    {
+        // Если пользователь является руководителем проектов A и B, то ограничить задачи, которые входят в проект A
+        // или B
+        $userId = Auth::id();
+        $tasksQuery->where(function ($baseQuery) use ($userId) {
+            $projects = DB::table('project_user')->where('user_id', $userId)->pluck('project_id')->toArray();
+//        $projects = Project::where('heads', $userId)->select('id')->get()->toArray();
+//        $projectsId = array_map(fn($project)=>$project['id'],$projects);
+            if (count($projects) > 0) {
+                $baseQuery->orWhereIn('tasks.id', function ($query) use ($projects) {
+                    $query->select('task_id')
+                        ->from('task_project')
+                        ->whereIn('project_id', $projects);
+                });
+            }
+            // Если пользователь является руководителем направлений A и B, то ограничить задачи, которые входят в
+            // направление A или B
+            $directionsId = Direction::where('head_id', $userId)
+                ->select('id')
+                ->get()
+                ->map(fn($direction) => $direction['id'])
+                ->toArray();
+
+            if (count($directionsId) > 0) {
+                $baseQuery->orWhereIn('users.direction_id', $directionsId);
+            }
+
+            // Если пользователь является руководителем группы A и B, то ограничить задачи, которые входят в
+            // направление в котором находятся группы /группа
+            $groupsDirections = Group::where('head_id', $userId)
+                ->distinct()
+                ->select('direction_id')
+                ->get()
+                ->map(fn($group) => $group['direction_id'])
+                ->toArray();
+
+            if (count($groupsDirections) > 0) {
+                $baseQuery->orWhereIn('users.direction_id', $groupsDirections);
+            }
+
+            // Если пользователь является руководителем подгруппы A и B, то ограничить задачи, которые входят в
+            // направление в котором находятся подгруппы /подгруппа
+
+            $subgroupsDirections = Subgroup::where('subgroups.head_id', $userId)
+                ->leftJoin('groups', 'subgroups.group_id', '=', 'groups.id')
+                ->distinct()
+                ->select('groups.direction_id')
+                ->get()
+                ->map(fn($subgroup) => $subgroup['direction_id'])
+                ->toArray();
+
+            if (count($subgroupsDirections) > 0) {
+                $baseQuery->orWhereIn('users.direction_id', $subgroupsDirections);
+            }
+            // в противном случае ограничить задачи по ответственному
+
+            $baseQuery->orWhere('user_id', $userId);
+            if($this->planerService->userIsPlaner($userId)){
+                $baseQuery->orWhereRaw('1=1');
+            }
+
+        });
+
     }
 
 }

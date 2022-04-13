@@ -81,11 +81,18 @@ class Task extends Model
         return $this->hasMany(TaskLog::class);
     }
 
-    public function product(){
-        return $this->belongsTo(Product::class);
-    }
+
     public function coperformers()
     {
         return $this->belongsToMany(User::class,'task_coperformer');
+    }
+    public function products(){
+        return $this->belongsToMany(Product::class, 'task_product');
+    }
+    public function families(){
+        return $this->belongsToMany(Family::class, 'task_family');
+    }
+    public function projects(){
+        return $this->belongsToMany(Project::class, 'task_project');
     }
 }

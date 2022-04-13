@@ -103,14 +103,27 @@ class SubgroupEditScreen extends Screen
     public function createOrUpdate(Subgroup $subgroup, Request $request)
     {
 
-        $request->validate([
+        $data = $request->validate([
             'subgroup.title' => [
                 'required',
                 Rule::unique(Subgroup::class, 'title')->ignore($subgroup),
+            ],
+            'subgroup.head_id' => [
+                'nullable',
+                Rule::exists(User::class, 'id')
+            ],
+            'subgroup.group_id' => [
+                'required',
+                Rule::exists(Group::class, 'id')
             ]
 
         ]);
-        $subgroup->fill($request->get('subgroup'))->save();
+
+        if (!isset($data['subgroup']['head_id'])) {
+            $data['subgroup']['head_id'] = null;
+        }
+
+        $subgroup->fill($data['subgroup'])->save();
 
         Alert::info('You have successfully created an post.');
 

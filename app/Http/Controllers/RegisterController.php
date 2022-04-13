@@ -32,10 +32,11 @@ class RegisterController
         $user->patronymic = $data['patronymic'];
         $user->email = $data['email'];
         $user->password = Hash::make($data['password']);
+        $user->permissions = [];
 
         $user->save();
 
-        return redirect()->route(LoginController::LOGIN_ACTION);
+        return redirect()->route(LoginController::LOGIN_ACTION)->with('success', __('messages.user_register_success'));
 
     }
 }

@@ -27,7 +27,7 @@ class TaskLogController extends Controller
         $task = Task::findOrFail($id);
 
         $data = $this->validate($request, [
-            'status' => ['required',Rule::in(array_keys(TaskLog::ALL_STATUSES))],
+            'status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
             'date_refresh_plan' => 'nullable|date',
             'date_refresh_fact' => ' nullable|date',
             'trouble' => 'required',
@@ -44,7 +44,13 @@ class TaskLogController extends Controller
 
         $taskLog->save();
 
-        return redirect()->route('tasks.list')->with('success',__('messages.task_refresh_success'));
+
+        $backUrl = $request->query->get('back');
+        if(empty($backUrl)){
+            $backUrl = route(TaskController::ACTION_LIST);
+        }
+
+        return redirect()->to($backUrl)->with('success', __('messages.task_refresh_success'));
 
     }
 }

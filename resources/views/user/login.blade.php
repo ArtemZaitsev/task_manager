@@ -11,7 +11,7 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="css/admin.css">
-{{--    <link rel="stylesheet" href="../../../public/css/all.min.css">--}}
+    {{--    <link rel="stylesheet" href="../../../public/css/all.min.css">--}}
     <style>
         /*body {*/
         /*    background: url("img/background.jpg");*/
@@ -37,7 +37,11 @@
 </video>
 
 <div class="register-box">
-
+    @if(Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success')}}
+        </div>
+    @endif
 
     <div class="card">
         {{--        <div class="register-logo">--}}
@@ -46,21 +50,21 @@
 
         {{--        <div class="card-body register-card-body ">--}}
         <div class="card-body">
-{{--            @if ($errors->any())--}}
-{{--                <div class="alert alert-danger">--}}
+            {{--            @if ($errors->any())--}}
+            {{--                <div class="alert alert-danger">--}}
 
-{{--                    <ul>--}}
-{{--                        @foreach ($errors->all() as $error)--}}
-{{--                            <li>{{ $error }}</li>--}}
-{{--                        @endforeach--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--            @endif--}}
-{{--            @if(session()->has('error'))--}}
-{{--                <div class="alert alert-danger">--}}
-{{--                    {{ session('error') }}--}}
-{{--                </div>--}}
-{{--            @endif--}}
+            {{--                    <ul>--}}
+            {{--                        @foreach ($errors->all() as $error)--}}
+            {{--                            <li>{{ $error }}</li>--}}
+            {{--                        @endforeach--}}
+            {{--                    </ul>--}}
+            {{--                </div>--}}
+            {{--            @endif--}}
+            {{--            @if(session()->has('error'))--}}
+            {{--                <div class="alert alert-danger">--}}
+            {{--                    {{ session('error') }}--}}
+            {{--                </div>--}}
+            {{--            @endif--}}
 
             <form action="{{ route(\App\Http\Controllers\LoginController::AUTHENTICATE_ACTION) }}" method="post">
                 @csrf
@@ -69,11 +73,11 @@
                     <input name="email" type="email" class="form-control {{ $errors->has('email') ? 'error' : '' }}"
                            placeholder="Электронная почта" value="{{ old('email')  }} ">
 
-{{--                                        <div class="input-group-append">--}}
-{{--                                            <div class="input-group-text">--}}
-{{--                                                <span class="fas fa-envelope"></span>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+                    {{--                                        <div class="input-group-append">--}}
+                    {{--                                            <div class="input-group-text">--}}
+                    {{--                                                <span class="fas fa-envelope"></span>--}}
+                    {{--                                            </div>--}}
+                    {{--                                        </div>--}}
 
                 </div>
                 @error('email')
@@ -112,8 +116,13 @@
                 </div>
             </form>
 
-            {{--                <br>--}}
-            {{--                    <a href="#" class="text-center mt-3">Зарегистрироваться</a>--}}
+
+            <br>
+            <a href="{{ route(\App\Http\Controllers\RegisterController::REGISTER_ACTION) }}"
+               class="text-center mt-3">Зарегистрироваться</a>
+            <br>
+            <a href="mailto:artem.zaitsev@nami.ru"
+               class="text-center mt-3">Забыли пароль?</a>
         </div>
         <!-- /.form-box -->
     </div><!-- /.card -->

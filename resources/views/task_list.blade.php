@@ -9,8 +9,8 @@
                 {{ Session::get('success')}}
             </div>
         @endif
-
-
+        <div>{{  Illuminate\Support\Facades\Auth::user()->label()  }}</div>
+        <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы</div>
         <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
                         btn-success m-1">Очистить</a>
         <a class="btn btn-success m-3" href="{{ route('task.showFormAdd') }}">
@@ -19,9 +19,12 @@
         <a class="btn btn-info m-3" href="{{ route('task.setupColumns.show') }}">
             Настроить столбцы
         </a>
-        <a href="{{ $exportUrl }}" class="btn btn-warning m-1">Excel</a>
-        <a class="btn btn-danger m-1 " href="{{ route
-                        (\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">Выход</a>
+        <a href="{{ $exportUrl }}" class="btn btn-warning m-1">
+            Excel
+        </a>
+        <a class="btn btn-danger m-1 " href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
+            Выход
+        </a>
 
         <table class="table table-bordered table-hover">
             <thead class="thead-dark " style="background-color: #d1f4ff ; position: sticky; top:0; z-index: 1">
@@ -183,11 +186,17 @@
 ])
                     </th>
                     <th scope="col" class="text-center">
+                        @include('filters.string_filter', [
+                        'filter_name' => 'comment',
+                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                        ])
+                    </th>
+                    <th scope="col" class="text-center">
                         @include('filters.enum_filter', [
-'filter_name' => 'task_log_status',
-'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-'filter_data' => \App\Models\TaskLog::ALL_STATUSES
-])
+                        'filter_name' => 'task_log_status',
+                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                        'filter_data' => \App\Models\TaskLog::ALL_STATUSES
+                        ])
                     </th>
 
                     <th scope="col" class="text-center">
@@ -216,6 +225,7 @@
 'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
 ])
                     </th>
+
 
 
                 </tr>
@@ -365,18 +375,22 @@
                         <?php \App\Http\Controllers\Task\TaskController::sortColumn('status', request()) ?>
                     </a>
                 </th>
+                <th scope="col" class="text-center">Комментарии</th>
                 <th scope="col" class="text-center">Статус проблемы</th>
                 <th scope="col" class="text-center">Дата обновления проблемы план</th>
                 <th scope="col" class="text-center">Дата обновления проблемы факт</th>
                 <th scope="col" class="text-center">Что мешает</th>
                 <th scope="col" class="text-center">Что делаем</th>
+
             </tr>
+
 
             </thead>
             <tbody>
             @foreach ($tasks as $task)
                 <tr>
                     <td @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif class="align-middle ">
+
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -385,23 +399,30 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li>
                                     <a class="dropdown-item"
-                                       href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,['id' => $task->id]) }}">
+                                       href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,
+                                       ['id' => $task->id, 'back' => url()->full()]) }}">
                                         Добавить проблему
                                     </a>
                                 </li>
 
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('task.edit',['id' => $task->id]) }}">
-                                        Редактировать задачу
-                                    </a>
-                                </li>
 
-                                <li>
-                                    <a class="dropdown-item" onclick="return confirm('Точно удалить?')"
-                                       href="{{ route('task.del',['id' => $task->id]) }}">
-                                        Удалить задачу
-                                    </a>
-                                </li>
+                                @if($taskVoter->canEdit($task))
+                                    <li>
+                                        <a class="dropdown-item" href="{{ $taskService->editUrl($task) }}">
+                                            Редактировать задачу
+                                        </a>
+                                    </li>
+                                @endif
+
+
+                                @if($taskVoter->canDelete($task))
+                                    <li>
+                                        <a class="dropdown-item" onclick="return confirm('Точно удалить?')"
+                                           href="{{ route('task.del',['id' => $task->id]) }}">
+                                            Удалить задачу
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
 
@@ -409,19 +430,34 @@
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->product?->family?->project?->title }}
+                            @foreach($task->projects as $project)
+                                {{ $project->title }}
+                                @if(!$loop->last)
+                                    <br/>
+                                @endif
+                            @endforeach
                         </td>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->product?->family?->title }}
+                            @foreach($task->families as $family)
+                                {{ $family->title }}
+                                @if(!$loop->last)
+                                    <br/>
+                                @endif
+                            @endforeach
                         </td>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('product'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->product?->title }}
+                            @foreach($task->products as $product)
+                                {{ $product->title }}
+                                @if(!$loop->last)
+                                    <br/>
+                                @endif
+                            @endforeach
                         </td>
                     @endif
 
@@ -505,6 +541,13 @@
                     <td class="text-left align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ \App\Models\Task::ALL_STATUSES[$task->status] }}
+
+                    </td>
+
+                    <td class="text-left align-middle"
+                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                        {{ $task->comment }}
+
                     </td>
 
                     <td>
@@ -538,6 +581,7 @@
                         </tr>
                     @endforeach
                 @endif
+
 
             @endforeach
 

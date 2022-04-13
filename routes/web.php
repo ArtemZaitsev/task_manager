@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Task\PerformerTaskEditController;
 use App\Http\Controllers\Task\TaskAddController;
 use App\Http\Controllers\Task\TaskColumnController;
 use App\Http\Controllers\Task\TaskController;
@@ -29,8 +30,8 @@ use Illuminate\Support\Facades\Route;
 //});
 
 
-Route::get('/setupcolumns',[TaskColumnController::class, 'index'])->name('task.setupColumns.show');
-Route::post('/setupcolumns',[TaskColumnController::class, 'processForm'])->name('task.setupColumns.store');
+Route::get('/setupcolumns', [TaskColumnController::class, 'index'])->name('task.setupColumns.show');
+Route::post('/setupcolumns', [TaskColumnController::class, 'processForm'])->name('task.setupColumns.store');
 
 Route::get('/', [TaskController::class, 'list'])
     ->name(TaskController::ACTION_LIST)
@@ -44,12 +45,19 @@ Route::post('/task/{id}/edit', [TaskEditController::class, 'processForm'])
     ->where('id', '[0-9]+')
     ->name('task.edit');
 
+Route::get('/task/{id}/edit_by_performer', [PerformerTaskEditController::class, 'index'])
+    ->where('id', '[0-9]+');;
+
+Route::post('/task/{id}/edit_by_performer', [PerformerTaskEditController::class, 'processForm'])
+    ->where('id', '[0-9]+')
+    ->name('task.edit_by_performer');
+
 Route::get('/task/{id}/del', [TaskDelController::class, 'index'])
     ->where('id', '[0-9]+')
     ->name('task.del');
 
 Route::get('/register', [RegisterController::class, 'show'])->name(RegisterController::REGISTER_ACTION);
-Route::post('/register', [RegisterController::class, 'register'])->name(RegisterController::REGISTER_ACTION);
+Route::post('/register', [RegisterController::class, 'register']);
 
 Route::get('/login', [LoginController::class, 'show'])->name(LoginController::LOGIN_ACTION);
 Route::post('/login', [LoginController::class, 'authenticate'])->name(LoginController::AUTHENTICATE_ACTION);

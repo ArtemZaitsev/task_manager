@@ -7,8 +7,7 @@
 
     <div class="container">
         <h1>Добавление данных для задачи "{{ $task->name }}" </h1>
-        <form method="post"
-              action="{{ route(\App\Http\Controllers\Task\TaskLogController::PROCESS_FORM_ACTION,['id' => $task->id]) }}">
+        <form method="post">
             @csrf
             <div class="form-group">
                 <label for="status">Статус проблемы</label>

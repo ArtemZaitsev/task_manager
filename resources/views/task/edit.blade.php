@@ -12,26 +12,72 @@
 
 
     <div class="container">
-        <h1>Редактирование задачи "{{ $task->name }}" </h1>
+        <h1>{{ $title }}</h1>
         {{--                {{ dump($errors) }}--}}
-        <form method="post" action="{{ route('task.edit',['id' => $task->id]) }}">
+        <form method="post" action="{{ $actionUrl }}">
+
             @csrf
 
             <div class="form-group">
-                <label for="product_id">Продукт</label>
-                <select name="product_id" id="product_id"
-                        class="form-control {{ $errors->has('product_id') ? 'error' : '' }}">
+                <label for="project">Проект</label>
+                <select name="project[]"
+                        class="select2 form-control {{ $errors->has('project') ? 'error' : '' }}"
+                        id="project" multiple="multiple">
+
+                    @foreach($projects as $project )
+                        <option value="{{ $project->id }}"
+                                @if(in_array($project->id,
+                                old('project',$task->projects()->allRelatedIds()->toArray()))) selected
+                            @endif>
+                            {{ $project->title }}
+                        </option>
+                    @endforeach
+                </select>
+                @if ($errors->has('project'))
+                    <div class="error">
+                        {{ $errors->first('project') }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="form-group">
+                <label for="family">Семейство</label>
+                <select name="family[]"
+                        class="select2 form-control {{ $errors->has('family') ? 'error' : '' }}"
+                        id="family" multiple="multiple">
+                    @foreach($families as $family )
+                        <option value="{{ $family->id }}"
+                                @if(in_array($family->id,
+                                old('family',$task->families()->allRelatedIds()->toArray()))) selected
+                            @endif>
+                            {{ $family->title }}
+                        </option>
+                    @endforeach
+                </select>
+                @if ($errors->has('family'))
+                    <div class="error">
+                        {{ $errors->first('family') }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="form-group">
+                <label for="product">Продукт</label>
+                <select name="product[]" id="product" multiple
+                        class=" select2 form-control {{ $errors->has('product') ? 'error' : '' }}">
                     @foreach( $products as $product )
                         <option value="{{ $product->id }}"
-                                @if( $product->id == old('product_id',$task->product_id) ) selected @endif>
+                                @if(in_array($product->id,
+                                old('product',$task->products()->allRelatedIds()->toArray()))) selected
+                            @endif>
                             {{ $product->title }}
                         </option>
                     @endforeach
 
                 </select>
-                @if ( $errors->has('product_id'))
+                @if ( $errors->has('product'))
                     <div class="error">
-                        {{ $errors->first('product_id') }}
+                        {{ $errors->first('product') }}
                     </div>
                 @endif
             </div>
@@ -50,7 +96,8 @@
 
             <div class="form-group">
                 <label for="setting_date">Дата постановки</label>
-                <input name="setting_date" class="form-control {{ $errors->has('setting_date') ? 'error' : '' }}"
+                <input name="setting_date"
+                       class="form-control {{ $errors->has('setting_date') ? 'error' : '' }}"
                        id="setting_date" type="date"
                        value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('setting_date', $task->setting_date)) }}">
                 @if ($errors->has('setting_date'))
@@ -62,7 +109,8 @@
 
             <div class="form-group">
                 <label for="task_creator">Постановщик</label>
-                <input name="task_creator" class="form-control {{ $errors->has('task_creator') ? 'error' : '' }}"
+                <input name="task_creator"
+                       class="form-control {{ $errors->has('task_creator') ? 'error' : '' }}"
                        id="theme" type="text" value="{{ old('task_creator', $task->task_creator)  }}">
                 @if ($errors->has('task_creator'))
                     <div class="error">
@@ -166,8 +214,8 @@
                         id="coperformers" multiple="multiple">
                     @foreach($users as $user )
                         <option value="{{ $user->id }}"
-                            @if(in_array($user->id,
-                            old('coperformers',$task->coperformers()->allRelatedIds()->toArray()))) selected
+                                @if(in_array($user->id,
+                                old('coperformers',$task->coperformers()->allRelatedIds()->toArray()))) selected
                             @endif>
                             {{ $user->name }}
                             {{ $user->surname }}
@@ -186,7 +234,8 @@
                 <label for="start_date">Дата начала</label>
                 <input name="start_date" class="form-control {{ $errors->has('start_date') ? 'error' : '' }}"
                        id="start_date" type="date"
-                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('start_date', $task->start_date)) }}" required>
+                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('start_date', $task->start_date)) }}"
+                       required>
                 @if ($errors->has('start_date'))
                     <div class="error">
                         {{ $errors->first('start_date') }}
@@ -197,7 +246,8 @@
                 <label for="end_date">Дата окончания</label>
                 <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'error' : '' }}"
                        id="end_date" type="date"
-                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}" required>
+                       value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}"
+                       required>
                 @if ($errors->has('end_date'))
                     <div class="error">
                         {{ $errors->first('end_date') }}
@@ -208,10 +258,12 @@
 
             <div class="form-group">
                 <label for="execute">Приступить</label>
-                <select name="execute" id="execute" class="form-control {{ $errors->has('execute') ? 'error' : '' }}"
+                <select name="execute" id="execute"
+                        class="form-control {{ $errors->has('execute') ? 'error' : '' }}"
                         required>
                     @foreach(\App\Models\Task::ALL_EXECUTIONS as $value => $label )
-                        <option value="{{ $value}}" @if( $value == old('execute',$task->execute) ) selected @endif>
+                        <option value="{{ $value}}"
+                                @if( $value == old('execute',$task->execute) ) selected @endif>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -225,10 +277,12 @@
 
             <div class="form-group">
                 <label for="status">Статус выполнения</label>
-                <select name="status" id="status" class="form-control {{ $errors->has('status') ? 'error' : '' }}"
+                <select name="status" id="status"
+                        class="form-control {{ $errors->has('status') ? 'error' : '' }}"
                         required>
                     @foreach(\App\Models\Task::ALL_STATUSES as $value => $label )
-                        <option value="{{ $value}}" @if( $value == old('status',$task->status) ) selected @endif>
+                        <option value="{{ $value}}"
+                                @if( $value == old('status',$task->status) ) selected @endif>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -236,6 +290,17 @@
                 @if ($errors->has('status'))
                     <div class="error">
                         {{ $errors->first('status') }}
+                    </div>
+                @endif
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Комментарии</label>
+                <input name="comment" class="form-control {{ $errors->has('comment') ? 'error' : '' }}"
+                       id="comment" type="text" value="{{ old('name', $task->comment)  }}">
+                @if ($errors->has('comment'))
+                    <div class="error">
+                        {{ $errors->first('comment') }}
                     </div>
                 @endif
             </div>
@@ -286,7 +351,8 @@
                             </td>
                             <td>
                                 <input type="text" name="task_log[{{$log->id}}][trouble]"
-                                       value="{{ old("task_log.{$log->id}.trouble", $log->trouble)  }} " required>
+                                       value="{{ old("task_log.{$log->id}.trouble", $log->trouble)  }} "
+                                       required>
                                 @if ($errors->has("task_log.{$log->id}.trouble"))
                                     <div class="error">
                                         {{ $errors->first("task_log.{$log->id}.trouble") }}

@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Project;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
@@ -85,9 +86,10 @@ class ProjectEditScreen extends Screen
                     ->help('Specify a short descriptive title for this post.'),
 
 
-                Relation::make('project.head_id')
-                    ->title('Руководитель проекта')
+                Relation::make('project.heads.')
+                    ->title('Руководители проекта')
                     ->fromModel(User::class, 'surname')
+                    ->multiple()
                     ->displayAppend('label'),
 
                 Relation::make('project.planer_id')
@@ -102,13 +104,22 @@ class ProjectEditScreen extends Screen
     {
         $request->validate([
 
+            'project.heads' => 'required|array|min:1',
+            'project.heads.*' => Rule::exists(User::class, 'id'),
+            'project.planer_id' => [
+                'nullable',
+                'integer',
+                Rule::exists(User::class, 'id'),
+            ],
             'project.title' => [
                 'required',
                 Rule::unique(Project::class, 'title')->ignore($project),
             ],
         ]);
-
-        $project->fill($request->get('project'))->save();
+        DB::transaction(function () use ($request, $project) {
+            $project->fill($request->get('project'))->save();
+            $project->heads()->sync($request->get('project')['heads'] ?? []);
+        });
 
         Alert::info('You have successfully created an post.');
 

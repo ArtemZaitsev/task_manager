@@ -13,19 +13,19 @@ class Project extends Model
 
     protected $fillable = [
         'title',
-        'head_id',
         'planer_id'
     ];
 
-    public function head(){
-        return $this->belongsTo(User::class);
+    public function heads(){
+        return $this->belongsToMany(User::class,'project_user');
     }
-
     public function planer(){
         return $this->belongsTo(User::class);
     }
-
     public function label(){
         return $this->title;
+    }
+    public function tasks(){
+        $this->belongsToMany(Task::class, 'task_project');
     }
 }

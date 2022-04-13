@@ -100,15 +100,27 @@ class GroupEditScreen extends Screen
 
     public function createOrUpdate(Group $group, Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'group.title' => [
                 'required',
                 Rule::unique(Group::class, 'title')->ignore($group),
+            ],
+            'group.head_id' => [
+                'nullable',
+                Rule::exists(User::class, 'id')
+            ],
+            'group.direction_id' => [
+                'required',
+                Rule::exists(Direction::class, 'id')
             ]
 
         ]);
 
-        $group->fill($request->get('group'))->save();
+        if (!isset($data['group']['head_id'])) {
+            $data['group']['head_id'] = null;
+        }
+
+        $group->fill($data['group'])->save();
 
         Alert::info('You have successfully created an post.');
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\BuisinessLogick\TaskService;
+use App\BuisinessLogick\TaskVoter;
 use App\Models\Direction;
 use App\Models\Family;
 use App\Models\Group;
@@ -24,6 +26,15 @@ class TaskController extends BaseController
 {
     const ACTION_LIST = 'tasks.list';
 
+    private TaskVoter $taskVoter;
+    private TaskService $taskService;
+
+    public function __construct()
+    {
+        $this->taskVoter = new TaskVoter();
+        $this->taskService = new TaskService();
+    }
+
     public function list(Request $request)
     {
 
@@ -32,6 +43,8 @@ class TaskController extends BaseController
 
 
         return view('task_list', [
+            'taskVoter' => $this->taskVoter,
+            'taskService' => $this->taskService,
             'projects' => Project::all(),
             'families' => Family::all(),
             'products' => Product::all(),

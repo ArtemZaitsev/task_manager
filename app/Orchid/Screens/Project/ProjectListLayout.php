@@ -33,9 +33,12 @@ class ProjectListLayout extends Table
                     return Link::make($project->title)
                         ->route('platform.project.edit', $project);
                 }),
-            TD::make('head_id', 'Руководитель проекта')
+            TD::make('head_id', 'Руководители проекта')
                 ->render(function (Project $project) {
-                    return $project->head?->label;
+                    $heads = $project->heads()->get()->all();
+                    $heads = array_map(fn(User $head)=>$head->label(),$heads);
+                    $label = implode("</br>", $heads);
+                    return $label;
                 }),
             TD::make('planer_id', 'Планер проекта')
                 ->render(function (Project $project) {

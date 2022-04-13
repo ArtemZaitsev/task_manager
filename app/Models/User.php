@@ -83,6 +83,9 @@ class User extends Authenticatable
         return new UserPresenter($this);
     }
 
+    public function projects(){
+        return $this->belongsToMany(Project::class,'project_user');
+    }
     public function direction(){
         return $this->belongsTo(Direction::class);
     }
@@ -96,5 +99,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Task::class,'task_coperformer');
     }
+
 
 }

@@ -30,5 +30,8 @@ class Family extends Model
     public function label(){
         return $this->title;
     }
+    public function tasks(){
+        $this->belongsToMany(Task::class, 'task_family');
+    }
 
 }

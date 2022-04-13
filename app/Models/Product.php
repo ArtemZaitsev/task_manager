@@ -34,4 +34,7 @@ class Product extends Model
         return $this->title;
     }
 
+    public function tasks(){
+        return $this->belongsToMany(Task::class, 'task_product');
+    }
 }
