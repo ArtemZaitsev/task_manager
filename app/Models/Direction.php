@@ -19,6 +19,9 @@ class Direction extends Model
     public function head(){
         return $this->belongsTo(User::class);
     }
+    public function groups(){
+        return $this->hasMany(Group::class);
+    }
 
     public function planer(){
         return $this->belongsTo(User::class);

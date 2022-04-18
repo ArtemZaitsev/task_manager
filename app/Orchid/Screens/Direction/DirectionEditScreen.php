@@ -66,7 +66,8 @@ class DirectionEditScreen extends Screen
             Button::make('Remove')
                 ->icon('trash')
                 ->method('remove')
-                ->canSee($this->direction->exists),
+                ->canSee($this->direction->exists)
+                ->disabled($this->direction->groups->count() > 0),
         ];
     }
 

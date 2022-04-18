@@ -68,7 +68,8 @@ class GroupEditScreen extends Screen
             Button::make('Remove')
                 ->icon('trash')
                 ->method('remove')
-                ->canSee($this->group->exists),
+                ->canSee($this->group->exists)
+                ->disabled($this->group->subgroups->count() > 0),
         ];
     }
 

@@ -237,26 +237,17 @@
                 {{--                <th scope="col" class="text-center">Номер</th>--}}
                 @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                     <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'project', request())  }}">Проект
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('project', request()) ?>
-                        </a>
+                        Проект
                     </th>
                 @endif
                 @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
                     <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'family', request())  }}">Семейство
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('family', request()) ?>
-                        </a>
+                        Семейство
                     </th>
                 @endif
                 @if( \App\Utils\ColumnUtils::isColumnEnabled('product'))
                     <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'product', request())  }}">Продукт
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('product', request()) ?>
-                        </a>
+                        Продукт
                     </th>
                 @endif
                 @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))

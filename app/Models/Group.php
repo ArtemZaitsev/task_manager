@@ -23,6 +23,10 @@ class Group extends Model
         return $this->belongsTo(Direction::class);
     }
 
+    public function subgroups(){
+        return $this->hasMany(Subgroup::class);
+    }
+
     public function label(){
         return $this->title;
     }
