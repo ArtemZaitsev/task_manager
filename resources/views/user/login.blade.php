@@ -43,6 +43,11 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="card">
         {{--        <div class="register-logo">--}}
         {{--            <b>Авторизация</b>--}}
@@ -73,12 +78,6 @@
                     <input name="email" type="email" class="form-control {{ $errors->has('email') ? 'error' : '' }}"
                            placeholder="Электронная почта" value="{{ old('email')  }} ">
 
-                    {{--                                        <div class="input-group-append">--}}
-                    {{--                                            <div class="input-group-text">--}}
-                    {{--                                                <span class="fas fa-envelope"></span>--}}
-                    {{--                                            </div>--}}
-                    {{--                                        </div>--}}
-
                 </div>
                 @error('email')
                 <div class="small text-danger">
@@ -90,7 +89,7 @@
                 <div class="input-group-append mt-3">
                     <input name="password" type="password"
                            class="form-control {{ $errors->has('password') ? 'error' : '' }}"
-                           placeholder="Пароль" value="{{ old('password')  }}">
+                           placeholder="Пароль">
 
                     {{--                    <div class="input-group-append">--}}
                     {{--                        <div class="input-group-text">--}}

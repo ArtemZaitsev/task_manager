@@ -222,10 +222,18 @@ class UserEditScreen extends Screen
             $userData['password'] = Hash::make($userData['password']);
         }
 
+        if(!isset($userData['group_id'])){
+            $userData['group_id'] = null;
+        }
+        if(!isset($userData['subgroup_id'])){
+            $userData['subgroup_id'] = null;
+        }
+
         $user
             ->fill($userData)
             ->fill([
                 'permissions' => $permissions,
+
             ]);
         $user->save();
 

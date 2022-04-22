@@ -102,28 +102,28 @@ class TaskFetcher
         if ($query->has('priority')) {
             $priorityFilter = $query->get('priority');
             if ($priorityFilter !== '' && $priorityFilter !== null) {
-                $tasksQuery->where('priority', $priorityFilter);
+                $tasksQuery->where('tasks.priority', $priorityFilter);
             }
         }
 
         if ($query->has('type')) {
             $typeFilter = $query->get('type');
             if ($typeFilter !== '' && $typeFilter !== null) {
-                $tasksQuery->where('type', $typeFilter);
+                $tasksQuery->where('tasks.type', $typeFilter);
             }
         }
 
         if ($query->has('theme')) {
-            $taskName = trim($query->get('theme'));
-            if ($taskName !== "") {
-                $tasksQuery->where('theme', 'like', '%' . $taskName . '%');
+            $theme = trim($query->get('theme'));
+            if ($theme !== "") {
+                $tasksQuery->where('tasks.theme', 'like', '%' . $theme . '%');
             }
         }
 
         if ($query->has('main_task')) {
             $main_task = trim($query->get('main_task'));
             if ($main_task !== "") {
-                $tasksQuery->where('main_task', 'like', '%' . $main_task . '%');
+                $tasksQuery->where('tasks.main_task', 'like', '%' . $main_task . '%');
             }
         }
 
@@ -131,7 +131,7 @@ class TaskFetcher
         if ($query->has('task_name')) {
             $taskName = trim($query->get('task_name'));
             if ($taskName !== "") {
-                $tasksQuery->where('name', 'like', '%' . $taskName . '%');
+                $tasksQuery->where('tasks.name', 'like', '%' . $taskName . '%');
             }
         }
 

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'direction_id',
         'group_id',
         'subgroup_id',
+        'enable',
     ];
 
     /**

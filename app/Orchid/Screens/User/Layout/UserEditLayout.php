@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\Subgroup;
 use App\Models\User;
 use Orchid\Screen\Field;
+use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Layouts\Rows;
@@ -42,12 +43,14 @@ class UserEditLayout extends Rows
                 ->required()
                 ->title('Отчество')
                 ->placeholder('Отчество'),
-
             Input::make('user.email')
                 ->type('email')
                 ->required()
                 ->title(__('Email'))
                 ->placeholder(__('Email')),
+            CheckBox::make('user.enable')
+                ->sendTrueOrFalse()
+                ->title(__('Включен')),
             Relation::make('user.direction_id')
                 ->title('Направление')
                 ->fromModel(Direction::class, 'title')

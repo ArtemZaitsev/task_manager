@@ -51,6 +51,15 @@ class UserListLayout extends Table
                         ]);
                 }),
 
+            TD::make('enable', __('Enable'))
+                ->sort()
+                ->render(function (User $user) {
+                    if($user->enable === 1) {
+                        return '<span class="text-success">Да</span>';
+                    }
+                    return '<span class="text-danger">Нет</span>';
+                }),
+
             TD::make('updated_at', __('Last edit'))
                 ->sort()
                 ->render(function (User $user) {

@@ -29,7 +29,9 @@ class LoginController extends Controller
             return redirect()->route(TaskController::ACTION_LIST);
         }
 
-        return back()->withErrors([
+        return back()
+            ->withInput($request->except('password'))
+            ->withErrors([
             'email' => 'Пользователь с такими данными не найден.',
         ]);
     }

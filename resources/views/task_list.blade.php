@@ -480,7 +480,7 @@
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('setting_date'))
                         <td class="text-center align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ \App\Utils\DateUtils::dateToHtmlInput($task->setting_date) }}
+                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->setting_date) }}
                         </td>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('task_creator'))
@@ -519,11 +519,11 @@
                     </td>
                     <td class="text-center align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ \App\Utils\DateUtils::dateToHtmlInput($task->start_date) }}
+                        {{ \App\Utils\DateUtils::dateToDisplayFormat($task->start_date) }}
                     </td>
                     <td class="text-center align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ \App\Utils\DateUtils::dateToHtmlInput($task->end_date) }}
+                        {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date) }}
                     </td>
                     <td class="text-left align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
@@ -550,11 +550,11 @@
 
                     {{--                    <td>@if ( count($task->logs) > 0 )  {{ $task->logs[0]->date_refresh_plan}} @endif</td>--}}
                     <td class="text-center align-middle">@if( count($task->logs) > 0 )
-                            {{ \App\Utils\DateUtils::dateToHtmlInput($task->logs[0]->date_refresh_plan) }}
+                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->logs[0]->date_refresh_plan) }}
                         @endif
                     </td>
                     <td class="text-center align-middle">@if ( count($task->logs) > 0 )
-                            {{ \App\Utils\DateUtils::dateToHtmlInput($task->logs[0]->date_refresh_fact) }}@endif
+                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->logs[0]->date_refresh_fact) }}@endif
                     </td>
                     <td>@if ( count($task->logs) > 0 )  {{ $task->logs[0]->trouble}} @endif</td>
                     <td>@if ( count($task->logs) > 0 )  {{ $task->logs[0]->what_to_do}} @endif</td>
@@ -564,9 +564,8 @@
                     @foreach( $task->logs->slice(1) as $taskLog )
                         <tr>
                             <td>{{ \App\Models\TaskLog::ALL_STATUSES[$taskLog->status]}}</td>
-                            <td class="text-center align-middle">{{ \Carbon\Carbon::parse($taskLog->date_refresh_plan)
-                            ->format('d.m.Y') }}</td>
-                            <td class="text-center align-middle">{{ \Carbon\Carbon::parse($taskLog->date_refresh_fact)->format('d.m.Y') }}</td>
+                            <td class="text-center align-middle">{{ App\Utils\DateUtils::dateToDisplayFormat($taskLog->date_refresh_plan) }}</td>
+                            <td class="text-center align-middle">{{ App\Utils\DateUtils::dateToDisplayFormat($taskLog->date_refresh_fact) }}</td>
                             <td class="text-left align-middle">{{ $taskLog->trouble}}</td>
                             <td class="text-left align-middle">{{ $taskLog->what_to_do}}</td>
                         </tr>
