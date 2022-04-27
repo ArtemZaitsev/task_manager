@@ -78,7 +78,7 @@ class  TaskRequest extends FormRequest
             'type' => ['nullable', Rule::in(array_keys(Task::All_TYPE))],
             'theme' => 'nullable|max:255',
             'main_task' => 'nullable|max:255',
-            'name' => 'required|max:255',
+            'name' => 'required',
             'user_id' => ['required', Rule::exists(User::class, 'id')],
             'coperformers' => 'nullable|array',
             'coperformers.*' => Rule::exists(User::class, 'id'),

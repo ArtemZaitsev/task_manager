@@ -21,6 +21,7 @@ class TaskAddController extends Controller
     public function index(Request $request)
     {
         $task = new Task();
+        $task->status = Task::STATUS_NOT_DONE;
         $logs = [];
 
         return view('task.edit', [

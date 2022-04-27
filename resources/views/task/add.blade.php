@@ -177,7 +177,7 @@
                 <label for="status">Статус выполнения</label>
                 <select name="status" id="status" class="form-control {{ $errors->has('status') ? 'error' : '' }}">
                     @foreach(\App\Models\Task::ALL_STATUSES as $value => $label )
-                        <option value="{{ $value}}" @if( $value == old('status') ) selected @endif>
+                        <option value="{{ $value}}" @if( $value == old('status', $task->status) ) selected @endif>
                             {{ $label }}
                         </option>
                     @endforeach

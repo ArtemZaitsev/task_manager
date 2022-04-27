@@ -13,21 +13,26 @@
         <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы</div>
         <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
                         btn-success m-1">Очистить</a>
-        <a class="btn btn-success m-3" href="{{ route('task.showFormAdd') }}">
-            Создать
-        </a>
+        @if($taskVoter->canCreate())
+            <a class="btn btn-success m-3" href="{{ route('task.showFormAdd') }}">
+                Создать
+            </a>
+        @endif
         <a class="btn btn-info m-3" href="{{ route('task.setupColumns.show') }}">
             Настроить столбцы
         </a>
-        <a href="{{ $exportUrl }}" class="btn btn-warning m-1">
-            Excel
-        </a>
+        @if($taskVoter->canExport())
+            <a href="{{ $exportUrl }}" class="btn btn-warning m-1">
+                Excel
+            </a>
+        @endif
         <a class="btn btn-danger m-1 " href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
             Выход
         </a>
 
         @impersonating()
-        <a class="btn btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под пользователя</a>
+        <a class="btn btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под
+            пользователя</a>
         @endImpersonating
 
         <table class="table table-bordered table-hover">
@@ -328,7 +333,7 @@
                         <?php \App\Http\Controllers\Task\TaskController::sortColumn('main_task', request()) ?>
                     </a>
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center" style="min-width: 500px">
                     <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
                     'name', request())  }}">Задача
                         <?php \App\Http\Controllers\Task\TaskController::sortColumn('name', request()) ?>
@@ -383,10 +388,12 @@
             <tbody>
             @foreach ($tasks as $task)
                 <tr>
-                    <td @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif class="align-middle ">
+                    <td @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}"
+                        @endif class="align-middle ">
 
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                    id="dropdownMenuButton1"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 Действия
                             </button>
@@ -544,7 +551,7 @@
 
                     </td>
 
-                    <td>
+                    <td class="text-center align-middle">
                         @if ( count($task->logs) > 0 )
                             {{ \App\Models\TaskLog::ALL_STATUSES[$task->logs[0]->status]}}
                         @endif
@@ -559,8 +566,9 @@
                     <td class="text-center align-middle">@if ( count($task->logs) > 0 )
                             {{ \App\Utils\DateUtils::dateToDisplayFormat($task->logs[0]->date_refresh_fact) }}@endif
                     </td>
-                    <td>@if ( count($task->logs) > 0 )  {{ $task->logs[0]->trouble}} @endif</td>
-                    <td>@if ( count($task->logs) > 0 )  {{ $task->logs[0]->what_to_do}} @endif</td>
+                    <td class="text-left align-middle">@if ( count($task->logs) > 0 )  {{ $task->logs[0]->trouble}}
+                        @endif</td>
+                    <td class="text-left align-middle">@if ( count($task->logs) > 0 )  {{ $task->logs[0]->what_to_do}} @endif</td>
                 </tr>
 
                 @if( count($task->logs) > 1 )
