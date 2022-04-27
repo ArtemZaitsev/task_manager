@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+
+use Lab404\Impersonate\Models\Impersonate;
 use Orchid\Platform\Models\User as Authenticatable;
+
 
 class User extends Authenticatable
 {
+    use Impersonate;
+
     /**
      * The attributes that are mass assignable.
      *

@@ -89,7 +89,9 @@ class SubgroupEditScreen extends Screen
 
                 Relation::make('subgroup.group_id')
                     ->title('Группа')
-                    ->fromModel(Group::class, 'title'),
+                    ->fromModel(Group::class, 'title')
+                    ->displayAppend('fullName'),
+
 
                 Relation::make('subgroup.head_id')
                     ->title('Руководитель подгруппы')
@@ -106,7 +108,12 @@ class SubgroupEditScreen extends Screen
         $data = $request->validate([
             'subgroup.title' => [
                 'required',
-                Rule::unique(Subgroup::class, 'title')->ignore($subgroup),
+                Rule::unique(Subgroup::class, 'title')
+                    ->where(function ($query) use ($request) {
+                       return $query
+                           ->where('group_id', $request->input('subgroup.group_id'));
+                    })
+                    ->ignore($subgroup),
             ],
             'subgroup.head_id' => [
                 'nullable',

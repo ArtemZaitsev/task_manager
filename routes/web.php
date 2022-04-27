@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 //    Route::get('/',[MainController::class,'index'])->name('admin.index');
 //});
 
-
+Route::impersonate();
 Route::get('/setupcolumns', [TaskColumnController::class, 'index'])->name('task.setupColumns.show');
 Route::post('/setupcolumns', [TaskColumnController::class, 'processForm'])->name('task.setupColumns.store');
 

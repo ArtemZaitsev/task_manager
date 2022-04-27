@@ -54,7 +54,7 @@ class UserListLayout extends Table
             TD::make('enable', __('Enable'))
                 ->sort()
                 ->render(function (User $user) {
-                    if($user->enable === 1) {
+                    if ($user->enable === 1) {
                         return '<span class="text-success">Да</span>';
                     }
                     return '<span class="text-danger">Нет</span>';
@@ -72,7 +72,13 @@ class UserListLayout extends Table
                 ->render(function (User $user) {
                     return DropDown::make()
                         ->icon('options-vertical')
-                        ->list([
+                        ->list(array_filter([
+
+                            $user->enable ?
+                                Link::make('Войти под пользователем')
+                                    ->route('impersonate', $user->id)
+                                    ->icon('pencil')
+                                : null,
 
                             Link::make(__('Edit'))
                                 ->route('platform.systems.users.edit', $user->id)
@@ -84,7 +90,7 @@ class UserListLayout extends Table
                                 ->method('remove', [
                                     'id' => $user->id,
                                 ]),
-                        ]);
+                        ]));
                 }),
         ];
     }

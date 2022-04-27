@@ -21,13 +21,13 @@ class TaskVoter
 
     public function canEdit(Task $task): bool
     {
-
-        if (Auth::id() === $task->user_id) {
+        if (Auth::id() === $task->user_id){
             return true;
         }
         if ($this->userIsPlaner()) {
             return true;
         }
+        return false;
     }
 
     public function canDelete(Task $task): bool

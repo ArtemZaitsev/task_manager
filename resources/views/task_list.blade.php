@@ -26,6 +26,10 @@
             Выход
         </a>
 
+        @impersonating()
+        <a class="btn btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под пользователя</a>
+        @endImpersonating
+
         <table class="table table-bordered table-hover">
             <thead class="thead-dark " style="background-color: #d1f4ff ; position: sticky; top:0; z-index: 1">
             <form method="GET">
@@ -225,7 +229,6 @@
 'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
 ])
                     </th>
-
 
 
                 </tr>

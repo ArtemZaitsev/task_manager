@@ -104,7 +104,12 @@ class GroupEditScreen extends Screen
         $data = $request->validate([
             'group.title' => [
                 'required',
-                Rule::unique(Group::class, 'title')->ignore($group),
+                Rule::unique(Group::class,'title')
+                    ->where(function($query) use ($request){
+                    return $query
+                        ->where('direction_id', $request->input('group.direction_id'));
+                })
+                    ->ignore($group),
             ],
             'group.head_id' => [
                 'nullable',
