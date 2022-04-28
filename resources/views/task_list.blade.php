@@ -10,12 +10,18 @@
             </div>
         @endif
         <div>{{  Illuminate\Support\Facades\Auth::user()->label()  }}</div>
-        <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы</div>
+
+        <a href="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы" target="_blank">
+            \\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
+        </a>
+
+
+
         <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
-                        btn-success m-1">Очистить</a>
+                        btn-success m-1">Очистить фильтры</a>
         @if($taskVoter->canCreate())
             <a class="btn btn-success m-3" href="{{ route('task.showFormAdd') }}">
-                Создать
+                Создать задачу
             </a>
         @endif
         <a class="btn btn-info m-3" href="{{ route('task.setupColumns.show') }}">
@@ -23,11 +29,11 @@
         </a>
         @if($taskVoter->canExport())
             <a href="{{ $exportUrl }}" class="btn btn-warning m-1">
-                Excel
+                Экспорт в Excel
             </a>
         @endif
         <a class="btn btn-danger m-1 " href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
-            Выход
+            Выход из системы
         </a>
 
         @impersonating()
@@ -240,7 +246,7 @@
 
             </form>
             <tr>
-                <th scope="col" class="text-center">Управление задачей</th>
+                <th scope="col" class="text-center"  >Управление задачей</th>
                 {{--                <th scope="col" class="text-center">Управление номером</th>--}}
                 {{--                <th scope="col" class="text-center">Номер</th>--}}
                 @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))

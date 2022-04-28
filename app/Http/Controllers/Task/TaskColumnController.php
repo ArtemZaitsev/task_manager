@@ -18,7 +18,9 @@ class TaskColumnController extends BaseController
         'setting_date' => 'Дата постановки',
         'task_creator' => 'Постановщик',
         'priority' => 'Приоритет',
-
+        'type' => 'Тип',
+        'theme' => 'Тема',
+        'main_task' => 'Основная задача',
         ];
 
     public function index(){

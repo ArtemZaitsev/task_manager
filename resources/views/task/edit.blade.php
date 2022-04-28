@@ -195,8 +195,8 @@
                     @foreach($users as $user )
                         <option value="{{ $user->id }}"
                                 @if( $user->id == old('user_id',$task->user_id) ) selected @endif>
-                            {{ $user->name }}
                             {{ $user->surname }}
+                            {{ $user->name }}
                             {{ $user->patronymic }}
                         </option>
                     @endforeach

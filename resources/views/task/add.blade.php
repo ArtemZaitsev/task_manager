@@ -47,7 +47,7 @@
                 <label for="priority">Приоритет</label>
                 <select name="priority" id="priority" class="form-control {{ $errors->has('priority') ? 'error' : '' }}">
                     @foreach(\App\Models\Task::All_PRIORITY as $value => $label )
-                        <option value="{{ $value}}" @if( $value == old('priority') ) selected @endif>
+                        <option value="{{ $value}}" @if( $value == old('priority', $task->priority) ) selected @endif>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -64,7 +64,7 @@
                 <label for="type">Тип</label>
                 <select name="type" id="type" class="form-control {{ $errors->has('type') ? 'error' : '' }}">
                     @foreach(\App\Models\Task::All_TYPE as $value => $label )
-                        <option value="{{ $value}}" @if( $value == old('type') ) selected @endif>
+                        <option value="{{ $value}}" @if( $value == old('type', $task->type) ) selected @endif>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -118,8 +118,8 @@
                     @foreach($users as $user )
                         <option value="{{ $user->id }}"
                                 @if( $user->id == old('user_id') ) selected @endif>
-                            {{ $user->name }}
                             {{ $user->surname }}
+                            {{ $user->name }}
                             {{ $user->patronymic }}
                         </option>
                     @endforeach
@@ -160,7 +160,7 @@
                 <label for="execute">Приступить</label>
                 <select name="execute" id="execute" class="form-control {{ $errors->has('execute') ? 'error' : '' }}">
                     @foreach(\App\Models\Task::ALL_EXECUTIONS as $value => $label )
-                        <option value="{{ $value}}" @if( $value == old('execute') ) selected @endif>
+                        <option value="{{ $value}}" @if( $value == old('execute', $task->execute) ) selected @endif>
                             {{ $label }}
                         </option>
                     @endforeach

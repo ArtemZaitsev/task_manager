@@ -39,6 +39,22 @@ class TasksExportController extends Controller
     private function writeHeader(Worksheet $sheet)
     {
         $headers = [
+
+
+            'Проект',
+            'Семейство',
+            'Продукт',
+            'Направление',
+            'Группа',
+            'Подгруппа',
+
+            'Основание',
+            'Дата постановки',
+            'Постановщик',
+            'Приоритет',
+            'Тип',
+
+
             'Тема',
             'Основная задача',
             'Название задачи',
@@ -70,6 +86,12 @@ class TasksExportController extends Controller
         $idx = 2;
         foreach ($tasks as $task) {
             $row = [
+
+                $task->base,
+                $task->setting_date,
+                $task->type,
+                $task->priority,
+                $task->task_creator,
                 $task->theme,
                 $task->main_task,
                 $task->name,

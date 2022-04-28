@@ -22,6 +22,9 @@ class TaskAddController extends Controller
     {
         $task = new Task();
         $task->status = Task::STATUS_NOT_DONE;
+        $task->priority = Task::PRIORITY_LOW;
+        $task->execute = Task::EXECUTE_DONT_KNOW;
+        $task->type = Task::TYPE_NOT_PLAN;
         $logs = [];
 
         return view('task.edit', [

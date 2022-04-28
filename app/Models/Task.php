@@ -17,8 +17,8 @@ class Task extends Model
 
     const ALL_STATUSES = [
         self::STATUS_BLOCKED => 'Заблокирована',
-        self::STATUS_NOT_DONE => 'Не выполнено',
-        self::STATUS_DONE => 'Закрыта',
+        self::STATUS_NOT_DONE => 'Не выполнена',
+        self::STATUS_DONE => 'Выполнена',
         self::STATUS_IN_PROGRESS => 'В процессе',
         self::STATUS_INFO => 'Информационная',
         self::STATUS_REFUSE => 'Снята',
@@ -30,13 +30,15 @@ class Task extends Model
     const EXECUTE_NEXT_WEEK = 3;
     const EXECUTE_THIS_MONTH = 4;
     const EXECUTE_NEXT_MONTH = 5;
+    const EXECUTE_DONT_KNOW = 6;
 
     const ALL_EXECUTIONS = [
-        self::EXECUTE_TODAY => '01. Сегодня',
-        self::EXECUTE_THIS_WEEK => '02. На этой неделе',
-        self::EXECUTE_NEXT_WEEK => '03. На следующей неделе',
-        self::EXECUTE_THIS_MONTH => '04. В этом месяце',
-        self::EXECUTE_NEXT_MONTH => '05. В следующем месяце',
+        self::EXECUTE_TODAY => 'Сегодня',
+        self::EXECUTE_THIS_WEEK => 'На этой неделе',
+        self::EXECUTE_NEXT_WEEK => 'На следующей неделе',
+        self::EXECUTE_THIS_MONTH => 'В этом месяце',
+        self::EXECUTE_NEXT_MONTH => 'В следующем месяце',
+        self::EXECUTE_DONT_KNOW => '-',
     ];
 
     const PRIORITY_HIGH = 1;
