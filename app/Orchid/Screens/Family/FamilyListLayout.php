@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens\Family;
 
 use App\Models\Family;
+use App\Models\User;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
@@ -43,8 +44,17 @@ class FamilyListLayout extends Table
 
             TD::make('head_id', 'Руководитель семейства продуктов')
                 ->render(function (Family $family) {
-                    return $family->head?->label;
+                    $heads = $family->heads()->get()->all();
+                    $heads = array_map(fn(User $head)=>$head->label(),$heads);
+                    $label = implode("</br>", $heads);
+                    return $label;
                 }),
+
+
+
+
+
+
             TD::make('head_id', 'Планер семейства продуктов')
                 ->render(function (Family $family) {
                     return $family->planer?->label;

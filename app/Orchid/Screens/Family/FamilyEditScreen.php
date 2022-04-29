@@ -6,6 +6,7 @@ use App\Models\Family;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
@@ -89,9 +90,10 @@ class FamilyEditScreen extends Screen
                     ->title('Проект')
                     ->fromModel(Project::class, 'title'),
 
-                Relation::make('family.head_id')
-                    ->title('Руководитель семейства продуктов')
+                Relation::make('family.heads.')
+                    ->title('Руководители семейства продуктов')
                     ->fromModel(User::class, 'surname')
+                    ->multiple()
                     ->displayAppend('label'),
 
                 Relation::make('family.planer_id')
@@ -105,6 +107,13 @@ class FamilyEditScreen extends Screen
     public function createOrUpdate(Family $family, Request $request)
     {
         $request->validate([
+            'family.heads' => 'array',
+            'family.heads.*' => Rule::exists(User::class, 'id'),
+            'family.planer_id' => [
+                'nullable',
+                'integer',
+                Rule::exists(User::class, 'id'),
+            ],
             'family.title' => [
                 'required',
                 Rule::unique(Family::class, 'title')->ignore($family),
@@ -112,7 +121,10 @@ class FamilyEditScreen extends Screen
 
         ]);
 
-        $family->fill($request->get('family'))->save();
+        DB::transaction(function () use ($request, $family) {
+            $family->fill($request->get('family'))->save();
+            $family->heads()->sync($request->get('family')['heads'] ?? []);
+        });
 
         Alert::info('You have successfully created an post.');
 

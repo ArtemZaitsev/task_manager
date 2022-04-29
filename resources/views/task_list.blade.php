@@ -11,11 +11,7 @@
         @endif
         <div>{{  Illuminate\Support\Facades\Auth::user()->label()  }}</div>
 
-        <a href="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы" target="_blank">
-            \\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
-        </a>
-
-
+        <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы</div>
 
         <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
                         btn-success m-1">Очистить фильтры</a>
@@ -246,7 +242,7 @@
 
             </form>
             <tr>
-                <th scope="col" class="text-center"  >Управление задачей</th>
+                <th scope="col" class="text-center">Управление задачей</th>
                 {{--                <th scope="col" class="text-center">Управление номером</th>--}}
                 {{--                <th scope="col" class="text-center">Номер</th>--}}
                 @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))

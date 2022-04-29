@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Task;
 use App\BuisinessLogick\PlanerService;
 use App\Http\Controllers\Filters\DateFilter;
 use App\Models\Direction;
+use App\Models\Family;
 use App\Models\Group;
 use App\Models\Product;
 use App\Models\Project;
@@ -30,8 +31,9 @@ class TaskFetcher
 
     private PlanerService $planerService;
 
-    public function __construct(){
-      $this->planerService = new PlanerService();
+    public function __construct()
+    {
+        $this->planerService = new PlanerService();
     }
 
     private function applyFilters(InputBag $query, Builder $tasksQuery)
@@ -442,12 +444,42 @@ class TaskFetcher
             if (count($subgroupsDirections) > 0) {
                 $baseQuery->orWhereIn('users.direction_id', $subgroupsDirections);
             }
-            // в противном случае ограничить задачи по ответственному
 
+            // Если пользователь является руководителем семейства, то ограничить задачи, которые входят в
+            // семейство
+            $familyHeads =  DB::table('family_heads')->where('user_id', $userId)->pluck('family_id')->toArray();;
+
+            if (count($familyHeads) > 0) {
+                $baseQuery->orWhereIn('tasks.id', function ($query) use ($familyHeads) {
+                    $query->select('task_id')
+                        ->from('task_family')
+                        ->whereIn('family_id', $familyHeads);
+                });
+            }
+
+            // Если пользователь является руководителем продукта, то ограничить задачи, которые входят в
+            // продукт
+            $productHeads = Product::query()
+                ->where('head_id', $userId)
+                ->select('products.id')
+                ->get()
+                ->map(fn($product) => $product['id'])
+                ->toArray();
+
+            if (count($productHeads) > 0) {
+                $baseQuery->orWhereIn('tasks.id', function ($query) use ($productHeads) {
+                    $query->select('task_id')
+                        ->from('task_product')
+                        ->whereIn('product_id', $productHeads);
+                });
+            }
+
+            // в противном случае ограничить задачи по ответственному
             $baseQuery->orWhere('user_id', $userId);
-            if($this->planerService->userIsPlaner($userId)){
+            if ($this->planerService->userIsPlaner($userId)) {
                 $baseQuery->orWhereRaw('1=1');
             }
+
 
         });
 

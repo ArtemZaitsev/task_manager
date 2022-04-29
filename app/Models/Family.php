@@ -13,14 +13,14 @@ class Family extends Model
 
     protected $fillable =[
         'title',
-        'head_id',
         'planer_id',
         'project_id'
     ];
 
-    public function head(){
-        return $this->belongsTo(User::class);
+    public function heads(){
+        return $this->belongsToMany(User::class, 'family_heads');
     }
+
     public function project(){
         return $this->belongsTo(Project::class);
     }
