@@ -13,7 +13,6 @@ class Product extends Model
 
     protected $fillable = [
         'title',
-        'head_id',
         'planer_id',
         'family_id'
     ];
@@ -22,8 +21,8 @@ class Product extends Model
         return $this->belongsTo(Family::class);
     }
 
-    public function head(){
-        return $this->belongsTo(User::class);
+    public function heads(){
+        return $this->belongsToMany(User::class, 'product_heads');
     }
 
     public function planer(){

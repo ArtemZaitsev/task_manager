@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens\Product;
 
 use App\Models\Product;
+use App\Models\User;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
@@ -42,10 +43,15 @@ class ProductListLayout extends Table
                     return Link::make($product->title)
                         ->route('platform.product.edit', $product);
                 }),
-            TD::make('head_id', 'Руководитель продукта')
+            TD::make('head_id', 'Руководители продукта')
                 ->render(function (Product $product) {
-                    return $product?->head?->label;
+                    $heads = $product->heads()->get()->all();
+                    $heads = array_map(fn(User $head)=>$head->label(),$heads);
+                    $label = implode("</br>", $heads);
+                    return $label;
                 }),
+
+
             TD::make('planer_id', 'Планер продукта')
                 ->render(function (Product $product) {
                     return $product?->planer?->label;

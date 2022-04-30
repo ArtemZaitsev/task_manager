@@ -42,18 +42,13 @@ class FamilyListLayout extends Table
                 }),
 
 
-            TD::make('head_id', 'Руководитель семейства продуктов')
+            TD::make('head_id', 'Руководители семейства продуктов')
                 ->render(function (Family $family) {
                     $heads = $family->heads()->get()->all();
                     $heads = array_map(fn(User $head)=>$head->label(),$heads);
                     $label = implode("</br>", $heads);
                     return $label;
                 }),
-
-
-
-
-
 
             TD::make('head_id', 'Планер семейства продуктов')
                 ->render(function (Family $family) {

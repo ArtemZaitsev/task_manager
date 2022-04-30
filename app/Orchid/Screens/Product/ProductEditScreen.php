@@ -6,6 +6,7 @@ use App\Models\Family;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
@@ -89,9 +90,10 @@ class ProductEditScreen extends Screen
                     ->title('Семейство')
                     ->fromModel(Family::class, 'title'),
 
-                Relation::make('product.head_id')
-                    ->title('Руководитель продукта')
+                Relation::make('product.heads.')
+                    ->title('Руководители продукта')
                     ->fromModel(User::class, 'surname')
+                    ->multiple()
                     ->displayAppend('label'),
 
                 Relation::make('product.planer_id')
@@ -101,19 +103,31 @@ class ProductEditScreen extends Screen
             ])
         ];
     }
+
     public function createOrUpdate(Product $product, Request $request)
     {
 
         $request->validate([
+            'product.heads' => 'array',
+            'product.heads.*' => Rule::exists(User::class, 'id'),
+            'product.planer_id' => [
+                'nullable',
+                'integer',
+                Rule::exists(User::class, 'id'),
+            ],
             'product.title' => [
                 'required',
                 Rule::unique(Product::class, 'title')->ignore($product),
             ]
 
         ]);
-        $product->fill($request->get('product'))->save();
 
-        Alert::info('You have successfully created an post.');
+        DB::transaction(function () use ($request, $product) {
+            $product->fill($request->get('product'))->save();
+            $product->heads()->sync($request->get('product')['heads'] ?? []);
+        });
+
+        Alert::info('Вы успешно поработали над продуктом.');
 
         return redirect()->route('platform.product.list');
     }

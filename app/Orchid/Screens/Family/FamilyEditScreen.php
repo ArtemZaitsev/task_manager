@@ -126,7 +126,7 @@ class FamilyEditScreen extends Screen
             $family->heads()->sync($request->get('family')['heads'] ?? []);
         });
 
-        Alert::info('You have successfully created an post.');
+        Alert::info('Вы успешно поработали над семейством продуктов.');
 
         return redirect()->route('platform.family.list');
     }

@@ -447,7 +447,7 @@ class TaskFetcher
 
             // Если пользователь является руководителем семейства, то ограничить задачи, которые входят в
             // семейство
-            $familyHeads =  DB::table('family_heads')->where('user_id', $userId)->pluck('family_id')->toArray();;
+            $familyHeads =  DB::table('family_heads')->where('user_id', $userId)->pluck('family_id')->toArray();
 
             if (count($familyHeads) > 0) {
                 $baseQuery->orWhereIn('tasks.id', function ($query) use ($familyHeads) {
@@ -459,12 +459,14 @@ class TaskFetcher
 
             // Если пользователь является руководителем продукта, то ограничить задачи, которые входят в
             // продукт
-            $productHeads = Product::query()
-                ->where('head_id', $userId)
-                ->select('products.id')
-                ->get()
-                ->map(fn($product) => $product['id'])
-                ->toArray();
+//            $productHeads = Product::query()
+//                ->where('head_id', $userId)
+//                ->select('products.id')
+//                ->get()
+//                ->map(fn($product) => $product['id'])
+//                ->toArray();
+            $productHeads =  DB::table('product_heads')->where('user_id', $userId)->pluck('product_id')->toArray();;
+
 
             if (count($productHeads) > 0) {
                 $baseQuery->orWhereIn('tasks.id', function ($query) use ($productHeads) {
