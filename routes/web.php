@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::impersonate();
+
 Route::get('/setupcolumns', [TaskColumnController::class, 'index'])->name('task.setupColumns.show');
 Route::post('/setupcolumns', [TaskColumnController::class, 'processForm'])->name('task.setupColumns.store');
 
@@ -72,6 +73,10 @@ Route::get('/task/{id}/create-log', [TaskLogController::class, 'index'])
 Route::post('/task/{id}/create-log', [TaskLogController::class, 'processForm'])
     ->where('id', '[0-9]+')
     ->name(TaskLogController::PROCESS_FORM_ACTION);
+
+Route::get('/tasklog/{id}/delete', [TaskLogController::class, 'deleteLog'])
+    ->where('id', '[0-9]+')
+    ->name(TaskLogController::DELETE_ACTION);
 
 //Route::get('/persons', [\App\Http\Controllers\PersonController::class, 'list'])->name('tasks.list');
 ////Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);

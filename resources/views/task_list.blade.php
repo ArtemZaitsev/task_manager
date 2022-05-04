@@ -4,6 +4,7 @@
 
 
     <div class="main">
+
         @if(Session::has('success'))
             <div class="alert alert-success">
                 {{ Session::get('success')}}
@@ -38,10 +39,13 @@
         @endImpersonating
 
         <table class="table table-bordered table-hover">
-            <thead class="thead-dark " style="background-color: #d1f4ff ; position: sticky; top:0; z-index: 1">
+            <thead class="thead-dark" style="background-color: #d1f4ff; ">
             <form method="GET">
                 <tr>
-                    <th scope="col" class="text-center ">
+                    <th scope="col" class="text-center sticky-th">
+                        <div class="for-headers">
+                            Управление задачей
+                        </div>
                     </th>
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                         <th scope="col" class="text-center">
@@ -50,8 +54,12 @@
                             'filter_data' => $projects,
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
+                            <div scope="col" class="text-center for-headers">
+                                Проект
+                            </div>
                         </th>
                     @endif
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
                         <th scope="col" class="text-center">
                             @include('filters.entity_filter', [
@@ -59,8 +67,12 @@
                             'filter_data' => $families,
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
+                            <div scope="col" class="text-center for-headers">
+                                Семейство
+                            </div>
                         </th>
                     @endif
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('product'))
                         <th scope="col" class="text-center">
                             @include('filters.entity_filter', [
@@ -68,8 +80,12 @@
                             'filter_data' => $products,
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
+                            <div scope="col" class="text-center for-headers">
+                                Продукт
+                            </div>
                         </th>
                     @endif
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
                         <th scope="col" class="text-center">
                             @include('filters.entity_filter', [
@@ -77,6 +93,12 @@
                             'filter_data' => $directions,
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                        'direction', request())  }}">Направление
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('direction', request()) ?>
+                                </a>
+                            </div>
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
@@ -86,6 +108,12 @@
                             'filter_data' => $groups,
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'group', request())  }}">Группа
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('group', request()) ?>
+                                </a>
+                            </div>
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
@@ -95,6 +123,12 @@
                             'filter_data' => $subgroups,
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'subgroup', request())  }}">Подгруппа
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('subgroup', request()) ?>
+                                </a>
+                            </div>
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('base'))
@@ -103,6 +137,12 @@
                            'filter_name' => 'base',
                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                          ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'base', request())  }}">Основание
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('base', request()) ?>
+                                </a>
+                            </div>
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('setting_date'))
@@ -111,6 +151,12 @@
                             'filter_name' => 'setting_date',
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                            ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'setting_date', request())  }}">Дата постановки
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('setting_date', request()) ?>
+                                </a>
+                            </div>
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('task_creator'))
@@ -119,6 +165,12 @@
                            'filter_name' => 'task_creator',
                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                          ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'task_creator', request())  }}">Постановщик
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('task_creator', request()) ?>
+                                </a>
+                            </div>
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
@@ -128,93 +180,172 @@
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
                             'filter_data' => \App\Models\Task::All_PRIORITY
                             ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'priority', request())  }}">Приоритет
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('priority', request()) ?>
+                                </a>
+                            </div>
                         </th>
                     @endif
-                    <th scope="col" class="text-center">
-                        @include('filters.enum_filter', [
-                        'filter_name' => 'type',
-                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                        'filter_data' => \App\Models\Task::All_TYPE
-                        ])</th>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('type'))
+                        <th scope="col" class="text-center">
+                            @include('filters.enum_filter', [
+                            'filter_name' => 'type',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                            'filter_data' => \App\Models\Task::All_TYPE
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'type', request())  }}">Тип
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('type', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
+                        <th scope="col" class="text-center">
+                            @include('filters.string_filter', [
+                           'filter_name' => 'theme',
+                           'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                         ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'theme', request())  }}">Тема
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('theme', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('main_task'))
+                        <th scope="col" class="text-center">
+                            @include('filters.string_filter', [
+                              'filter_name' => 'main_task',
+                              'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'main_task', request())  }}">Основная задача
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('main_task', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
+
                     <th scope="col" class="text-center">
                         @include('filters.string_filter', [
-                       'filter_name' => 'theme',
-                       'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                     ])
-                    </th>
-                    <th scope="col" class="text-center">
-                        @include('filters.string_filter', [
-                          'filter_name' => 'main_task',
-                          'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                        ])
-                    </th>
-                    <th scope="col" class="text-center">
-                        @include('filters.string_filter', [
-                        'filter_name' => 'task_name',
-                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                        ])
+                            'filter_name' => 'task_name',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                        <div scope="col" class="text-center for-headers" style="min-width: 500px">
+                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'name', request())  }}">Задача
+                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('name', request()) ?>
+                            </a>
+                        </div>
+
                     </th>
                     <th scope="col" class="text-center">
                         @include('filters.entity_filter', [
-                        'filter_name' => 'user',
-                        'filter_data' => $users,
-                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                        ])
+                            'filter_name' => 'user',
+                            'filter_data' => $users,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+
+                        <div scope="col" class="text-center for-headers">
+                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'user', request())  }}">Ответственный
+                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('user', request()) ?>
+                            </a>
+                        </div>
                     </th>
 
                     <th scope="col" class="text-center">
                         @include('filters.entity_filter', [
-                        'filter_name' => 'coperformer',
-                        'filter_data' => $users,
-                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                        ])
+                            'filter_name' => 'coperformer',
+                            'filter_data' => $users,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                        <div scope="col" class="text-center for-headers">
+                            Соисполнители
+                        </div>
                     </th>
                     <th scope="col" class="text-center">
                         @include('filters.date_filter', [
-    'filter_name' => 'start_date',
-    'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-   ])
+                            'filter_name' => 'start_date',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                           ])
+
+                        <div scope="col" class="text-center for-headers">
+                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'start_date', request())  }}">Дата начала план
+                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('start_date', request()) ?>
+                            </a>
+                        </div>
+
                     </th>
-                    <th scope="col" class="text-center">
+                    <th scope="col" class="text-center ">
                         @include('filters.date_filter', [
-    'filter_name' => 'end_date',
-      'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-    ])
+                            'filter_name' => 'end_date',
+                              'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+
+                        <div scope="col" class="text-center for-headers">
+                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'end_date', request())  }}">Дата окончания план
+                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date', request()) ?>
+                            </a>
+                        </div>
                     </th>
                     <th scope="col" class="text-center">
                         @include('filters.enum_filter', [
-'filter_name' => 'execute',
-'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-'filter_data' => \App\Models\Task::ALL_EXECUTIONS
-])
+                            'filter_name' => 'execute',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                            'filter_data' => \App\Models\Task::ALL_EXECUTIONS
+                            ])
+                        <div scope="col" class="text-center for-headers">
+                            @include('sort_field', [
+                                'sortColumn' => 'execute',
+                                'label' => 'Приступить'
+                            ])
+                        </div>
                     </th>
 
                     <th scope="col" class="text-center">
                         @include('filters.enum_filter', [
-'filter_name' => 'status',
-'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-'filter_data' => \App\Models\Task::ALL_STATUSES
-])
+                            'filter_name' => 'status',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                            'filter_data' => \App\Models\Task::ALL_STATUSES
+                            ])
+                        <div scope="col" class="text-center for-headers">
+                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'status', request())  }}">Статус выполнения
+                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('status', request()) ?>
+                            </a>
+                        </div>
                     </th>
                     <th scope="col" class="text-center">
                         @include('filters.string_filter', [
-                        'filter_name' => 'comment',
-                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                        ])
+                            'filter_name' => 'comment',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                        <div scope="col" class="text-center for-headers">Комментарии</div>
                     </th>
                     <th scope="col" class="text-center">
                         @include('filters.enum_filter', [
-                        'filter_name' => 'task_log_status',
-                        'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                        'filter_data' => \App\Models\TaskLog::ALL_STATUSES
-                        ])
+                            'filter_name' => 'task_log_status',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                            'filter_data' => \App\Models\TaskLog::ALL_STATUSES
+                            ])
+                        <div scope="col" class="text-center for-headers">Статус проблемы</div>
                     </th>
 
                     <th scope="col" class="text-center">
                         @include('filters.date_filter', [
-    'filter_name' => 'date_refresh_plan',
-      'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-    ])
+                            'filter_name' => 'date_refresh_plan',
+                              'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                        <div scope="col" class="text-center for-headers">Дата обновления проблемы план</div>
                     </th>
 
                     <th scope="col" class="text-center">
@@ -222,193 +353,48 @@
                            'filter_name' => 'date_refresh_fact',
                              'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                            ])
+                        <div scope="col" class="text-center for-headers">Дата обновления проблемы факт</div>
                     </th>
 
                     <th scope="col" class="text-center">
                         @include('filters.string_filter', [
-'filter_name' => 'trouble',
-'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-])
+                            'filter_name' => 'trouble',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                        <div scope="col" class="text-center for-headers">Что мешает</div>
                     </th>
                     <th scope="col" class="text-center">
                         @include('filters.string_filter', [
-'filter_name' => 'what_to_do',
-'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-])
+                            'filter_name' => 'what_to_do',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                        <div scope="col" class="text-center for-headers">Что делаем</div>
                     </th>
 
 
                 </tr>
 
             </form>
-            <tr>
-                <th scope="col" class="text-center">Управление задачей</th>
-                {{--                <th scope="col" class="text-center">Управление номером</th>--}}
-                {{--                <th scope="col" class="text-center">Номер</th>--}}
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
-                    <th scope="col" class="text-center">
-                        Проект
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
-                    <th scope="col" class="text-center">
-                        Семейство
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('product'))
-                    <th scope="col" class="text-center">
-                        Продукт
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
-                    <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                        'direction', request())  }}">Направление
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('direction', request()) ?>
-                        </a>
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
-                    <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'group', request())  }}">Группа
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('group', request()) ?>
-                        </a>
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
-                    <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'subgroup', request())  }}">Подгруппа
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('subgroup', request()) ?>
-                        </a>
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('base'))
-                    <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'base', request())  }}">Основание
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('base', request()) ?>
-                        </a>
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('setting_date'))
-                    <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'setting_date', request())  }}">Дата постановки
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('setting_date', request()) ?>
-                        </a>
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('task_creator'))
-                    <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'task_creator', request())  }}">Постановщик
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('task_creator', request()) ?>
-                        </a>
-                    </th>
-                @endif
-                @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
-                    <th scope="col" class="text-center">
-                        <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'priority', request())  }}">Приоритет
-                            <?php \App\Http\Controllers\Task\TaskController::sortColumn('priority', request()) ?>
-                        </a>
-                    </th>
-                @endif
-                <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'type', request())  }}">Тип
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('type', request()) ?>
-                    </a>
-                </th>
-
-                <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'theme', request())  }}">Тема
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('theme', request()) ?>
-                    </a>
-                </th>
-                <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'main_task', request())  }}">Основная задача
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('main_task', request()) ?>
-                    </a>
-                </th>
-                <th scope="col" class="text-center" style="min-width: 500px">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'name', request())  }}">Задача
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('name', request()) ?>
-                    </a>
-                </th>
-                <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'user', request())  }}">Ответственный
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('user', request()) ?>
-                    </a>
-                </th>
-
-                <th scope="col" class="text-center">
-                    Соисполнители
-                </th>
-                <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'start_date', request())  }}">Дата начала план
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('start_date', request()) ?>
-                    </a>
-                </th>
-                <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'end_date', request())  }}">Дата окончания план
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date', request()) ?>
-                    </a>
-                </th>
-                <th scope="col" class="text-center">
-                    @include('sort_field', [
-                        'sortColumn' => 'execute',
-                        'label' => 'Приступить'
-                    ])
-                </th>
-                {{--                <th scope="col" class="text-center">Процент выполнения</th>--}}
-                <th scope="col" class="text-center">
-                    <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'status', request())  }}">Статус выполнения
-                        <?php \App\Http\Controllers\Task\TaskController::sortColumn('status', request()) ?>
-                    </a>
-                </th>
-                <th scope="col" class="text-center">Комментарии</th>
-                <th scope="col" class="text-center">Статус проблемы</th>
-                <th scope="col" class="text-center">Дата обновления проблемы план</th>
-                <th scope="col" class="text-center">Дата обновления проблемы факт</th>
-                <th scope="col" class="text-center">Что мешает</th>
-                <th scope="col" class="text-center">Что делаем</th>
-
-            </tr>
-
-
             </thead>
+
             <tbody>
             @foreach ($tasks as $task)
                 <tr>
-                    <td @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}"
+                    <th @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}"
                         @endif class="align-middle ">
-
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                    id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="btn-group dropend">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                 Действия
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item"
                                        href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,
-                                       ['id' => $task->id, 'back' => url()->full()]) }}">
+                                                                       ['id' => $task->id, 'back' => url()->full()]) }}">
                                         Добавить проблему
                                     </a>
                                 </li>
-
-
                                 @if($taskVoter->canEdit($task))
                                     <li>
                                         <a class="dropdown-item" href="{{ $taskService->editUrl($task) }}">
@@ -416,8 +402,6 @@
                                         </a>
                                     </li>
                                 @endif
-
-
                                 @if($taskVoter->canDelete($task))
                                     <li>
                                         <a class="dropdown-item" onclick="return confirm('Точно удалить?')"
@@ -428,8 +412,7 @@
                                 @endif
                             </ul>
                         </div>
-
-                    </td>
+                    </th>
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
@@ -501,21 +484,33 @@
                         $task->task_creator }}
                         </td>
                     @endif
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
+                        @include('task_priority', [
+                            'priority' => $task->priority,
+                            ])
+                    @endif
+
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('type'))
+                        @include('task_type', [
+                            'type' => $task->type,
+                            ])
+                    @endif
+
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ \App\Models\Task::All_PRIORITY[$task->priority] }}
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->theme }}
+                        </td>
+                    @endif
+
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('main_task'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->main_task }}
                         </td>
                     @endif
                     <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ \App\Models\Task::All_TYPE[$task->type] }}</td>
-                    <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->theme }}</td>
-                    <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->main_task }}</td>
-                    <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->name }}</td>
+                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->name }}
+                    </td>
                     <td class="text-left align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ $task->user->label() }}
@@ -541,11 +536,9 @@
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ $task->execute === null ? '' : \App\Models\Task::ALL_EXECUTIONS[$task->execute] }}</td>
                     {{--                    <td class="text-left align-middle">{{ $task->progress }}</td>--}}
-                    <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ \App\Models\Task::ALL_STATUSES[$task->status] }}
-
-                    </td>
+                    @include('task_status', [
+                           'status' => $task->status,
+                           ])
 
                     <td class="text-left align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
@@ -554,6 +547,7 @@
                     </td>
 
                     <td class="text-center align-middle">
+
                         @if ( count($task->logs) > 0 )
                             {{ \App\Models\TaskLog::ALL_STATUSES[$task->logs[0]->status]}}
                         @endif

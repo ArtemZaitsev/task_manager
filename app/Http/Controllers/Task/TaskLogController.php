@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\BuisinessLogick\TaskService;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\TaskLog;
@@ -12,6 +13,7 @@ class TaskLogController extends Controller
 {
     const INDEX_ACTION = 'task_log_index';
     const PROCESS_FORM_ACTION = 'task_log_process_form';
+    const DELETE_ACTION = 'task_log_delete';
 
     public function index(Request $request, $id)
     {
@@ -51,6 +53,18 @@ class TaskLogController extends Controller
         }
 
         return redirect()->to($backUrl)->with('success', __('messages.task_refresh_success'));
+
+    }
+
+    public function deleteLog(Request $request, $id){
+        /** @var TaskLog $taskLog */
+
+        $taskService = new TaskService();
+        $taskLog = TaskLog::findOrFail($id);
+        $task = $taskLog->task;
+        $taskLog->delete();
+
+        return redirect()->to( $taskService->editUrl($task))->with('success',__('messages.task_log_del_success'));
 
     }
 }

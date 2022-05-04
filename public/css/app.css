@@ -5,3 +5,50 @@
     padding: 3px;
 }
 
+.priority-1 {
+    background-color: #f5c6cb;
+}
+
+.priority-2{
+    background-color: #ffeeba; !important;
+    color:orange;
+}
+
+.priority-3 {
+    background-color: #c3e6cb;
+}
+
+.table thead th {
+    top:0;
+    z-index: 1;
+    position: sticky;
+    background-color: #d1f4ff;
+}
+
+.table thead th.sticky-th {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+}
+
+.table tbody th {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 1;
+}
+
+.table tbody th div ul {
+    position: fixed;
+}
+
+.for-headers {
+    /*background-color:red;*/
+    height: 75px;!important;
+    display: flex;
+    /*text-align: center;*/
+    /*text-align: center;*/
+    justify-content: center;
+    align-items: center;
+
+}

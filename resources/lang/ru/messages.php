@@ -12,6 +12,8 @@ return [
     'task_refresh_success' => 'Задача успешно обновлена',
     'task_del_success' => 'Задача успешно удалена',
 
+    'task_log_del_success' => 'Проблема успешно удалена',
+
     \App\Http\Controllers\Filters\DateFilter::MODE_TODAY => 'Сегодня',
     \App\Http\Controllers\Filters\DateFilter::MODE_RANGE => 'Диапазон',
 ];

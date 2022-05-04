@@ -55,8 +55,6 @@ class Task extends Model
     const TYPE_PLAN = 1;
     const TYPE_NOT_PLAN = 2;
 
-
-
     const All_TYPE = [
         self::TYPE_PLAN => 'плановая',
         self::TYPE_NOT_PLAN => 'внеплановая',

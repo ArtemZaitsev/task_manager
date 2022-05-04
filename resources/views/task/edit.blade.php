@@ -313,6 +313,7 @@
                         <th>Дата обновления факт</th>
                         <th>Что мешает</th>
                         <th>Что делаем</th>
+                        <th>Действия</th>
                     </tr>
 
                     @foreach($logs as $log)
@@ -367,7 +368,15 @@
                                     </div>
                                 @endif
                             </td>
+                            <td>
+                                <a class="btn btn-danger" href="{{ route
+                                (App\Http\Controllers\Task\TaskLogController::DELETE_ACTION,
+                                ['id' => $log->id]) }}">
+                                    Удалить
+                                </a>
+                            </td>
                         </tr>
+
                     @endforeach
 
                 </table>

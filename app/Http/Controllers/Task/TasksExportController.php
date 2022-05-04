@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
+use App\Models\Family;
+use App\Models\Product;
+use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,17 +47,15 @@ class TasksExportController extends Controller
             'Проект',
             'Семейство',
             'Продукт',
+
             'Направление',
             'Группа',
             'Подгруппа',
-
             'Основание',
             'Дата постановки',
-            'Постановщик',
             'Приоритет',
             'Тип',
-
-
+            'Постановщик',
             'Тема',
             'Основная задача',
             'Название задачи',
@@ -87,17 +88,23 @@ class TasksExportController extends Controller
         foreach ($tasks as $task) {
             $row = [
 
+                implode(', ', $task->projects->map(fn(Project $entity)=> $entity->title)->toArray()),
+                implode(', ', $task->families->map(fn(Family $entity)=> $entity->title)->toArray()),
+                implode(', ', $task->products->map(fn(Product $entity)=> $entity->title)->toArray()),
+                $task->user->direction?->title,
+                $task->user->group?->title,
+                $task->user->subgroup?->title,
                 $task->base,
-                $task->setting_date,
-                $task->type,
-                $task->priority,
+                \App\Utils\DateUtils::dateToDisplayFormat($task->setting_date),
+                \App\Models\Task::All_PRIORITY[$task->priority],
+                \App\Models\Task::All_TYPE[$task->type],
                 $task->task_creator,
                 $task->theme,
                 $task->main_task,
                 $task->name,
                 $task->user->label(),
-                $task->start_date,
-                $task->end_date,
+                \App\Utils\DateUtils::dateToDisplayFormat($task->start_date),
+                \App\Utils\DateUtils::dateToDisplayFormat($task->end_date),
                 ($task->execute !== "" && isset(Task::ALL_EXECUTIONS[$task->execute])) ?
                     Task::ALL_EXECUTIONS[$task->execute] : "",
                 $task->end_date_fact,
@@ -111,8 +118,8 @@ class TasksExportController extends Controller
             } elseif (count($task->logs) > 0) {
                 $firstRow = $task->logs[0];
                 $row = array_merge($row, [
-                    $firstRow->date_refresh_plan,
-                    $firstRow->date_refresh_fact,
+                    \App\Utils\DateUtils::dateToDisplayFormat($firstRow->date_refresh_plan),
+                    \App\Utils\DateUtils::dateToDisplayFormat( $firstRow->date_refresh_fact),
                     $firstRow->trouble,
                     $firstRow->what_to_do,
                 ]);
