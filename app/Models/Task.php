@@ -48,8 +48,8 @@ class Task extends Model
 
     const All_PRIORITY = [
         self::PRIORITY_HIGH => 'высокий',
-        self::PRIORITY_MIDDLE => 'средний',
-        self::PRIORITY_LOW => 'низкий',
+        self::PRIORITY_MIDDLE => 'повышенный',
+        self::PRIORITY_LOW => 'обычный',
     ];
 
     const TYPE_PLAN = 1;

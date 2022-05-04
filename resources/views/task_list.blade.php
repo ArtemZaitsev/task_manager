@@ -87,7 +87,7 @@
                     @endif
 
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="max-width: 250px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'direction',
                             'filter_data' => $directions,
@@ -102,7 +102,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="max-width: 250px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'group',
                             'filter_data' => $groups,
@@ -117,7 +117,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="max-width: 250px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'subgroup',
                             'filter_data' => $subgroups,

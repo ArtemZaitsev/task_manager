@@ -32,7 +32,9 @@ class TaskByPerformerRequest extends FormRequest
     public function rules()
     {
         return [
+            'execute' => ['nullable', Rule::in(array_keys(Task::ALL_EXECUTIONS))],
             'status' => ['required', Rule::in(array_keys(Task::ALL_STATUSES))],
+            'comment' => 'nullable',
 //            'parent_id' => 'required|numeric',
             'task_log.*.status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
             'task_log.*.date_refresh_plan' => 'date',
@@ -54,7 +56,9 @@ class TaskByPerformerRequest extends FormRequest
         $data = $this->validated();
 
         DB::transaction(function () use ($task, $data) {
+            $task->execute = $data['execute'];
             $task->status = $data['status'];
+            $task->comment = $data['comment'];
             $task->save();
 
             if(isset($data['task_log'])){

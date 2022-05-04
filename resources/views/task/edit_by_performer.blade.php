@@ -12,40 +12,58 @@
 
 
     <div class="container">
-        <h1>{{ $title }}</h1>
-
         <table>
+            {{--            <tr>--}}
+            {{--                <th>--}}
+            {{--                    Проект--}}
+            {{--                </th>--}}
+            {{--                <td>--}}
+            {{--                    @foreach($task->projects as $project)--}}
+            {{--                        {{ $project->title }}--}}
+            {{--                        @if(!$loop->last)--}}
+            {{--                            <br/>--}}
+            {{--                        @endif--}}
+            {{--                    @endforeach--}}
+            {{--                </td>--}}
+            {{--            </tr>--}}
             <tr>
-                <th>
-                    Название
-                </th>
-                <td>
-                   {{ $task->name }}
-                </td>
+                {{--                <th>--}}
+                {{--                    Задача--}}
+                {{--                </th>--}}
+                {{--                <td>--}}
+                <h4>{{ $task->name }}</h4>
+                {{--                </td>--}}
             </tr>
-            <tr>
-                <th>
-                    Проекты
-                </th>
-                <td>
-                    @foreach($task->projects as $project)
-                        {{ $project->title }}
-                        @if(!$loop->last)
-                            <br/>
-                        @endif
-                    @endforeach
-                </td>
-            </tr>
+
 
         </table>
 
         <form method="post" action="{{ $actionUrl }}">
 
             @csrf
+            <div class="form-group col-2 mt-2">
+                <label for="execute">Приступить</label>
+                <select name="execute" id="execute"
+                        class="form-control {{ $errors->has('execute') ? 'error' : '' }}"
+                        required>
+                    @foreach(\App\Models\Task::ALL_EXECUTIONS as $value => $label )
+                        <option value="{{ $value}}"
+                                @if( $value == old('execute',$task->execute) ) selected @endif>
+                            {{ $label }}
+                        </option>
+                    @endforeach
+                </select>
+                @if ($errors->has('execute'))
+                    <div class="error">
+                        {{ $errors->first('execute') }}
+                    </div>
+                @endif
+            </div>
 
 
-            <div class="form-group">
+            <div class="form-group col-2 mt-2">
                 <label for="status">Статус выполнения</label>
+
                 <select name="status" id="status"
                         class="form-control {{ $errors->has('status') ? 'error' : '' }}"
                         required>
@@ -62,15 +80,16 @@
                     </div>
                 @endif
             </div>
-
-
-            <a class="btn btn-danger mt-5"
-               href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,['id' => $task->id,
-                   'back' => url()->current()]) }}">
-                Добавить проблему
-            </a>
-
-
+            <div class="form-group mt-2">
+                <label for="comment">Комментарии</label>
+                <input name="comment" class="form-control {{ $errors->has('comment') ? 'error' : '' }}"
+                       id="comment" type="text" value="{{ old('name', $task->comment)  }}">
+                @if ($errors->has('comment'))
+                    <div class="error">
+                        {{ $errors->first('comment') }}
+                    </div>
+                @endif
+            </div>
             @if(count($logs) > 0)
                 <table class="table table-bordered table-hover mt-5">
                     <tr style="background-color: #d1f4ff ;">
@@ -79,8 +98,8 @@
                         <th>Дата обновления факт</th>
                         <th>Что мешает</th>
                         <th>Что делаем</th>
+                        <th>Действия</th>
                     </tr>
-
                     @foreach($logs as $log)
                         <tr>
                             <td>
@@ -133,15 +152,30 @@
                                     </div>
                                 @endif
                             </td>
+                            <td>
+                                <a class="btn btn-danger" href="{{ route
+                                (App\Http\Controllers\Task\TaskLogController::DELETE_ACTION,
+                                ['id' => $log->id]) }}">
+                                    Удалить
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
-
                 </table>
+
+
+                <a class="btn btn-outline-success mt-2"
+                   href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,['id' => $task->id,
+                   'back' => url()->current()]) }}">
+                    Добавить проблему
+                </a>
             @else
-                <h4>Препятствий для решения задачи нет.</h4>
+                <h6>Препятствий для решения задачи нет.</h6>
             @endif
 
-            <button type="submit" class="btn btn-info mt-md-3">Сохранить</button>
+
+</br>
+            <button type="submit" class="btn btn-info mt-5" >Сохранить</button>
         </form>
     </div>
 @endsection
