@@ -545,17 +545,13 @@
                         {{ $task->comment }}
 
                     </td>
-
                     <td class="text-center align-middle">
-
                         @if ( count($task->logs) > 0 )
                             {{ \App\Models\TaskLog::ALL_STATUSES[$task->logs[0]->status]}}
                         @endif
                     </td>
-
-
-                    {{--                    <td>@if ( count($task->logs) > 0 )  {{ $task->logs[0]->date_refresh_plan}} @endif</td>--}}
-                    <td class="text-center align-middle">@if( count($task->logs) > 0 )
+                    <td class="text-center align-middle">
+                        @if( count($task->logs) > 0 )
                             {{ \App\Utils\DateUtils::dateToDisplayFormat($task->logs[0]->date_refresh_plan) }}
                         @endif
                     </td>
@@ -570,7 +566,8 @@
                 @if( count($task->logs) > 1 )
                     @foreach( $task->logs->slice(1) as $taskLog )
                         <tr>
-                            <td>{{ \App\Models\TaskLog::ALL_STATUSES[$taskLog->status]}}</td>
+                            <td class="text-center align-middle">{{
+                            \App\Models\TaskLog::ALL_STATUSES[$taskLog->status]}}</td>
                             <td class="text-center align-middle">{{ App\Utils\DateUtils::dateToDisplayFormat($taskLog->date_refresh_plan) }}</td>
                             <td class="text-center align-middle">{{ App\Utils\DateUtils::dateToDisplayFormat($taskLog->date_refresh_fact) }}</td>
                             <td class="text-left align-middle">{{ $taskLog->trouble}}</td>
