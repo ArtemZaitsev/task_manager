@@ -388,13 +388,13 @@
                                 Действия
                             </button>
                             <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item"
-                                       href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,
-                                                                       ['id' => $task->id, 'back' => url()->full()]) }}">
-                                        Добавить проблему
-                                    </a>
-                                </li>
+{{--                                <li>--}}
+{{--                                    <a class="dropdown-item"--}}
+{{--                                       href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,--}}
+{{--                                                                       ['id' => $task->id, 'back' => url()->full()]) }}">--}}
+{{--                                        Добавить проблему--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
                                 @if($taskVoter->canEdit($task))
                                     <li>
                                         <a class="dropdown-item" href="{{ $taskService->editUrl($task) }}">
