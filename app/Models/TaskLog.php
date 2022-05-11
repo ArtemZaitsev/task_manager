@@ -8,6 +8,15 @@ class TaskLog extends Model
 {
     protected $table = 'task_log';
 
+    protected $fillable = [
+        'task_id',
+        'date_refresh_plan',
+        'date_refresh_fact',
+        'trouble',
+        'status',
+        'what_to_do'
+    ];
+
     const STATUS_NOT_DONE = 1;
     const STATUS_DONE = 2;
 

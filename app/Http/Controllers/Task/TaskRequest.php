@@ -45,13 +45,13 @@ class  TaskRequest extends FormRequest
             'project.*' => Rule::exists(Project::class, 'id'),
             'family' => [
                 'array',
-                function ($attribute, $value, $fail){
+                function ($attribute, $value, $fail) {
                     $families = Family::whereIn('id', $value)->get()->toArray();
                     $familiesProjects = array_map(fn($family) => $family['project_id'], $families);
                     $projects = $this->get('project');
-                    $invalidProjects = array_filter($familiesProjects,fn($projectId) => !in_array($projectId,
+                    $invalidProjects = array_filter($familiesProjects, fn($projectId) => !in_array($projectId,
                         $projects));
-                    if(count($invalidProjects)>0){
+                    if (count($invalidProjects) > 0) {
                         $fail('Семейства не соответствуют выбранным проектам');
                     }
                 },
@@ -63,9 +63,9 @@ class  TaskRequest extends FormRequest
                     $products = Product::whereIn('id', $value)->get()->toArray();
                     $productsFamilies = array_map(fn($product) => $product['family_id'], $products);
                     $families = $this->get('family');
-                    $invalidFamilies = array_filter($productsFamilies,fn($familyId) => !in_array($familyId,
+                    $invalidFamilies = array_filter($productsFamilies, fn($familyId) => !in_array($familyId,
                         $families));
-                    if(count($invalidFamilies)>0){
+                    if (count($invalidFamilies) > 0) {
                         $fail('Продукты не соответствуют выбранным семействам.');
                     }
                 },
@@ -88,6 +88,7 @@ class  TaskRequest extends FormRequest
             'status' => ['required', Rule::in(array_keys(Task::ALL_STATUSES))],
             'comment' => 'nullable',
 //            'parent_id' => 'required|numeric',
+            'task_log.*.id' => ['nullable'],
             'task_log.*.status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
             'task_log.*.date_refresh_plan' => ['nullable', 'date'],
             'task_log.*.date_refresh_fact' => ['nullable', 'date'],
@@ -95,15 +96,24 @@ class  TaskRequest extends FormRequest
             'task_log.*.what_to_do' => ['nullable', 'max:255'],
         ];
     }
+
     public function messages()
     {
         return [
             'required' => 'Поле обязательно для заполнения',
         ];
     }
-    public function store(Task $task){
+
+    public function store(Task $task)
+    {
         $data = $this->validated();
         /** @var  User $user */
+
+        $taskLogsIdMap = [];
+        foreach ($task->logs as $log) {
+            $taskLogsIdMap[$log->id] = $log;
+        }
+
         $user = User::findOrFail($data['user_id']);
         DB::transaction(function () use ($task, $data, $user, $taskLogsIdMap) {
             $task->base = $data['base'];
@@ -127,18 +137,46 @@ class  TaskRequest extends FormRequest
             $task->families()->sync($data['family'] ?? []);
             $task->products()->sync($data['product'] ?? []);
 
-            if (isset($data['task_log'])) {
-                foreach ($data['task_log'] as $id => $taskLogData) {
-                    $taskLog = TaskLog::findOrFail($id);
-                    $taskLog->status = $taskLogData['status'];
-                    $taskLog->date_refresh_plan = $taskLogData['date_refresh_plan'];
-                    $taskLog->date_refresh_fact = $taskLogData['date_refresh_fact'];
-                    $taskLog->trouble = $taskLogData['trouble'];
-                    $taskLog->what_to_do = $taskLogData['what_to_do'];
+//            if (isset($data['task_log'])) {
+//                foreach ($data['task_log'] as $id => $taskLogData) {
+//                    $taskLog = TaskLog::findOrFail($id);
+//                    $taskLog->status = $taskLogData['status'];
+//                    $taskLog->date_refresh_plan = $taskLogData['date_refresh_plan'];
+//                    $taskLog->date_refresh_fact = $taskLogData['date_refresh_fact'];
+//                    $taskLog->trouble = $taskLogData['trouble'];
+//                    $taskLog->what_to_do = $taskLogData['what_to_do'];
+//
+//                    $taskLog->save();
+//                }
+//            }
 
+            $requestTaskLogs = $data['task_log'] ?? [];
+            foreach ($requestTaskLogs as $row) {
+                if (empty($row['id'])) {
+                    $taskLog = new TaskLog();
+                    $taskLog->fill($row);
+                    $taskLog->task_id = $task->id;
                     $taskLog->save();
+                } else {
+                    /** @var TaskLog $existingLog */
+                    $existingLog = $taskLogsIdMap[$row['id']] ?? null;
+                    if ($existingLog !== null) {
+                        $existingLog->fill($row);
+                        $existingLog->save();
+                    }
                 }
             }
+
+            $ids = array_map(fn($data) => $data['id'], $requestTaskLogs);
+            $ids = array_filter($ids);
+
+            foreach (array_keys($taskLogsIdMap) as $existingId) {
+                if (!in_array($existingId, $ids)) {
+                    $taskLogsIdMap[$existingId]->delete();
+                }
+            }
+
+
         });
     }
 }

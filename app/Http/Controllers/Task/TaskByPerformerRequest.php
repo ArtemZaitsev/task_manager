@@ -51,7 +51,7 @@ class TaskByPerformerRequest extends FormRequest
         ];
     }
 
-    public function store(Task $task)
+     public function store(Task $task)
     {
         $data = $this->validated();
 

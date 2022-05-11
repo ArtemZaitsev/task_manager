@@ -26,7 +26,7 @@ class TaskEditController extends Controller
         $logs = TaskLog::where('task_id', $id)->get();
 
         return view('task.edit', [
-            'actionUrl' => route('task.edit',['id' => $task->id]),
+            'actionUrl' => route('task.edit', ['id' => $task->id]),
             'title' => "Редактирование задачи " . $task->name,
             'users' => User::all(),
             'projects' => Project::all(),

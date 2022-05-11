@@ -64,7 +64,10 @@ class TaskLogController extends Controller
         $task = $taskLog->task;
         $taskLog->delete();
 
-        return redirect()->to( $taskService->editUrl($task))->with('success',__('messages.task_log_del_success'));
+        return response()->json([
+            'status' => 'ok',
+            'task' => $task->id
+        ]);
 
     }
 }

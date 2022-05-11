@@ -13,9 +13,37 @@
 
     <div class="container">
         <h1>{{ $title }}</h1>
-        {{--                {{ dump($errors) }}--}}
-        <form method="post" action="{{ $actionUrl }}">
 
+        <div style="display: none">
+            <table>
+                <tr id="task-log-template">
+                    <td>
+                        <input type="hidden" name="task_log[__id__][id]" value="">
+                        <select name="task_log[__id__][status]">
+                            @foreach ( \App\Models\TaskLog::ALL_STATUSES as $value => $label)
+                                <option value="{{$value}}">
+                                    {{$label}}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <input type="date" name="task_log[__id__][date_refresh_plan]">
+                    </td>
+                    <td>
+                        <input type="date" name="task_log[__id__][date_refresh_fact]">
+                    </td>
+                    <td>
+                        <input type="text" name="task_log[__id__][trouble]" required>
+                    </td>
+                    <td><input type="text" name="task_log[__id__][what_to_do]">
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" onclick="deleteTaskLog(this)">Удалить</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <form method="post">
             @csrf
 
             <div class="form-group">
