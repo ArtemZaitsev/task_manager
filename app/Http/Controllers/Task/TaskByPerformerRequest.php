@@ -37,8 +37,8 @@ class TaskByPerformerRequest extends FormRequest
             'comment' => 'nullable',
 //            'parent_id' => 'required|numeric',
             'task_log.*.status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
-            'task_log.*.date_refresh_plan' => 'date',
-            'task_log.*.date_refresh_fact' => 'date',
+            'task_log.*.date_refresh_plan' => ['nullable','date'],
+            'task_log.*.date_refresh_fact' => ['nullable','date'],
             'task_log.*.trouble' => 'required|max:255',
             'task_log.*.what_to_do' => 'max:255',
         ];

@@ -306,85 +306,15 @@
             </div>
 
             @if(count($logs) > 0)
-                <table class="table table-bordered table-hover mt-5">
-                    <tr style="background-color: #d1f4ff ;">
-                        <th>Статус решения</th>
-                        <th>Дата обновления план</th>
-                        <th>Дата обновления факт</th>
-                        <th>Что мешает</th>
-                        <th>Что делаем</th>
-                        <th>Действия</th>
-                    </tr>
-
-                    @foreach($logs as $log)
-                        <tr>
-                            <td>
-                                <select name="task_log[{{$log->id}}][status]">
-                                    @foreach ( \App\Models\TaskLog::ALL_STATUSES as $value => $label)
-                                        <option value="{{$value}}"
-                                                @if( $value == old("task_log.{$log->id}.status",$log->status) ) selected @endif >
-                                            {{$label}}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has("task_log.{$log->id}.status"))
-                                    <div class="error">
-                                        {{ $errors->first("task_log.{$log->id}.status") }}
-                                    </div>
-                                @endif
-                            </td>
-                            <td>
-                                <input type="date" name="task_log[{{$log->id}}][date_refresh_plan]"
-                                       value="{{ \App\Utils\DateUtils::dateToHtmlInput($log->date_refresh_plan)  }}">
-                                @if ($errors->has("task_log.{$log->id}.date_refresh_plan"))
-                                    <div class="error">
-                                        {{ $errors->first("task_log.{$log->id}.date_refresh_plan") }}
-                                    </div>
-                                @endif
-                            </td>
-                            <td>
-                                <input type="date" name="task_log[{{$log->id}}][date_refresh_fact]"
-                                       value="{{ \App\Utils\DateUtils::dateToHtmlInput($log->date_refresh_fact)  }}">
-                                @if ($errors->has("task_log.{$log->id}.date_refresh_fact"))
-                                    <div class="error">
-                                        {{ $errors->first("task_log.{$log->id}.date_refresh_fact") }}
-                                    </div>
-                                @endif
-                            </td>
-                            <td>
-                                <input type="text" name="task_log[{{$log->id}}][trouble]"
-                                       value="{{ old("task_log.{$log->id}.trouble", $log->trouble)  }} "
-                                       required>
-                                @if ($errors->has("task_log.{$log->id}.trouble"))
-                                    <div class="error">
-                                        {{ $errors->first("task_log.{$log->id}.trouble") }}
-                                    </div>
-                                @endif
-                            </td>
-                            <td><input type="text" name="task_log[{{$log->id}}][what_to_do]"
-                                       value="{{($log->what_to_do)}}">
-                                @if ($errors->has("task_log.{$log->id}.what_to_do"))
-                                    <div class="error">
-                                        {{ $errors->first("task_log.{$log->id}.what_to_do") }}
-                                    </div>
-                                @endif
-                            </td>
-                            <td>
-                                <a class="btn btn-danger" href="{{ route
-                                (App\Http\Controllers\Task\TaskLogController::DELETE_ACTION,
-                                ['id' => $log->id]) }}">
-                                    Удалить
-                                </a>
-                            </td>
-                        </tr>
-
-                    @endforeach
-
-                </table>
+                @include('task/task_log_edit')
             @else
-                <h4>Препятствий для решения задачи нет.</h4>
+                <h6>Препятствий для решения задачи нет.</h6>
             @endif
-
-            <button type="submit" class="btn btn-info mt-md-3">Сохранить</button>
+            <button type="button" class="btn btn-outline-success mt-2"
+                    onclick="addTaskLog()"> Добавить проблему
+            </button>
+            </br>
+            <button type="submit" class="btn btn-info mt-3">Сохранить</button>
         </form>
     </div>
 @endsection

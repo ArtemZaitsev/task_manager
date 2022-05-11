@@ -7,6 +7,7 @@
     <script src="/js/bootstrap_bundle_min.js"></script>
         <link href="/css/select2.css" rel="stylesheet"/>
     <script src="/js/select2.js"></script>
+    <script src="/js/myapp.js"></script>
     <link rel="stylesheet" href="/css/app.css">
 
     <script>

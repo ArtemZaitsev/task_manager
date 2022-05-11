@@ -90,99 +90,21 @@
                     </div>
                 @endif
             </div>
-            <button type="submit" class="btn btn-info mt-1">Сохранить вышеуказанные поля и вернуться к списку
-                задач
-            </button>
+
+
+            @if(count($logs) > 0)
+                @include('task/task_log_edit')
+            @else
+                <h6>Препятствий для решения задачи нет.</h6>
+            @endif
+            <a class="btn btn-outline-success mt-2"
+               href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,['id' => $task->id,
+                   'back' => url()->full()]) }}">
+                Добавить проблему
+            </a>
+            </br>
+            <button type="submit" class="btn btn-info mt-3">Сохранить</button>
         </form>
-
-        @if(count($logs) > 0)
-            <table class="table table-bordered table-hover mt-5">
-                <tr style="background-color: #d1f4ff ;">
-                    <th>Статус решения</th>
-                    <th>Дата обновления план</th>
-                    <th>Дата обновления факт</th>
-                    <th>Что мешает</th>
-                    <th>Что делаем</th>
-                    <th>Действия</th>
-                </tr>
-                @foreach($logs as $log)
-                    <tr>
-                        <td>
-                            <select name="task_log[{{$log->id}}][status]">
-                                @foreach ( \App\Models\TaskLog::ALL_STATUSES as $value => $label)
-                                    <option value="{{$value}}"
-                                            @if( $value == old("task_log.{$log->id}.status",$log->status) ) selected @endif >
-                                        {{$label}}</option>
-                                @endforeach
-                            </select>
-                            @if ($errors->has("task_log.{$log->id}.status"))
-                                <div class="error">
-                                    {{ $errors->first("task_log.{$log->id}.status") }}
-                                </div>
-                            @endif
-                        </td>
-                        <td>
-                            <input type="date" name="task_log[{{$log->id}}][date_refresh_plan]"
-                                   value="{{ \App\Utils\DateUtils::dateToHtmlInput($log->date_refresh_plan)  }}">
-                            @if ($errors->has("task_log.{$log->id}.date_refresh_plan"))
-                                <div class="error">
-                                    {{ $errors->first("task_log.{$log->id}.date_refresh_plan") }}
-                                </div>
-                            @endif
-                        </td>
-                        <td>
-                            <input type="date" name="task_log[{{$log->id}}][date_refresh_fact]"
-                                   value="{{ \App\Utils\DateUtils::dateToHtmlInput($log->date_refresh_fact)  }}">
-                            @if ($errors->has("task_log.{$log->id}.date_refresh_fact"))
-                                <div class="error">
-                                    {{ $errors->first("task_log.{$log->id}.date_refresh_fact") }}
-                                </div>
-                            @endif
-                        </td>
-                        <td>
-                            <input type="text" name="task_log[{{$log->id}}][trouble]"
-                                   value="{{ old("task_log.{$log->id}.trouble", $log->trouble)  }} "
-                                   required>
-                            @if ($errors->has("task_log.{$log->id}.trouble"))
-                                <div class="error">
-                                    {{ $errors->first("task_log.{$log->id}.trouble") }}
-                                </div>
-                            @endif
-                        </td>
-                        <td><input type="text" name="task_log[{{$log->id}}][what_to_do]"
-                                   value="{{($log->what_to_do)}}">
-                            @if ($errors->has("task_log.{$log->id}.what_to_do"))
-                                <div class="error">
-                                    {{ $errors->first("task_log.{$log->id}.what_to_do") }}
-                                </div>
-                            @endif
-                        </td>
-                        <td>
-                            <a class="btn btn-danger" href="{{ route
-                                (App\Http\Controllers\Task\TaskLogController::DELETE_ACTION,
-                                ['id' => $log->id]) }}">
-                                Удалить
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
-
-
-            <a class="btn btn-outline-success mt-2"
-               href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,['id' => $task->id,
-                   'back' => url()->current()]) }}">
-                Добавить проблему к этой задаче и вернуться на эту же страницу
-            </a>
-        @else
-            <h6>Препятствий для решения задачи нет.</h6>
-            <a class="btn btn-outline-success mt-2"
-               href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,['id' => $task->id,
-                   'back' => url()->current()]) }}">
-                Добавить проблему к этой задаче и вернуться на эту же страницу
-            </a>
-        @endif
-
 
     </div>
 @endsection

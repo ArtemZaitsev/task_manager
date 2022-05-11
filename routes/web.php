@@ -66,17 +66,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name(LoginController:
 
 Route::get('/tasks/export', [TasksExportController::class, 'export'])->name(TasksExportController::EXPORT_ACTION);
 
-Route::get('/task/{id}/create-log', [TaskLogController::class, 'index'])
-    ->where('id', '[0-9]+')
-    ->name(TaskLogController::INDEX_ACTION);
-
-Route::post('/task/{id}/create-log', [TaskLogController::class, 'processForm'])
-    ->where('id', '[0-9]+')
-    ->name(TaskLogController::PROCESS_FORM_ACTION);
-
-Route::get('/tasklog/{id}/delete', [TaskLogController::class, 'deleteLog'])
-    ->where('id', '[0-9]+')
-    ->name(TaskLogController::DELETE_ACTION);
 
 //Route::get('/persons', [\App\Http\Controllers\PersonController::class, 'list'])->name('tasks.list');
 ////Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);

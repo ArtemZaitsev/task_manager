@@ -27,6 +27,15 @@ class PerformerTaskEditController extends Controller
         /** @var  Task $task */
         $task = Task::findOrFail($id);
         $request->store($task);
-        return redirect()->route('tasks.list')->with('success', __('messages.task_edit_success'));
+
+        if ($request->query->has('back')) {
+            $backUrl = $request->query->get('back');
+            $response = redirect()->to($backUrl);
+        } else {
+            $response = redirect()->route('tasks.list');
+        }
+
+        return $response->with('success', __('messages.task_edit_success'));
+
     }
 }
