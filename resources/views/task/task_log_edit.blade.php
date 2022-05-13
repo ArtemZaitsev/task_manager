@@ -1,29 +1,6 @@
-<script>
-    function addTaskLog() {
-        var taskLogsTable = document.getElementById('task-logs-tbody');
-        var rowTemplate = document.getElementById('task-log-template');
-        var newRow = rowTemplate.cloneNode(true);
-
-        var allInputs = newRow.querySelectorAll('input,select');
-        allInputs.forEach((input) => {
-            var rowsCount = taskLogsTable.children.length;
-            var nextId = (rowsCount * -1) - 1;
-            var nameAttr = input.getAttribute('name');
-            var newName = nameAttr.replaceAll('__id__', nextId);
-            input.setAttribute('name', newName);
-        });
-
-        taskLogsTable.appendChild(newRow);
-    }
-
-    function deleteTaskLog(delLink) {
-        var currentRow = delLink.closest('tr');
-        currentRow.remove();
-    }
-</script>
-
 <table class="table table-bordered table-hover mt-5" id="task-logs">
-    <thead>
+
+    <thead id="task-logs-thead" @if (count($logs) == 0) style="display: none" @endif>
     <tr style="background-color: #d1f4ff ;">
         <th>Статус решения</th>
         <th>Дата обновления план</th>
@@ -33,6 +10,8 @@
         <th>Действия</th>
     </tr>
     </thead>
+
+
     <tbody id="task-logs-tbody">
 
     @foreach($logs as $log)

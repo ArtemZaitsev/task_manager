@@ -5,12 +5,14 @@
         @foreach ($filter_data as $value => $label)
 
             <option value="{{$value}}"
-                    {{--                @if($request->has($filter_name) && $request->get($filter_name) == $value) selected="selected"@endif>{{$label}}</option>--}}
-                    @if($request->has($filter_name) && in_array($value,$request->get($filter_name))) selected="selected"@endif>{{$label}}</option>
-
+                    @if($request->has($filter_name) && in_array($value,$request->get($filter_name))) selected="selected"@endif>
+                {{$label}}
+            </option>
         @endforeach
     </select>
     <button type="submit" class="btn btn-info mt-2">&#128269;</button>
     <a href="{{ App\Utils\UrlUtils::clearFilterUrl($route_name, $filter_name, request()) }}"
-       class="btn btn-info mt-2">&#10060;</a>
+       class="btn btn-info mt-2">
+        &#10060;
+    </a>
 </div>

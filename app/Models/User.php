@@ -76,19 +76,18 @@ class User extends Authenticatable
     ];
 
     public function label(){
-        return $this->surname." ".$this->name." ".$this->patronymic;
+        return $this->surname." ".mb_substr($this->name,0,1).".".mb_substr($this->patronymic,0,1).".";
     }
-
+    public function labelFull(){
+        return $this->surname." ".$this->name." ".$this->patronymic." ";
+    }
     public function getLabelAttribute(){
         return $this->label();
     }
-
-
     public function presenter()
     {
         return new UserPresenter($this);
     }
-
     public function projects(){
         return $this->belongsToMany(Project::class,'project_user');
     }

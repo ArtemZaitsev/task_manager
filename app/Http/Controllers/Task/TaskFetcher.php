@@ -159,7 +159,6 @@ class TaskFetcher
             }
         }
 
-
         if ($query->has('user')) {
             $execute = $query->get('user');
             $this->applyMultipleValuesFilter($execute, $tasksQuery, 'user_id');

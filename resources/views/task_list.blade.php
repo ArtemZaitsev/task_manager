@@ -10,7 +10,7 @@
                 {{ Session::get('success')}}
             </div>
         @endif
-        <div>{{  Illuminate\Support\Facades\Auth::user()->label()  }}</div>
+        <div>{{  Illuminate\Support\Facades\Auth::user()->labelFull()  }}</div>
 
         <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы</div>
 
@@ -314,10 +314,10 @@
                     <th scope="col" class="text-center">
                         @include('filters.enum_filter', [
                             'filter_name' => 'status',
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                            'filter_data' => \App\Models\Task::ALL_STATUSES
+                            'filter_data' => \App\Models\Task::ALL_STATUSES,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
-                        <div scope="col" class="text-center for-headers">
+                        <div class="text-center for-headers">
                             <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
                     'status', request())  }}">Статус выполнения
                                 <?php \App\Http\Controllers\Task\TaskController::sortColumn('status', request()) ?>
@@ -388,13 +388,13 @@
                                 Действия
                             </button>
                             <ul class="dropdown-menu">
-{{--                                <li>--}}
-{{--                                    <a class="dropdown-item"--}}
-{{--                                       href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,--}}
-{{--                                                                       ['id' => $task->id, 'back' => url()->full()]) }}">--}}
-{{--                                        Добавить проблему--}}
-{{--                                    </a>--}}
-{{--                                </li>--}}
+                                {{--                                <li>--}}
+                                {{--                                    <a class="dropdown-item"--}}
+                                {{--                                       href="{{ route(\App\Http\Controllers\Task\TaskLogController::INDEX_ACTION,--}}
+                                {{--                                                                       ['id' => $task->id, 'back' => url()->full()]) }}">--}}
+                                {{--                                        Добавить проблему--}}
+                                {{--                                    </a>--}}
+                                {{--                                </li>--}}
                                 @if($taskVoter->canEdit($task))
                                     <li>
                                         <a class="dropdown-item" href="{{ $taskService->editUrl($task) }}">
@@ -518,7 +518,7 @@
                     <td class="text-left align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         @foreach($task->coperformers as $coperformer)
-                            {{ $coperformer->label }}
+                            {{ $coperformer->label() }}
                             @if(!$loop->last)
                                 <br>
                             @endif

@@ -132,10 +132,19 @@ class  TaskRequest extends FormRequest
             $task->comment = $data['comment'];
             //        $task->parent()->associate($parentTask);
             $task->save();
-            $task->coperformers()->sync($data['coperformers'] ?? []);
-            $task->projects()->sync($data['project'] ?? []);
-            $task->families()->sync($data['family'] ?? []);
-            $task->products()->sync($data['product'] ?? []);
+
+            if (isset($data['coperformers'])) {
+                $task->coperformers()->sync($data['coperformers']);
+            }
+            if (isset($data['project'])) {
+                $task->projects()->sync($data['project']);
+            }
+            if (isset($data['family'])) {
+                $task->families()->sync($data['family']);
+            }
+            if (isset($data['product'])) {
+                $task->products()->sync($data['product']);
+            }
 
 //            if (isset($data['task_log'])) {
 //                foreach ($data['task_log'] as $id => $taskLogData) {
