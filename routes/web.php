@@ -41,10 +41,12 @@ Route::get('/', [TaskController::class, 'list'])
 Route::get('/task/add', [TaskAddController::class, 'index'])->name('task.showFormAdd');
 Route::post('/task/add', [TaskAddController::class, 'processForm'])->name('task.store');
 
-Route::get('/task/{id}/edit', [TaskEditController::class, 'index'])->where('id', '[0-9]+');
+Route::get('/task/{id}/edit', [TaskEditController::class, 'index'])
+    ->where('id', '[0-9]+')
+    ->name(TaskEditController::INDEX_ACTION);
 Route::post('/task/{id}/edit', [TaskEditController::class, 'processForm'])
     ->where('id', '[0-9]+')
-    ->name('task.edit');
+    ->name(TaskEditController::EDIT_ACTION);
 
 Route::get('/task/{id}/edit_by_performer', [PerformerTaskEditController::class, 'index'])
     ->where('id', '[0-9]+');;

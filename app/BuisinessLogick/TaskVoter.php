@@ -48,13 +48,23 @@ class TaskVoter
         return false;
     }
 
-    private function userIsPlaner(): bool
+    public function userIsPlaner(): bool
     {
         if ($this->isPlaner !== null) {
             return $this->isPlaner;
         }
         $this->isPlaner = $this->planerService->userIsPlaner(Auth::id());
         return $this->isPlaner;
+    }
+
+    public function editRole(Task $task): ?string {
+        if($this->userIsPlaner()) {
+            return 'planer';
+        }
+        if(Auth::id() === $task->user_id) {
+            return 'performer';
+        }
+        return null;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\BuisinessLogick\TaskVoter;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
@@ -14,33 +15,24 @@ use Illuminate\Validation\Rule;
 
 class  TaskRequest extends FormRequest
 {
+    private array $rules = [];
 
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
-        return true;
-    }
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
-    protected function prepareForValidation()
-    {
-        if (!$this->has('project')) {
-            $this->request->set('project', []);
-        };
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
+        $this->rules ['performer'] = [
+            'execute' => ['nullable', Rule::in(array_keys(Task::ALL_EXECUTIONS))],
+            'status' => ['required', Rule::in(array_keys(Task::ALL_STATUSES))],
+            'comment' => 'nullable',
+            'task_log.*.id' => ['nullable'],
+            'task_log.*.status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
+            'task_log.*.date_refresh_plan' => ['nullable', 'date'],
+            'task_log.*.date_refresh_fact' => ['nullable', 'date'],
+            'task_log.*.trouble' => ['required', 'max:255'],
+            'task_log.*.what_to_do' => ['nullable', 'max:255'],
+        ];
+        $this->rules['planer'] = array_merge($this->rules['performer'], [
             'project' => 'required|array|min:1',
             'project.*' => Rule::exists(Project::class, 'id'),
             'family' => [
@@ -84,17 +76,57 @@ class  TaskRequest extends FormRequest
             'coperformers.*' => Rule::exists(User::class, 'id'),
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-            'execute' => ['nullable', Rule::in(array_keys(Task::ALL_EXECUTIONS))],
-            'status' => ['required', Rule::in(array_keys(Task::ALL_STATUSES))],
-            'comment' => 'nullable',
-//            'parent_id' => 'required|numeric',
-            'task_log.*.id' => ['nullable'],
-            'task_log.*.status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
-            'task_log.*.date_refresh_plan' => ['nullable', 'date'],
-            'task_log.*.date_refresh_fact' => ['nullable', 'date'],
-            'task_log.*.trouble' => ['required', 'max:255'],
-            'task_log.*.what_to_do' => ['nullable', 'max:255'],
-        ];
+        ]);
+
+    }
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    protected function prepareForValidation()
+    {
+        $task = $this->currentTask();
+        $voter = new TaskVoter();
+        $role = $voter->editRole($task);
+
+        if ($role === 'performer') {
+
+        } elseif ($role === 'planer') {
+            $fields = ['project', 'coperformers', 'family', 'product'];
+            foreach ($fields as $field) {
+                if (!$this->has($field)) {
+                    $this->request->set($field, []);
+                };
+            }
+
+        }
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $task = $this->currentTask();
+
+        $voter = new TaskVoter();
+        return $this->rules[$voter->editRole($task)];
+    }
+
+    private function currentTask(): Task
+    {
+        $id = $this->route()->parameter('id');
+        $task = Task::query()->findOrFail($id);
+        return $task;
     }
 
     public function messages()
@@ -107,30 +139,14 @@ class  TaskRequest extends FormRequest
     public function store(Task $task)
     {
         $data = $this->validated();
-        /** @var  User $user */
 
         $taskLogsIdMap = [];
         foreach ($task->logs as $log) {
             $taskLogsIdMap[$log->id] = $log;
         }
 
-        $user = User::findOrFail($data['user_id']);
-        DB::transaction(function () use ($task, $data, $user, $taskLogsIdMap) {
-            $task->base = $data['base'];
-            $task->setting_date = $data['setting_date'];
-            $task->task_creator = $data['task_creator'];
-            $task->priority = $data['priority'];
-            $task->type = $data['type'];
-            $task->theme = $data['theme'];
-            $task->main_task = $data['main_task'];
-            $task->name = $data['name'];
-            $task->user()->associate($user);
-            $task->start_date = $data['start_date'];
-            $task->end_date = $data['end_date'];
-            $task->execute = $data['execute'];
-            $task->status = $data['status'];
-            $task->comment = $data['comment'];
-            //        $task->parent()->associate($parentTask);
+        DB::transaction(function () use ($task, $data, $taskLogsIdMap) {
+            $task->fill($data);
             $task->save();
 
             if (isset($data['coperformers'])) {
@@ -146,18 +162,6 @@ class  TaskRequest extends FormRequest
                 $task->products()->sync($data['product']);
             }
 
-//            if (isset($data['task_log'])) {
-//                foreach ($data['task_log'] as $id => $taskLogData) {
-//                    $taskLog = TaskLog::findOrFail($id);
-//                    $taskLog->status = $taskLogData['status'];
-//                    $taskLog->date_refresh_plan = $taskLogData['date_refresh_plan'];
-//                    $taskLog->date_refresh_fact = $taskLogData['date_refresh_fact'];
-//                    $taskLog->trouble = $taskLogData['trouble'];
-//                    $taskLog->what_to_do = $taskLogData['what_to_do'];
-//
-//                    $taskLog->save();
-//                }
-//            }
 
             $requestTaskLogs = $data['task_log'] ?? [];
             foreach ($requestTaskLogs as $row) {

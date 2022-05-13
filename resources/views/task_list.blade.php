@@ -397,7 +397,9 @@
                                 {{--                                </li>--}}
                                 @if($taskVoter->canEdit($task))
                                     <li>
-                                        <a class="dropdown-item" href="{{ $taskService->editUrl($task) }}">
+                                        <a class="dropdown-item"
+                                           href="{{ route(\App\Http\Controllers\Task\TaskEditController::EDIT_ACTION,
+                                            ['id' => $task->id]) }}">
                                             Редактировать задачу
                                         </a>
                                     </li>

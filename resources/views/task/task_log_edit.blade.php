@@ -13,7 +13,6 @@
 
 
     <tbody id="task-logs-tbody">
-
     @foreach($logs as $log)
         <tr data-tasklog-id="{{ $log->id }}">
             <td>

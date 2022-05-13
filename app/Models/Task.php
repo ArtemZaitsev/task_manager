@@ -60,7 +60,24 @@ class Task extends Model
         self::TYPE_NOT_PLAN => 'внеплановая',
     ];
 
-    protected $fillable = ['name', 'start_date', 'end_date', 'user_id'];
+    protected $fillable = [
+        'base',
+        'setting_date',
+        'task_creator',
+        'priority',
+        'type',
+        'theme',
+        'main_task',
+        'name',
+        'user_id',
+        'start_date',
+        'end_date',
+        'execute',
+        'status',
+        'comment'
+
+    ];
+
     protected $casts = [
         'number' => 'json',
     ];

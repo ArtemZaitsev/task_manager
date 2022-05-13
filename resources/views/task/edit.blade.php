@@ -46,27 +46,29 @@
         <form method="post">
             @csrf
 
-            <div class="form-group">
-                <label for="project">Проект</label>
-                <select name="project[]"
-                        class="select2 form-control {{ $errors->has('project') ? 'error' : '' }}"
-                        id="project" multiple="multiple">
+            @if($fieldsToEdit === null || in_array('project', $fieldsToEdit))
+                <div class="form-group">
+                    <label for="project">Проект</label>
+                    <select name="project[]"
+                            class="select2 form-control {{ $errors->has('project') ? 'error' : '' }}"
+                            id="project" multiple="multiple">
 
-                    @foreach($projects as $project )
-                        <option value="{{ $project->id }}"
-                                @if(in_array($project->id,
-                                old('project',$task->projects()->allRelatedIds()->toArray()))) selected
-                            @endif>
-                            {{ $project->title }}
-                        </option>
-                    @endforeach
-                </select>
-                @if ($errors->has('project'))
-                    <div class="error">
-                        {{ $errors->first('project') }}
-                    </div>
-                @endif
-            </div>
+                        @foreach($projects as $project )
+                            <option value="{{ $project->id }}"
+                                    @if(in_array($project->id,
+                                    old('project',$task->projects()->allRelatedIds()->toArray()))) selected
+                                @endif>
+                                {{ $project->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('project'))
+                        <div class="error">
+                            {{ $errors->first('project') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
 
             @if($fieldsToEdit === null || in_array('family', $fieldsToEdit))
                 <div class="form-group">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\BuisinessLogick\TaskVoter;
 use App\Http\Controllers\Controller;
 use App\Models\Direction;
 use App\Models\Family;
@@ -11,6 +12,7 @@ use App\Models\Task;
 use App\Models\TaskLog;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use function __;
@@ -19,11 +21,30 @@ use function view;
 
 class TaskEditController extends Controller
 {
+    public const EDIT_ACTION = 'task.edit';
+    public const INDEX_ACTION = 'task.edit.index';
+
+    public function __construct(
+        private TaskVoter $voter
+    )
+    {
+    }
+
     public function index(Request $request, $id)
     {
 
         $task = Task::findOrFail($id);
         $logs = TaskLog::where('task_id', $id)->get();
+
+        $fieldsToEdit = match($this->voter->editRole($task)) {
+            'planer' => null,
+            'performer' =>  [
+                'execute',
+                'status',
+                'comment'
+            ],
+            default => []
+        };
 
         return view('task.edit', [
             'actionUrl' => route('task.edit', ['id' => $task->id]),
@@ -34,6 +55,7 @@ class TaskEditController extends Controller
             'products' => Product::all(),
             'task' => $task,
             'logs' => $logs,
+            'fieldsToEdit' => $fieldsToEdit
         ]);
     }
 
