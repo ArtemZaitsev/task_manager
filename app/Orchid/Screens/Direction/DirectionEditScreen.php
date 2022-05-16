@@ -101,9 +101,12 @@ class DirectionEditScreen extends Screen
     public function createOrUpdate(Direction $direction, Request $request)
     {
         $request->validate([
-            'project.heads' => 'required|array|min:1',
-            'project.heads.*' => Rule::exists(User::class, 'id'),
-            'project.planer_id' => [
+            'direction.head_id' => [
+                'required',
+                'integer',
+                Rule::exists(User::class, 'id')
+            ],
+            'direction.planer_id' => [
                 'nullable',
                 'integer',
                 Rule::exists(User::class, 'id'),
