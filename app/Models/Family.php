@@ -28,7 +28,7 @@ class Family extends Model
         return $this->belongsTo(User::class);
     }
     public function label(){
-        return $this->title;
+        return $this->title." - ". $this->project->title;
     }
     public function tasks(){
         $this->belongsToMany(Task::class, 'task_family');

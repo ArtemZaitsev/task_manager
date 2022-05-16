@@ -70,8 +70,9 @@ class Task extends Model
         'main_task',
         'name',
         'user_id',
-        'start_date',
         'end_date',
+        'end_date_plan',
+        'end_date_fact',
         'execute',
         'status',
         'comment'

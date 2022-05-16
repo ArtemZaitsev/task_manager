@@ -28,7 +28,7 @@ class Group extends Model
     }
 
     public function label(){
-        return $this->title;
+        return $this->title." - ". $this->direction->title;
     }
     public function getLabelAttribute(){
         return $this->label();

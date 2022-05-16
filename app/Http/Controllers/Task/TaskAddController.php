@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Task\Request\TaskAddRequest;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
@@ -26,6 +27,7 @@ class TaskAddController extends Controller
         $task->execute = Task::EXECUTE_DONT_KNOW;
         $task->type = Task::TYPE_NOT_PLAN;
         $logs = [];
+        $fieldsToEdit = null;
 
         return view('task.edit', [
             'actionUrl' => route('task.store'),
@@ -36,10 +38,11 @@ class TaskAddController extends Controller
             'products' => Product::all(),
             'task' => $task,
             'logs' => $logs,
+            'fieldsToEdit' => $fieldsToEdit,
         ]);
     }
 
-    public function processForm(TaskRequest $request)
+    public function processForm(TaskAddRequest $request)
     {
         $task = new Task();
         $request->store($task);

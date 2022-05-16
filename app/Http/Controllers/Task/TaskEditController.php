@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task;
 
 use App\BuisinessLogick\TaskVoter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Task\Request\TaskEditRequest;
 use App\Models\Direction;
 use App\Models\Family;
 use App\Models\Product;
@@ -39,6 +40,8 @@ class TaskEditController extends Controller
         $fieldsToEdit = match($this->voter->editRole($task)) {
             'planer' => null,
             'performer' =>  [
+                'end_date_plan',
+                'end_date_fact',
                 'execute',
                 'status',
                 'comment'
@@ -48,7 +51,7 @@ class TaskEditController extends Controller
 
         return view('task.edit', [
             'actionUrl' => route('task.edit', ['id' => $task->id]),
-            'title' => "Редактирование задачи " . $task->name,
+            'title' => $task->name,
             'users' => User::all(),
             'projects' => Project::all(),
             'families' => Family::all(),
@@ -59,7 +62,7 @@ class TaskEditController extends Controller
         ]);
     }
 
-    public function processForm(TaskRequest $request, $id)
+    public function processForm(TaskEditRequest $request, $id)
     {
         /** @var  Task $task */
         $task = Task::findOrFail($id);

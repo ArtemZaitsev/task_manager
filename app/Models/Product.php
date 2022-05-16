@@ -30,7 +30,7 @@ class Product extends Model
     }
 
     public function label(){
-        return $this->title;
+        return $this->title." - ". $this->family->title." - ". $this->family->project->title;
     }
 
     public function tasks(){

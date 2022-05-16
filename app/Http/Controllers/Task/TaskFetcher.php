@@ -102,17 +102,14 @@ class TaskFetcher
         }
 
         if ($query->has('priority')) {
-            $priorityFilter = $query->get('priority');
-            if ($priorityFilter !== '' && $priorityFilter !== null) {
-                $tasksQuery->where('tasks.priority', $priorityFilter);
-            }
+            $priority = $query->get('priority');
+            $this->applyMultipleValuesFilter($priority, $tasksQuery, 'priority');
         }
 
+
         if ($query->has('type')) {
-            $typeFilter = $query->get('type');
-            if ($typeFilter !== '' && $typeFilter !== null) {
-                $tasksQuery->where('tasks.type', $typeFilter);
-            }
+            $type = $query->get('type');
+            $this->applyMultipleValuesFilter($type, $tasksQuery, 'type');
         }
 
         if ($query->has('theme')) {
@@ -137,14 +134,13 @@ class TaskFetcher
             }
         }
 
-        if ($query->has('start_date')) {
-            $startDateFilter = $query->get('start_date');
-            $this->applyDateFilter($startDateFilter, $tasksQuery, 'start_date');
-        }
-
         if ($query->has('end_date')) {
             $endDateFilter = $query->get('end_date');
             $this->applyDateFilter($endDateFilter, $tasksQuery, 'end_date');
+        }
+        if ($query->has('end_date_plan')) {
+            $endDateFilterPlan = $query->get('end_date_plan');
+            $this->applyDateFilter($endDateFilterPlan, $tasksQuery, 'end_date_plan');
         }
 
         if ($query->has('end_date_fact')) {
@@ -154,9 +150,7 @@ class TaskFetcher
 
         if ($query->has('status')) {
             $status = $query->get('status');
-            if ($status !== '' && $status !== null) {
-                $tasksQuery->where('status', $status);
-            }
+                $this->applyMultipleValuesFilter($status, $tasksQuery, 'status');
         }
 
         if ($query->has('user')) {
@@ -186,7 +180,6 @@ class TaskFetcher
             $orderColumn = $query->get('order_column');
             if (isset(self::ORDER_FIELDS[$orderColumn])) {
                 $tasksQuery->orderBy($orderColumn, $query->get('order_direction'));
-//            $this->applyDateFilter($endDateFilter, $tasksQuery,'end_date');
             }
         }
 
@@ -262,8 +255,9 @@ class TaskFetcher
             'main_task' => 'main_task',
             'name' => 'name',
             'user' => 'user_id',
-            'start_date' => 'start_date',
             'end_date' => 'end_date',
+            'end_date_plan' => 'end_date_plan',
+            'end_date_fact' => 'end_date_fact',
             'execute' => 'execute',
             'status' => 'status'
 
@@ -446,7 +440,7 @@ class TaskFetcher
 
             // Если пользователь является руководителем семейства, то ограничить задачи, которые входят в
             // семейство
-            $familyHeads =  DB::table('family_heads')->where('user_id', $userId)->pluck('family_id')->toArray();
+            $familyHeads = DB::table('family_heads')->where('user_id', $userId)->pluck('family_id')->toArray();
 
             if (count($familyHeads) > 0) {
                 $baseQuery->orWhereIn('tasks.id', function ($query) use ($familyHeads) {
@@ -464,7 +458,7 @@ class TaskFetcher
 //                ->get()
 //                ->map(fn($product) => $product['id'])
 //                ->toArray();
-            $productHeads =  DB::table('product_heads')->where('user_id', $userId)->pluck('product_id')->toArray();;
+            $productHeads = DB::table('product_heads')->where('user_id', $userId)->pluck('product_id')->toArray();;
 
 
             if (count($productHeads) > 0) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Task;
+namespace App\Http\Controllers\Task\Request;
 
 use App\BuisinessLogick\TaskVoter;
 use App\Models\Family;
@@ -13,15 +13,17 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-class  TaskRequest extends FormRequest
+abstract class BaseTaskRequest extends FormRequest
 {
-    private array $rules = [];
+    protected array $rules = [];
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
-        $this->rules ['performer'] = [
+        $this->rules [TaskVoter::ROLE_PERFORMER] = [
+            'end_date_plan' => 'nullable|date',
+            'end_date_fact' => 'nullable|date',
             'execute' => ['nullable', Rule::in(array_keys(Task::ALL_EXECUTIONS))],
             'status' => ['required', Rule::in(array_keys(Task::ALL_STATUSES))],
             'comment' => 'nullable',
@@ -32,7 +34,7 @@ class  TaskRequest extends FormRequest
             'task_log.*.trouble' => ['required', 'max:255'],
             'task_log.*.what_to_do' => ['nullable', 'max:255'],
         ];
-        $this->rules['planer'] = array_merge($this->rules['performer'], [
+        $this->rules[TaskVoter::ROLE_PLANER] = array_merge($this->rules[TaskVoter::ROLE_PERFORMER], [
             'project' => 'required|array|min:1',
             'project.*' => Rule::exists(Project::class, 'id'),
             'family' => [
@@ -74,7 +76,6 @@ class  TaskRequest extends FormRequest
             'user_id' => ['required', Rule::exists(User::class, 'id')],
             'coperformers' => 'nullable|array',
             'coperformers.*' => Rule::exists(User::class, 'id'),
-            'start_date' => 'required|date',
             'end_date' => 'required|date',
         ]);
 
@@ -90,44 +91,16 @@ class  TaskRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation()
-    {
-        $task = $this->currentTask();
-        $voter = new TaskVoter();
-        $role = $voter->editRole($task);
 
-        if ($role === 'performer') {
-
-        } elseif ($role === 'planer') {
-            $fields = ['project', 'coperformers', 'family', 'product'];
-            foreach ($fields as $field) {
-                if (!$this->has($field)) {
-                    $this->request->set($field, []);
-                };
-            }
-
+    protected function setDefaultFields() {
+        $fields = ['project', 'coperformers', 'family', 'product'];
+        foreach ($fields as $field) {
+            if (!$this->has($field)) {
+                $this->request->set($field, []);
+            };
         }
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        $task = $this->currentTask();
-
-        $voter = new TaskVoter();
-        return $this->rules[$voter->editRole($task)];
-    }
-
-    private function currentTask(): Task
-    {
-        $id = $this->route()->parameter('id');
-        $task = Task::query()->findOrFail($id);
-        return $task;
-    }
 
     public function messages()
     {
@@ -192,4 +165,6 @@ class  TaskRequest extends FormRequest
 
         });
     }
+
+
 }

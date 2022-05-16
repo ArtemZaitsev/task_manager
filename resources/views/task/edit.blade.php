@@ -12,7 +12,7 @@
 
 
     <div class="container">
-        <h1>{{ $title }}</h1>
+        <h3>{{ $title }}</h3>
 
         <div style="display: none">
             <table>
@@ -278,24 +278,11 @@
                     @endif
                 </div>
             @endif
-            @if($fieldsToEdit === null || in_array('start_date', $fieldsToEdit))
-                <div class="form-group">
-                    <label for="start_date">Дата начала</label>
-                    <input name="start_date" class="form-control {{ $errors->has('start_date') ? 'error' : '' }}"
-                           id="start_date" type="date"
-                           value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('start_date', $task->start_date)) }}"
-                           required>
-                    @if ($errors->has('start_date'))
-                        <div class="error">
-                            {{ $errors->first('start_date') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
+
 
             @if($fieldsToEdit === null || in_array('end_date', $fieldsToEdit))
                 <div class="form-group">
-                    <label for="end_date">Дата окончания</label>
+                    <label for="end_date">Дата протокол</label>
                     <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'error' : '' }}"
                            id="end_date" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}"
@@ -303,6 +290,34 @@
                     @if ($errors->has('end_date'))
                         <div class="error">
                             {{ $errors->first('end_date') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+            @if($fieldsToEdit === null || in_array('end_date_plan', $fieldsToEdit))
+                <div class="form-group">
+                    <label for="end_date_plan">Дата окончания план</label>
+                    <input name="end_date_plan" class="form-control {{ $errors->has('end_date_plan') ? 'error' : '' }}"
+                           id="end_date_plan" type="date"
+                           value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date_plan', $task->end_date_plan))
+                            }}">
+                    @if ($errors->has('end_date_plan'))
+                        <div class="error">
+                            {{ $errors->first('end_date_plan') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+            @if($fieldsToEdit === null || in_array('end_date_fact', $fieldsToEdit))
+                <div class="form-group">
+                    <label for="end_date_fact">Дата окончания факт</label>
+                    <input name="end_date_fact" class="form-control {{ $errors->has('end_date_fact') ? 'error' : '' }}"
+                           id="end_date_fact" type="date"
+                           value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date_fact', $task->end_date_fact))
+                            }}">
+                    @if ($errors->has('end_date_fact'))
+                        <div class="error">
+                            {{ $errors->first('end_date_fact') }}
                         </div>
                     @endif
                 </div>

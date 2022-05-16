@@ -26,7 +26,7 @@ class Subgroup extends Model
     }
 
     public function label(){
-        return $this->title;
+        return $this->title." - ". $this->group->title ." - ". $this->group->direction-> title;
     }
     public function getLabelAttribute(){
         return $this->label();

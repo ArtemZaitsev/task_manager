@@ -1,4 +1,4 @@
-<html>
+<html lang="ru">
 <head>
     <title>@yield('title')</title>
     <script src="/js/jquery_3.6.0.js"></script>
