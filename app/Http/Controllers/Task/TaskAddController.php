@@ -18,7 +18,6 @@ use function view;
 class TaskAddController extends Controller
 {
 
-
     public function index(Request $request)
     {
         $task = new Task();

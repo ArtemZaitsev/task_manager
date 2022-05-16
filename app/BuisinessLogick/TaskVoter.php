@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskVoter
 {
+    public const ROLE_PLANER = 'planer';
+    public const ROLE_PERFORMER = 'performer';
+
     private ?bool $isPlaner = null;
     private PlanerService $planerService;
 
@@ -59,10 +62,10 @@ class TaskVoter
 
     public function editRole(Task $task): ?string {
         if($this->userIsPlaner()) {
-            return 'planer';
+            return self::ROLE_PLANER;
         }
         if(Auth::id() === $task->user_id) {
-            return 'performer';
+            return self::ROLE_PERFORMER;
         }
         return null;
     }
