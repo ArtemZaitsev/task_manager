@@ -47,86 +47,32 @@
                             Управление задачей
                         </div>
                     </th>
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
                         <th scope="col" class="text-center">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'project',
-                            'filter_data' => $projects,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                            <div scope="col" class="text-center for-headers">
-                                Проект
-                            </div>
-                        </th>
-                    @endif
-
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
-                        <th scope="col" class="text-center">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'family',
-                            'filter_data' => $families,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                            <div scope="col" class="text-center for-headers">
-                                Семейство
-                            </div>
-                        </th>
-                    @endif
-
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('product'))
-                        <th scope="col" class="text-center">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'product',
-                            'filter_data' => $products,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                            <div scope="col" class="text-center for-headers">
-                                Продукт
-                            </div>
-                        </th>
-                    @endif
-
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
-                        <th scope="col" class="text-center" style="max-width: 250px;">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'direction',
-                            'filter_data' => $directions,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            @include('filters.enum_filter', [
+                            'filter_name' => 'priority',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                            'filter_data' => \App\Models\Task::All_PRIORITY
                             ])
                             <div scope="col" class="text-center for-headers">
                                 <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                        'direction', request())  }}">Направление
-                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('direction', request()) ?>
+                    'priority', request())  }}">Приоритет
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('priority', request()) ?>
                                 </a>
                             </div>
                         </th>
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
-                        <th scope="col" class="text-center" style="max-width: 250px;">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'group',
-                            'filter_data' => $groups,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('type'))
+                        <th scope="col" class="text-center">
+                            @include('filters.enum_filter', [
+                            'filter_name' => 'type',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                            'filter_data' => \App\Models\Task::All_TYPE
                             ])
                             <div scope="col" class="text-center for-headers">
                                 <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'group', request())  }}">Группа
-                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('group', request()) ?>
-                                </a>
-                            </div>
-                        </th>
-                    @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
-                        <th scope="col" class="text-center" style="max-width: 250px;">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'subgroup',
-                            'filter_data' => $subgroups,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                            <div scope="col" class="text-center for-headers">
-                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'subgroup', request())  }}">Подгруппа
-                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('subgroup', request()) ?>
+                    'type', request())  }}">Тип
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('type', request()) ?>
                                 </a>
                             </div>
                         </th>
@@ -173,33 +119,84 @@
                             </div>
                         </th>
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
-                        <th scope="col" class="text-center">
-                            @include('filters.enum_filter', [
-                            'filter_name' => 'priority',
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                            'filter_data' => \App\Models\Task::All_PRIORITY
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
+                        <th scope="col" class="text-center" style="max-width: 250px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'direction',
+                            'filter_data' => $directions,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
                             <div scope="col" class="text-center for-headers">
                                 <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'priority', request())  }}">Приоритет
-                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('priority', request()) ?>
+                        'direction', request())  }}">Направление
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('direction', request()) ?>
                                 </a>
                             </div>
                         </th>
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('type'))
-                        <th scope="col" class="text-center">
-                            @include('filters.enum_filter', [
-                            'filter_name' => 'type',
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                            'filter_data' => \App\Models\Task::All_TYPE
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
+                        <th scope="col" class="text-center" style="max-width: 250px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'group',
+                            'filter_data' => $groups,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
                             <div scope="col" class="text-center for-headers">
                                 <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'type', request())  }}">Тип
-                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('type', request()) ?>
+                    'group', request())  }}">Группа
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('group', request()) ?>
                                 </a>
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
+                        <th scope="col" class="text-center" style="max-width: 250px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'subgroup',
+                            'filter_data' => $subgroups,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'subgroup', request())  }}">Подгруппа
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('subgroup', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
+                        <th scope="col" class="text-center">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'project',
+                            'filter_data' => $projects,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Проект
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
+                        <th scope="col" class="text-center">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'family',
+                            'filter_data' => $families,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Семейство
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('product'))
+                        <th scope="col" class="text-center">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'product',
+                            'filter_data' => $products,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Продукт
                             </div>
                         </th>
                     @endif
@@ -279,7 +276,7 @@
 
                         <div scope="col" class="text-center for-headers">
                             <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'end_date', request())  }}">Дата протокол
+                    'end_date', request())  }}">Дата в протоколе
                                 <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date', request()) ?>
                             </a>
                         </div>
@@ -395,7 +392,7 @@
             <tbody>
             @foreach ($tasks as $task)
                 <tr>
-                    <th  @if ( count($task->logs) > 1 ) rowspan="{{ count
+                    <th @if ( count($task->logs) > 1 ) rowspan="{{ count
                     ($task->logs) }} "
                         @endif class="align-middle " style="background-color: #f6fdff;">
                         @if($taskVoter->canEdit($task))
@@ -416,15 +413,64 @@
                             <a style="text-decoration: none" onclick="return confirm('Точно удалить?')"
                                href="{{ route('task.del',['id' => $task->id]) }}">
                                 <button type="button" class="btn btn-outline-danger" title="Удалить">
-                                    <svg width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                                    <svg width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+                                         viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
                                     </svg>
                                 </button>
                             </a>
 
                         @endif
                     </th>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
+                        @include('task_priority', [
+                            'priority' => $task->priority,
+                            ])
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('type'))
+                        @include('task_type', [
+                            'type' => $task->type,
+                            ])
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('base'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->base }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('setting_date'))
+                        <td class="text-center align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->setting_date) }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_creator'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{
+                        $task->task_creator }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->user?->direction?->title }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->user?->group?->title }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->user?->subgroup?->title }}
+                        </td>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
@@ -459,62 +505,11 @@
                         </td>
                     @endif
 
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
-                        <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->user?->direction?->title }}
-                        </td>
-                    @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
-                        <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->user?->group?->title }}
-                        </td>
-                    @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
-                        <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->user?->subgroup?->title }}
-                        </td>
-                    @endif
-
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('base'))
-                        <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->base }}
-                        </td>
-                    @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('setting_date'))
-                        <td class="text-center align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->setting_date) }}
-                        </td>
-                    @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_creator'))
-                        <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{
-                        $task->task_creator }}
-                        </td>
-                    @endif
-
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
-                        @include('task_priority', [
-                            'priority' => $task->priority,
-                            ])
-                    @endif
-
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('type'))
-                        @include('task_type', [
-                            'type' => $task->type,
-                            ])
-                    @endif
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->theme }}
                         </td>
                     @endif
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('main_task'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->main_task }}
