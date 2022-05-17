@@ -366,7 +366,7 @@
                 <div class="form-group">
                     <label for="comment">Комментарии</label>
                     <input name="comment" class="form-control {{ $errors->has('comment') ? 'error' : '' }}"
-                           id="comment" type="text" value="{{ old('name', $task->comment)  }}">
+                              id="comment" type="text" value="{{ old('comment', $task->comment)  }}">
                     @if ($errors->has('comment'))
                         <div class="error">
                             {{ $errors->first('comment') }}

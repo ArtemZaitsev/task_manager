@@ -78,7 +78,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('base'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
                            'filter_name' => 'base',
                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
@@ -106,7 +106,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('task_creator'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="min-width: 150px;">
                             @include('filters.string_filter', [
                            'filter_name' => 'task_creator',
                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
@@ -120,7 +120,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('direction'))
-                        <th scope="col" class="text-center" style="max-width: 250px;">
+                        <th scope="col" class="text-center" style="max-width: 200px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'direction',
                             'filter_data' => $directions,
@@ -135,7 +135,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('group'))
-                        <th scope="col" class="text-center" style="max-width: 250px;">
+                        <th scope="col" class="text-center" style="max-width: 200px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'group',
                             'filter_data' => $groups,
@@ -150,7 +150,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('subgroup'))
-                        <th scope="col" class="text-center" style="max-width: 250px;">
+                        <th scope="col" class="text-center" style="max-width: 200px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'subgroup',
                             'filter_data' => $subgroups,
@@ -165,7 +165,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="min-width: 170px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'project',
                             'filter_data' => $projects,
@@ -177,7 +177,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="max-width: 150px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'family',
                             'filter_data' => $families,
@@ -189,7 +189,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('product'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="max-width: 150px;">
                             @include('filters.entity_filter', [
                             'filter_name' => 'product',
                             'filter_data' => $products,
@@ -201,7 +201,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
                            'filter_name' => 'theme',
                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
@@ -215,7 +215,7 @@
                         </th>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('main_task'))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
                               'filter_name' => 'main_task',
                               'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
@@ -242,7 +242,7 @@
                         </div>
 
                     </th>
-                    <th scope="col" class="text-center">
+                    <th scope="col" class="text-center" style="max-width: 150px;">
                         @include('filters.entity_filter', [
                             'filter_name' => 'user',
                             'filter_data' => $users,
@@ -257,7 +257,7 @@
                         </div>
                     </th>
 
-                    <th scope="col" class="text-center">
+                    <th scope="col" class="text-center" style="max-width: 150px;">
                         @include('filters.entity_filter', [
                             'filter_name' => 'coperformer',
                             'filter_data' => $users,
@@ -281,13 +281,13 @@
                             </a>
                         </div>
                     </th>
-                    <th scope="col" class="text-center ">
+                    <th scope="col" class="text-center " >
                         @include('filters.date_filter', [
                             'filter_name' => 'end_date_plan',
                               'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
 
-                        <div scope="col" class="text-center for-headers">
+                        <div scope="col" class="text-center for-headers" >
                             <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
                     'end_date_plan', request())  }}">Дата окончания план
                                 <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date_plan', request()
@@ -336,7 +336,7 @@
                             </a>
                         </div>
                     </th>
-                    <th scope="col" class="text-center">
+                    <th scope="col" class="text-center" style="min-width: 400px;">
                         @include('filters.string_filter', [
                             'filter_name' => 'comment',
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
@@ -368,14 +368,14 @@
                         <div scope="col" class="text-center for-headers">Дата обновления проблемы факт</div>
                     </th>
 
-                    <th scope="col" class="text-center">
+                    <th scope="col" class="text-center" style="min-width: 250px;">
                         @include('filters.string_filter', [
                             'filter_name' => 'trouble',
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
                         <div scope="col" class="text-center for-headers">Что мешает</div>
                     </th>
-                    <th scope="col" class="text-center">
+                    <th scope="col" class="text-center" style="min-width: 250px;">
                         @include('filters.string_filter', [
                             'filter_name' => 'what_to_do',
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST

@@ -1,5 +1,5 @@
 <div @if($request->has($filter_name) && !empty($request->get($filter_name)) ) class="filter-applied" @endif>
-    <input type="text" name="{{$filter_name}}" id="{{$filter_name}}"
+    <input type="text" class="form-control" name="{{$filter_name}}" id="{{$filter_name}}"
            @if($request->has($filter_name)) value="{{$request->get($filter_name)}}"@endif>
     <button type="submit" class="btn btn-outline-success mt-1">
         <svg width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
