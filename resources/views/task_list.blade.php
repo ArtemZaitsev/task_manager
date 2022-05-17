@@ -395,10 +395,11 @@
             <tbody>
             @foreach ($tasks as $task)
                 <tr>
-                    <th @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}"
-                        @endif class="align-middle ">
+                    <th  @if ( count($task->logs) > 1 ) rowspan="{{ count
+                    ($task->logs) }} "
+                        @endif class="align-middle " style="background-color: #f6fdff;">
                         @if($taskVoter->canEdit($task))
-                            <a style="text-decoration: none" href="{{ route
+                            <a style="text-decoration: none;" href="{{ route
                                 (\App\Http\Controllers\Task\TaskEditController::EDIT_ACTION,
                                             ['id' => $task->id, 'back' => url()->full()]) }}">
                                 <button type="button" class="btn btn-outline-warning" title="Редактировать">
