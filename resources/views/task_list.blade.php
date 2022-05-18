@@ -350,13 +350,13 @@
                         <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
                             план
                         </div>
-                        <div>{{ $sum['execute_time_plan']  }}</div>
+                        <div class="text-center">{{ $sum['execute_time_plan']  }}</div>
                     </th>
                     <th scope="col" class="text-center">
                         <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
                             факт
                         </div>
-                        <div>{{ $sum['execute_time_fact']  }}</div>
+                        <div class="text-center">{{ $sum['execute_time_fact']  }}</div>
                     </th>
                     <th scope="col" class="text-center" style="min-width: 400px;">
                         @include('filters.string_filter', [
@@ -573,7 +573,7 @@
                     @include('task_status', [
                            'status' => $task->status,
                            ])
-                    <td class="text-left align-middle"
+                    <td class="text-center align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ $task->execute_time_plan }}
                     </td>
