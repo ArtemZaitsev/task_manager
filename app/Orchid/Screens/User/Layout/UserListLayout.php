@@ -29,6 +29,28 @@ class UserListLayout extends Table
     public function columns(): array
     {
         return [
+            TD::make('direction', 'Направление')
+                ->sort()
+                ->cantHide()
+                ->filter(Input::make())
+                ->render(function (User $user) {
+                    return $user->direction?->title;
+                }),
+            TD::make('group', 'Группа')
+                ->sort()
+                ->cantHide()
+                ->filter(Input::make())
+                ->render(function (User $user) {
+                    return $user->group?->title;
+                }),
+            TD::make('subgroup', 'Подгруппа')
+                ->sort()
+                ->cantHide()
+                ->filter(Input::make())
+                ->render(function (User $user) {
+                    return $user->subgroup?->title;
+                }),
+
             TD::make('name', __('Name'))
                 ->sort()
                 ->cantHide()

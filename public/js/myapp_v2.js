@@ -24,3 +24,35 @@ function deleteTaskLog(delLink) {
     var currentRow = delLink.closest('tr');
     currentRow.remove();
 }
+
+function copyToClipboard(elem) {
+    var textToCopy = elem.getAttribute('data-text');
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(textToCopy);
+    }
+
+    const el = document.createElement('textarea');
+    el.value = textToCopy;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    elem.textContent = 'Скопировано';
+    // setTimeout("alert('Привет')", 1000);
+
+    // function refreshText(elem) {
+    //     elem.textContent = 'Скопировать путь';
+    // }
+
+    // setTimeout(elem.textContent = 'Скопировать путь', 3000);
+    // setTimeout("elem.textContent = 'Скопировать путь'", 3000);
+
+}
+
+
+
+

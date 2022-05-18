@@ -75,8 +75,9 @@ class Task extends Model
         'end_date_fact',
         'execute',
         'status',
-        'comment'
-
+        'comment',
+        'execute_time_plan',
+        'execute_time_fact'
     ];
 
     protected $casts = [
@@ -87,19 +88,15 @@ class Task extends Model
     {
         return $this->belongsTo(User::class);
     }
-
     public function parent()
     {
 //        return $this->hasOne(Task::class);
         return $this->belongsTo(Task::class);
     }
-
     public function logs()
     {
         return $this->hasMany(TaskLog::class);
     }
-
-
     public function coperformers()
     {
         return $this->belongsToMany(User::class,'task_coperformer');

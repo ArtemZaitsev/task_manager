@@ -27,12 +27,14 @@ abstract class BaseTaskRequest extends FormRequest
             'execute' => ['nullable', Rule::in(array_keys(Task::ALL_EXECUTIONS))],
             'status' => ['required', Rule::in(array_keys(Task::ALL_STATUSES))],
             'comment' => 'nullable',
+            'execute_time_fact' => ['nullable','numeric','min:0','max:10000'],
             'task_log.*.id' => ['nullable'],
             'task_log.*.status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
             'task_log.*.date_refresh_plan' => ['nullable', 'date'],
             'task_log.*.date_refresh_fact' => ['nullable', 'date'],
             'task_log.*.trouble' => ['required', 'max:255'],
             'task_log.*.what_to_do' => ['nullable', 'max:255'],
+
         ];
         $this->rules[TaskVoter::ROLE_PLANER] = array_merge($this->rules[TaskVoter::ROLE_PERFORMER], [
             'project' => 'required|array|min:1',
@@ -77,6 +79,7 @@ abstract class BaseTaskRequest extends FormRequest
             'coperformers' => 'nullable|array',
             'coperformers.*' => Rule::exists(User::class, 'id'),
             'end_date' => 'required|date',
+            'execute_time_plan' => ['nullable','numeric','min:0','max:10000'],
         ]);
 
     }

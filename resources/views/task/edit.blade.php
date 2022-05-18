@@ -362,6 +362,34 @@
                     @endif
                 </div>
             @endif
+            @if($fieldsToEdit === null || in_array('execute_time_plan', $fieldsToEdit))
+                <div class="form-group">
+                    <label for="execute_time_plan">Кол-во ч/ч, план</label>
+                    <input name="execute_time_plan" class="form-control {{ $errors->has('execute_time_plan') ? 'error' : '' }}"
+                           id="execute_time_plan" type="number" step="0.1" value="{{ old('execute_time_plan',
+                           $task->execute_time_plan)
+                           }}">
+                    @if ($errors->has('execute_time_plan'))
+                        <div class="error">
+                            {{ $errors->first('execute_time_plan') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+            @if($fieldsToEdit === null || in_array('execute_time_fact', $fieldsToEdit))
+                <div class="form-group">
+                    <label for="execute_time_fact">Кол-во ч/ч, факт</label>
+                    <input name="execute_time_fact" class="form-control {{ $errors->has('execute_time_fact') ? 'error' : '' }}"
+                           id="execute_time_fact" type="number" step="0.1" value="{{ old('execute_time_fact',
+                           $task->execute_time_fact)
+                           }}">
+                    @if ($errors->has('execute_time_fact'))
+                        <div class="error">
+                            {{ $errors->first('execute_time_fact') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
             @if($fieldsToEdit === null || in_array('comment', $fieldsToEdit))
                 <div class="form-group">
                     <label for="comment">Комментарии</label>

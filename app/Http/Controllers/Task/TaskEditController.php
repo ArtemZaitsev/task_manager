@@ -44,7 +44,8 @@ class TaskEditController extends Controller
                 'end_date_fact',
                 'execute',
                 'status',
-                'comment'
+                'comment',
+                'execute_time_fact'
             ],
             default => []
         };

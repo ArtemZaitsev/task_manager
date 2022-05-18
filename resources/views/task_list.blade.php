@@ -10,9 +10,19 @@
                 {{ Session::get('success')}}
             </div>
         @endif
-        <div>{{  Illuminate\Support\Facades\Auth::user()->labelFull()  }}</div>
 
-        <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы</div>
+        <div><b>{{ Illuminate\Support\Facades\Auth::user()->labelFull() }}</b></div>
+
+        <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
+            <button type="button" class="btn btn-outline-success"
+                    data-text="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы"
+                    onclick="copyToClipboard(this)">Скопировать путь
+            </button>
+        </div>
+
+
+        </br>
+
 
         <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
                         btn-success m-1">Очистить фильтры</a>
@@ -281,13 +291,13 @@
                             </a>
                         </div>
                     </th>
-                    <th scope="col" class="text-center " >
+                    <th scope="col" class="text-center ">
                         @include('filters.date_filter', [
                             'filter_name' => 'end_date_plan',
                               'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
 
-                        <div scope="col" class="text-center for-headers" >
+                        <div scope="col" class="text-center for-headers">
                             <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
                     'end_date_plan', request())  }}">Дата окончания план
                                 <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date_plan', request()
@@ -335,6 +345,18 @@
                                 <?php \App\Http\Controllers\Task\TaskController::sortColumn('status', request()) ?>
                             </a>
                         </div>
+                    </th>
+                    <th scope="col" class="text-center">
+                        <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
+                            план
+                        </div>
+                        <div>{{ $sum['execute_time_plan']  }}</div>
+                    </th>
+                    <th scope="col" class="text-center">
+                        <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
+                            факт
+                        </div>
+                        <div>{{ $sum['execute_time_fact']  }}</div>
                     </th>
                     <th scope="col" class="text-center" style="min-width: 400px;">
                         @include('filters.string_filter', [
@@ -551,11 +573,17 @@
                     @include('task_status', [
                            'status' => $task->status,
                            ])
-
                     <td class="text-left align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                        {{ $task->execute_time_plan }}
+                    </td>
+                    <td class="text-center align-middle"
+                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                        {{ $task->execute_time_fact }}
+                    </td>
+                    <td class="text-center align-middle"
+                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ $task->comment }}
-
                     </td>
                     <td class="text-center align-middle">
                         @if ( count($task->logs) > 0 )
