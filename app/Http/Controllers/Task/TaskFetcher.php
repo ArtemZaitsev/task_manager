@@ -299,6 +299,19 @@ class TaskFetcher
     public function fetchTasks(InputBag $query)
     {
 
+        $tasksQuery = $this->createQueryBuilder($query);
+
+        $tasks = $tasksQuery->paginate(300);
+        return $tasks;
+    }
+
+    public function sumByColumn(string $field, InputBag $query): float {
+        $qb = $this->createQueryBuilder($query);
+        $result = $qb->sum("tasks.$field");
+        return $result;
+    }
+
+    private function createQueryBuilder(InputBag $query): Builder {
         $tasksQuery = Task::with('user')
             ->with('logs');
 
@@ -325,9 +338,7 @@ class TaskFetcher
         $this->applyFilters($query, $tasksQuery);
         $this->applySort($query, $tasksQuery);
 
-
-        $tasks = $tasksQuery->paginate(300);
-        return $tasks;
+        return $tasksQuery;
     }
 
     private function applyDateFilter(array $filterDate, $query, string $columnName)

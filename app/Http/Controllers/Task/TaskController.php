@@ -41,6 +41,11 @@ class TaskController extends BaseController
         $fetcher = new TaskFetcher();
         $tasks = $fetcher->fetchTasks($request->query);
 
+        $sum = [
+            'execute_time_plan' => $fetcher->sumByColumn('execute_time_plan', $request->query),
+            'execute_time_fact' => $fetcher->sumByColumn('execute_time_fact', $request->query),
+        ];
+
 
         return view('task_list', [
             'taskVoter' => $this->taskVoter,
@@ -52,6 +57,7 @@ class TaskController extends BaseController
             'groups' => Group::all(),
             'subgroups' => Subgroup::all(),
             'tasks' => $tasks,
+            'sum' => $sum,
             'users' => User::all(),
             'request' => $request->query,
             'orderFields' => TaskFetcher::ORDER_FIELDS,
