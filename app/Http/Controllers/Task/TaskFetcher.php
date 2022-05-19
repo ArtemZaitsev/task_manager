@@ -317,7 +317,7 @@ class TaskFetcher
 
         $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
         $tasksQuery->select('tasks.*');
-        $tasksQuery->orderByDesc('tasks.created_at');
+//        $tasksQuery->orderByDesc('tasks.created_at');
 
         $this->filterByPermissions($tasksQuery);
 
