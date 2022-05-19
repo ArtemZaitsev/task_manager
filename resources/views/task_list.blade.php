@@ -581,7 +581,7 @@
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ $task->execute_time_fact }}
                     </td>
-                    <td class="text-center align-middle"
+                    <td class="text-left align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ $task->comment }}
                     </td>

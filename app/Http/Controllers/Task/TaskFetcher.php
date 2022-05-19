@@ -333,10 +333,12 @@ class TaskFetcher
         if ($query->get('sort') === 'direction' || count($query->get('direction') ?? []) > 0) {
             $tasksQuery->leftJoin('directions', 'directions.id', '=', 'users.direction_id');
             $tasksQuery->select('tasks.*');
+            $tasksQuery->orderByDesc('tasks.created_at');
         }
 
         $this->applyFilters($query, $tasksQuery);
         $this->applySort($query, $tasksQuery);
+
 
         return $tasksQuery;
     }
