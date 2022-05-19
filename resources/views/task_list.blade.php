@@ -286,7 +286,7 @@
 
                         <div scope="col" class="text-center for-headers">
                             <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                    'end_date', request())  }}">Дата в протоколе
+                    'end_date', request())  }}">Дата установленная руководителем
                                 <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date', request()) ?>
                             </a>
                         </div>

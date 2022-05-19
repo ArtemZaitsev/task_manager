@@ -282,7 +282,7 @@
 
             @if($fieldsToEdit === null || in_array('end_date', $fieldsToEdit))
                 <div class="form-group">
-                    <label for="end_date">Дата протокол</label>
+                    <label for="end_date">Дата в протокол/плане/поручении</label>
                     <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'error' : '' }}"
                            id="end_date" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}"

@@ -174,7 +174,12 @@ class TaskFetcher
             $this->applyMultipleValuesFilter($execute, $tasksQuery, 'execute');
         }
 
-
+        if ($query->has('comment')) {
+            $commentFilter = trim($query->get('comment'));
+            if ($commentFilter !== "") {
+                $tasksQuery->where('comment', 'like', '%' . $commentFilter . '%');
+            }
+        }
         if ($query->has('order_column')) {
 
             $orderColumn = $query->get('order_column');

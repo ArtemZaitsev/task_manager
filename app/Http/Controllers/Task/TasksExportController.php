@@ -7,6 +7,7 @@ use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -43,28 +44,30 @@ class TasksExportController extends Controller
     {
         $headers = [
 
-
-            'Проект',
-            'Семейство',
-            'Продукт',
-
+            'Приоритет',
+            'Тип',
+            'Основание',
+            'Дата постановки',
+            'Постановщик',
             'Направление',
             'Группа',
             'Подгруппа',
-            'Основание',
-            'Дата постановки',
-            'Приоритет',
-            'Тип',
-            'Постановщик',
+            'Проект',
+            'Семейство',
+            'Продукт',
             'Тема',
             'Основная задача',
-            'Название задачи',
+            'Задача',
             'Ответственный',
-            'Дата начала план',
+            'Соисполнители',
+            'Дата установленная руководителем',
             'Дата окончания план',
-            'Приступить',
             'Дата окончания факт',
+            'Приступить',
             'Статус выполнения',
+            'Кол-во ч/ч план',
+            'Кол-во ч/ч факт',
+            'Статус проблемы',
             'Дата обновления план',
             'Дата обновления факт',
             'Что мешает',
@@ -87,37 +90,39 @@ class TasksExportController extends Controller
         $idx = 2;
         foreach ($tasks as $task) {
             $row = [
-
-                implode(', ', $task->projects->map(fn(Project $entity)=> $entity->title)->toArray()),
-                implode(', ', $task->families->map(fn(Family $entity)=> $entity->title)->toArray()),
-                implode(', ', $task->products->map(fn(Product $entity)=> $entity->title)->toArray()),
+                \App\Models\Task::All_PRIORITY[$task->priority],
+                \App\Models\Task::All_TYPE[$task->type],
+                $task->base,
+                \App\Utils\DateUtils::dateToDisplayFormat($task->setting_date),
+                $task->task_creator,
                 $task->user->direction?->title,
                 $task->user->group?->title,
                 $task->user->subgroup?->title,
-                $task->base,
-                \App\Utils\DateUtils::dateToDisplayFormat($task->setting_date),
-                \App\Models\Task::All_PRIORITY[$task->priority],
-                \App\Models\Task::All_TYPE[$task->type],
-                $task->task_creator,
+                implode(', ', $task->projects->map(fn(Project $entity)=> $entity->title)->toArray()),
+                implode(', ', $task->families->map(fn(Family $entity)=> $entity->title)->toArray()),
+                implode(', ', $task->products->map(fn(Product $entity)=> $entity->title)->toArray()),
                 $task->theme,
                 $task->main_task,
                 $task->name,
                 $task->user->label(),
-                \App\Utils\DateUtils::dateToDisplayFormat($task->start_date),
+                implode(', ', $task->coperformers->map(fn(User $entity)=> $entity->label)->toArray()),
                 \App\Utils\DateUtils::dateToDisplayFormat($task->end_date),
+                \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_plan),
+                \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_fact),
                 ($task->execute !== "" && isset(Task::ALL_EXECUTIONS[$task->execute])) ?
                     Task::ALL_EXECUTIONS[$task->execute] : "",
-                $task->end_date_fact,
                 ($task->status !== "" && isset(Task::ALL_STATUSES[$task->status])) ?
                     Task::ALL_STATUSES[$task->status] : "",
-
+                $task->execute_time_plan,
+                $task->execute_time_fact,
             ];
 
             if (count($task->logs) === 0) {
-                $row = array_merge($row, ['', '', '', '']);
+                $row = array_merge($row, ['', '', '', '', '']);
             } elseif (count($task->logs) > 0) {
                 $firstRow = $task->logs[0];
                 $row = array_merge($row, [
+                    $firstRow->status,
                     \App\Utils\DateUtils::dateToDisplayFormat($firstRow->date_refresh_plan),
                     \App\Utils\DateUtils::dateToDisplayFormat( $firstRow->date_refresh_fact),
                     $firstRow->trouble,
@@ -130,6 +135,7 @@ class TasksExportController extends Controller
             if (count($task->logs) > 1) {
                 foreach ($task->logs->slice(1) as $taskLog) {
                     $row = array_merge(array_fill(0, 9, ''), [
+                        $taskLog->status,
                         $taskLog->date_refresh_plan,
                         $taskLog->date_refresh_fact,
                         $taskLog->trouble,
