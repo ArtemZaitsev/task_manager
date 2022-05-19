@@ -317,6 +317,7 @@ class TaskFetcher
 
         $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
         $tasksQuery->select('tasks.*');
+        $tasksQuery->orderByDesc('tasks.created_at');
 
         $this->filterByPermissions($tasksQuery);
 
@@ -333,7 +334,6 @@ class TaskFetcher
         if ($query->get('sort') === 'direction' || count($query->get('direction') ?? []) > 0) {
             $tasksQuery->leftJoin('directions', 'directions.id', '=', 'users.direction_id');
             $tasksQuery->select('tasks.*');
-            $tasksQuery->orderByDesc('tasks.created_at');
         }
 
         $this->applyFilters($query, $tasksQuery);
