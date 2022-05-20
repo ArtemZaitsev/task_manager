@@ -17,7 +17,7 @@ class GroupListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'groups'=>Group::paginate()
+            'groups'=>Group::paginate(20)
         ];
     }
 

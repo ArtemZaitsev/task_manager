@@ -42,14 +42,10 @@ function copyToClipboard(elem) {
     document.body.removeChild(el);
 
     elem.textContent = 'Скопировано';
-    // setTimeout("alert('Привет')", 1000);
+    setTimeout(function(){
+        elem.textContent = 'Скопировать путь'}, 3000
+    );
 
-    // function refreshText(elem) {
-    //     elem.textContent = 'Скопировать путь';
-    // }
-
-    // setTimeout(elem.textContent = 'Скопировать путь', 3000);
-    // setTimeout("elem.textContent = 'Скопировать путь'", 3000);
 
 }
 

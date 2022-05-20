@@ -7,6 +7,7 @@ use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\TaskLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +68,7 @@ class TasksExportController extends Controller
             'Статус выполнения',
             'Кол-во ч/ч план',
             'Кол-во ч/ч факт',
+            'Комментарии',
             'Статус проблемы',
             'Дата обновления план',
             'Дата обновления факт',
@@ -115,6 +117,7 @@ class TasksExportController extends Controller
                     Task::ALL_STATUSES[$task->status] : "",
                 $task->execute_time_plan,
                 $task->execute_time_fact,
+                $task->comment,
             ];
 
             if (count($task->logs) === 0) {
@@ -122,7 +125,7 @@ class TasksExportController extends Controller
             } elseif (count($task->logs) > 0) {
                 $firstRow = $task->logs[0];
                 $row = array_merge($row, [
-                    $firstRow->status,
+                    \App\Models\TaskLog::ALL_STATUSES[$firstRow->status],
                     \App\Utils\DateUtils::dateToDisplayFormat($firstRow->date_refresh_plan),
                     \App\Utils\DateUtils::dateToDisplayFormat( $firstRow->date_refresh_fact),
                     $firstRow->trouble,

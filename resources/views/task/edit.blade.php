@@ -50,7 +50,7 @@
                 <div class="form-group">
                     <label for="project">Проект</label>
                     <select name="project[]"
-                            class="select2 form-control {{ $errors->has('project') ? 'error' : '' }}"
+                            class="select2 form-control {{ $errors->has('project') ? 'is-invalid' : '' }}"
                             id="project" multiple="multiple">
 
                         @foreach($projects as $project )
@@ -63,7 +63,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('project'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('project') }}
                         </div>
                     @endif
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <label for="family">Семейство</label>
                     <select name="family[]"
-                            class="select2 form-control {{ $errors->has('family') ? 'error' : '' }}"
+                            class="select2 form-control {{ $errors->has('family') ? 'is-invalid' : '' }}"
                             id="family" multiple="multiple">
                         @foreach($families as $family )
                             <option value="{{ $family->id }}"
@@ -86,7 +86,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('family'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('family') }}
                         </div>
                     @endif
@@ -95,10 +95,10 @@
 
             @if($fieldsToEdit === null || in_array('product', $fieldsToEdit))
 
-                <div class="form-group">
+                <div class="form-group ">
                     <label for="product">Продукт</label>
                     <select name="product[]" id="product" multiple
-                            class=" select2 form-control {{ $errors->has('product') ? 'error' : '' }}">
+                            class=" select2 form-control {{ $errors->has('product') ? 'is-invalid' : '' }}">
                         @foreach( $products as $product )
                             <option value="{{ $product->id }}"
                                     @if(in_array($product->id,
@@ -110,7 +110,7 @@
 
                     </select>
                     @if ( $errors->has('product'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('product') }}
                         </div>
                     @endif
@@ -121,10 +121,10 @@
 
                 <div class="form-group">
                     <label for="base">Основание</label>
-                    <input name="base" class="form-control {{ $errors->has('base') ? 'error' : '' }}"
+                    <input name="base" class="form-control {{ $errors->has('base') ? 'is-invalid' : '' }}"
                            id="base" type="text" value="{{ old('base', $task->base)  }}">
                     @if ($errors->has('base'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('base') }}
                         </div>
                     @endif
@@ -135,11 +135,11 @@
                 <div class="form-group">
                     <label for="setting_date">Дата постановки</label>
                     <input name="setting_date"
-                           class="form-control {{ $errors->has('setting_date') ? 'error' : '' }}"
+                           class="form-control {{ $errors->has('setting_date') ? 'is-invalid' : '' }}"
                            id="setting_date" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('setting_date', $task->setting_date)) }}">
                     @if ($errors->has('setting_date'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('setting_date') }}
                         </div>
                     @endif
@@ -149,10 +149,10 @@
                 <div class="form-group">
                     <label for="task_creator">Постановщик</label>
                     <input name="task_creator"
-                           class="form-control {{ $errors->has('task_creator') ? 'error' : '' }}"
+                           class="form-control {{ $errors->has('task_creator') ? 'is-invalid' : '' }}"
                            id="theme" type="text" value="{{ old('task_creator', $task->task_creator)  }}">
                     @if ($errors->has('task_creator'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('task_creator') }}
                         </div>
                     @endif
@@ -163,7 +163,7 @@
                 <div class="form-group">
                     <label for="priority">Приоритет</label>
                     <select name="priority" id="priority"
-                            class="form-control {{ $errors->has('priority') ? 'error' : '' }}">
+                            class="form-control {{ $errors->has('priority') ? 'is-invalid' : '' }}">
                         @foreach(\App\Models\Task::All_PRIORITY as $value => $label )
                             <option value="{{ $value}}" @if( $value == old('priority', $task->priority) ) selected
                                 @endif>
@@ -172,7 +172,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('priority'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('priority') }}
                         </div>
                     @endif
@@ -181,7 +181,7 @@
             @if($fieldsToEdit === null || in_array('type', $fieldsToEdit))
                 <div class="form-group">
                     <label for="type">Тип</label>
-                    <select name="type" id="type" class="form-control {{ $errors->has('type') ? 'error' : '' }}">
+                    <select name="type" id="type" class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}">
                         @foreach(\App\Models\Task::All_TYPE as $value => $label )
                             <option value="{{ $value}}" @if( $value == old('type', $task->type) ) selected @endif>
                                 {{ $label }}
@@ -189,7 +189,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('type'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('type') }}
                         </div>
                     @endif
@@ -199,10 +199,10 @@
             @if($fieldsToEdit === null || in_array('theme', $fieldsToEdit))
                 <div class="form-group">
                     <label for="theme">Тема</label>
-                    <input name="theme" class="form-control {{ $errors->has('theme') ? 'error' : '' }}"
+                    <input name="theme" class="form-control {{ $errors->has('theme') ? 'is-invalid' : '' }}"
                            id="theme" type="text" value="{{ old('theme', $task->theme)  }}">
                     @if ($errors->has('theme'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('theme') }}
                         </div>
                     @endif
@@ -212,10 +212,10 @@
             @if($fieldsToEdit === null || in_array('main_task', $fieldsToEdit))
                 <div class="form-group">
                     <label for="main_task">Основная задача</label>
-                    <input name="main_task" class="form-control {{ $errors->has('main_task') ? 'error' : '' }}"
+                    <input name="main_task" class="form-control {{ $errors->has('main_task') ? 'is-invalid' : '' }}"
                            id="main_task" type="text" value="{{ old('main_task', $task->main_task)  }}">
                     @if ($errors->has('main_task'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('main_task') }}
                         </div>
                     @endif
@@ -224,10 +224,10 @@
             @if($fieldsToEdit === null || in_array('name', $fieldsToEdit))
                 <div class="form-group">
                     <label for="name">Задача</label>
-                    <input name="name" class="form-control {{ $errors->has('name') ? 'error' : '' }}"
-                           id="name" type="text" value="{{ old('name', $task->name)  }}" required>
+                    <textarea name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                              id="name" rows="3">{{ old('name', $task->name) }} </textarea>
                     @if ($errors->has('name'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('name') }}
                         </div>
                     @endif
@@ -236,7 +236,7 @@
             @if($fieldsToEdit === null || in_array('user_id', $fieldsToEdit))
                 <div class="form-group">
                     <label for="userId">Ответственный</label>
-                    <select name="user_id" class="form-control {{ $errors->has('user_id') ? 'error' : '' }}"
+                    <select name="user_id" class="form-control {{ $errors->has('user_id') ? 'is-invalid' : '' }}"
                             id="userId" required>
                         @foreach($users as $user )
                             <option value="{{ $user->id }}"
@@ -248,7 +248,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('user_id'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('user_id') }}
                         </div>
                     @endif
@@ -258,7 +258,7 @@
                 <div class="form-group">
                     <label for="coperformers">Соисполнители</label>
                     <select name="coperformers[]"
-                            class="select2 form-control {{ $errors->has('coperformers') ? 'error' : '' }}"
+                            class="select2 form-control {{ $errors->has('coperformers') ? 'is-invalid' : '' }}"
                             id="coperformers" multiple="multiple">
                         @foreach($users as $user )
                             <option value="{{ $user->id }}"
@@ -272,7 +272,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('coperformers'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('coperformers') }}
                         </div>
                     @endif
@@ -283,12 +283,12 @@
             @if($fieldsToEdit === null || in_array('end_date', $fieldsToEdit))
                 <div class="form-group">
                     <label for="end_date">Дата в протокол/плане/поручении</label>
-                    <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'error' : '' }}"
+                    <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'is-invalid' : '' }}"
                            id="end_date" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}"
                            required>
                     @if ($errors->has('end_date'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('end_date') }}
                         </div>
                     @endif
@@ -297,12 +297,12 @@
             @if($fieldsToEdit === null || in_array('end_date_plan', $fieldsToEdit))
                 <div class="form-group">
                     <label for="end_date_plan">Дата окончания план</label>
-                    <input name="end_date_plan" class="form-control {{ $errors->has('end_date_plan') ? 'error' : '' }}"
+                    <input name="end_date_plan" class="form-control {{ $errors->has('end_date_plan') ? 'is-invalid' : '' }}"
                            id="end_date_plan" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date_plan', $task->end_date_plan))
                             }}">
                     @if ($errors->has('end_date_plan'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('end_date_plan') }}
                         </div>
                     @endif
@@ -311,12 +311,12 @@
             @if($fieldsToEdit === null || in_array('end_date_fact', $fieldsToEdit))
                 <div class="form-group">
                     <label for="end_date_fact">Дата окончания факт</label>
-                    <input name="end_date_fact" class="form-control {{ $errors->has('end_date_fact') ? 'error' : '' }}"
+                    <input name="end_date_fact" class="form-control {{ $errors->has('end_date_fact') ? 'is-invalid' : '' }}"
                            id="end_date_fact" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date_fact', $task->end_date_fact))
                             }}">
                     @if ($errors->has('end_date_fact'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('end_date_fact') }}
                         </div>
                     @endif
@@ -326,7 +326,7 @@
                 <div class="form-group">
                     <label for="execute">Приступить</label>
                     <select name="execute" id="execute"
-                            class="form-control {{ $errors->has('execute') ? 'error' : '' }}"
+                            class="form-control {{ $errors->has('execute') ? 'is-invalid' : '' }}"
                             required>
                         @foreach(\App\Models\Task::ALL_EXECUTIONS as $value => $label )
                             <option value="{{ $value}}"
@@ -336,7 +336,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('execute'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('execute') }}
                         </div>
                     @endif
@@ -346,7 +346,7 @@
                 <div class="form-group">
                     <label for="status">Статус выполнения</label>
                     <select name="status" id="status"
-                            class="form-control {{ $errors->has('status') ? 'error' : '' }}"
+                            class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}"
                             required>
                         @foreach(\App\Models\Task::ALL_STATUSES as $value => $label )
                             <option value="{{ $value}}"
@@ -356,7 +356,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('status'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('status') }}
                         </div>
                     @endif
@@ -365,12 +365,13 @@
             @if($fieldsToEdit === null || in_array('execute_time_plan', $fieldsToEdit))
                 <div class="form-group">
                     <label for="execute_time_plan">Кол-во ч/ч, план</label>
-                    <input name="execute_time_plan" class="form-control {{ $errors->has('execute_time_plan') ? 'error' : '' }}"
+                    <input name="execute_time_plan"
+                           class="form-control {{ $errors->has('execute_time_plan') ? 'is-invalid' : '' }}"
                            id="execute_time_plan" type="number" step="0.1" value="{{ old('execute_time_plan',
                            $task->execute_time_plan)
                            }}">
                     @if ($errors->has('execute_time_plan'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('execute_time_plan') }}
                         </div>
                     @endif
@@ -379,12 +380,13 @@
             @if($fieldsToEdit === null || in_array('execute_time_fact', $fieldsToEdit))
                 <div class="form-group">
                     <label for="execute_time_fact">Кол-во ч/ч, факт</label>
-                    <input name="execute_time_fact" class="form-control {{ $errors->has('execute_time_fact') ? 'error' : '' }}"
+                    <input name="execute_time_fact"
+                           class="form-control {{ $errors->has('execute_time_fact') ? 'is-invalid' : '' }}"
                            id="execute_time_fact" type="number" step="0.1" value="{{ old('execute_time_fact',
                            $task->execute_time_fact)
                            }}">
                     @if ($errors->has('execute_time_fact'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('execute_time_fact') }}
                         </div>
                     @endif
@@ -393,10 +395,10 @@
             @if($fieldsToEdit === null || in_array('comment', $fieldsToEdit))
                 <div class="form-group">
                     <label for="comment">Комментарии</label>
-                    <input name="comment" class="form-control {{ $errors->has('comment') ? 'error' : '' }}"
-                              id="comment" type="text" value="{{ old('comment', $task->comment)  }}">
+                    <textarea name="comment" class="form-control {{ $errors->has('comment') ? 'is-invalid' : '' }}"
+                              id="comment" rows="3">{{ old('comment', $task->comment)  }}</textarea>
                     @if ($errors->has('comment'))
-                        <div class="error">
+                        <div class="invalid-feedback">
                             {{ $errors->first('comment') }}
                         </div>
                     @endif

@@ -21,9 +21,6 @@
         </div>
 
 
-        </br>
-
-
         <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
                         btn-success m-1">Очистить фильтры</a>
         @if($taskVoter->canCreate())
@@ -134,6 +131,7 @@
                             @include('filters.entity_filter', [
                             'filter_name' => 'direction',
                             'filter_data' => $directions,
+                            'attr' => 'style="width: 180px;"',
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
                             <div scope="col" class="text-center for-headers">
@@ -149,6 +147,7 @@
                             @include('filters.entity_filter', [
                             'filter_name' => 'group',
                             'filter_data' => $groups,
+                            'attr' => 'style="width: 300px;"',
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
                             <div scope="col" class="text-center for-headers">
@@ -164,6 +163,7 @@
                             @include('filters.entity_filter', [
                             'filter_name' => 'subgroup',
                             'filter_data' => $subgroups,
+                            'attr' => 'style="width: 600px;"',
                             'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
                             ])
                             <div scope="col" class="text-center for-headers">
@@ -433,7 +433,7 @@
                         @if($taskVoter->canDelete($task))
 
                             <a style="text-decoration: none" onclick="return confirm('Точно удалить?')"
-                               href="{{ route('task.del',['id' => $task->id]) }}">
+                               href="{{ route('task.del',['id' => $task->id, 'back' => url()->full()]) }}">
                                 <button type="button" class="btn btn-outline-danger" title="Удалить">
                                     <svg width="16" height="16" fill="currentColor" class="bi bi-x-lg"
                                          viewBox="0 0 16 16">

@@ -37,7 +37,6 @@ class TaskController extends BaseController
 
     public function list(Request $request)
     {
-
         $fetcher = new TaskFetcher();
         $tasks = $fetcher->fetchTasks($request->query);
 

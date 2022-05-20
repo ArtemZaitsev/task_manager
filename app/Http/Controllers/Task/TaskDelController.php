@@ -15,10 +15,22 @@ class TaskDelController extends Controller
        /** @var Task $task */
 
         $task = Task::findOrFail($id);
+
+
+
+//        return redirect()->route('tasks.list')->with('success',__('messages.task_del_success'));
+
+
+        if ($request->query->has('back')) {
+            $backUrl = $request->query->get('back');
+            $response = redirect()->to($backUrl);
+        } else {
+            $response = redirect()->route('tasks.list');
+        }
+
         $task->delete();
 
-
-        return redirect()->route('tasks.list')->with('success',__('messages.task_del_success'));
+        return $response->with('success', __('messages.task_del_success'));
 
     }
 }
