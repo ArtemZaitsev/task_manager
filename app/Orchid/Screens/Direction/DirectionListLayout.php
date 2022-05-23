@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Direction;
 
 use App\Models\Direction;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -28,6 +29,7 @@ class DirectionListLayout extends Table
     {
         return [
             TD::make('title', 'Название направления')
+                ->filter(Input::make())
                 ->render(function (Direction $direction) {
                     return Link::make($direction->title)
                         ->route('platform.direction.edit', $direction);

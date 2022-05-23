@@ -54,6 +54,34 @@
                             Управление задачей
                         </div>
                     </th>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('created_at'))
+                        <th scope="col" class="text-center">
+                            @include('filters.date_filter', [
+                            'filter_name' => 'created_at',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                           ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'created_at', request())  }}">Дата создания
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('created_at', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('updated_at'))
+                        <th scope="col" class="text-center">
+                            @include('filters.date_filter', [
+                            'filter_name' => 'updated_at',
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                           ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'updated_at', request())  }}">Дата обновления
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('updated_at', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
                         <th scope="col" class="text-center">
                             @include('filters.enum_filter', [
@@ -447,6 +475,18 @@
 
                         @endif
                     </th>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('created_at'))
+                        <td class="text-center align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->created_at) }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('updated_at'))
+                        <td class="text-center align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->updated_at) }}
+                        </td>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('priority'))
                         @include('task_priority', [
                             'priority' => $task->priority,

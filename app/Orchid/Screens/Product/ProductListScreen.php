@@ -16,7 +16,9 @@ class ProductListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'products' => Product::paginate()
+            'products' => Product::query()
+                ->filters()
+                ->paginate()
         ];
     }
 

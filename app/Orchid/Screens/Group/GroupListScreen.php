@@ -17,7 +17,9 @@ class GroupListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'groups'=>Group::paginate(20)
+            'groups' => Group::query()
+                ->filters()
+                ->paginate(),
         ];
     }
 
@@ -30,10 +32,12 @@ class GroupListScreen extends Screen
     {
         return 'Список групп';
     }
+
     public function description(): ?string
     {
         return "Все группы";
     }
+
     /**
      * Button commands.
      *

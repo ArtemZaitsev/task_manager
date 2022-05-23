@@ -16,7 +16,9 @@ class FamilyListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'families' => Family::paginate()
+            'families' => Family::query()
+                ->filters()
+                ->paginate()
         ];
     }
 

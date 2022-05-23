@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Family;
 use App\Models\Family;
 use App\Models\User;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -36,6 +37,7 @@ class FamilyListLayout extends Table
                     return $family->project->title;
                 }),
             TD::make('title', 'Название семейства продуктов')
+                ->filter(Input::make())
                 ->render(function (Family $family) {
                     return Link::make($family->title)
                         ->route('platform.family.edit', $family);

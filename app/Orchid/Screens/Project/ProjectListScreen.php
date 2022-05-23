@@ -17,7 +17,9 @@ class ProjectListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'projects' => Project::paginate()
+            'projects' => Project::query()
+                ->filters()
+                ->paginate(),
         ];
     }
 

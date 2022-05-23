@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Product;
 use App\Models\Product;
 use App\Models\User;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -39,6 +40,7 @@ class ProductListLayout extends Table
                 }),
 
             TD::make('title', 'Название продукта')
+                ->filter(Input::make())
                 ->render(function (Product $product) {
                     return Link::make($product->title)
                         ->route('platform.product.edit', $product);

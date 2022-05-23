@@ -71,7 +71,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('family', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="family">Семейство</label>
                     <select name="family[]"
                             class="select2 form-control {{ $errors->has('family') ? 'is-invalid' : '' }}"
@@ -95,7 +95,7 @@
 
             @if($fieldsToEdit === null || in_array('product', $fieldsToEdit))
 
-                <div class="form-group ">
+                <div class="form-group mt-2">
                     <label for="product">Продукт</label>
                     <select name="product[]" id="product" multiple
                             class=" select2 form-control {{ $errors->has('product') ? 'is-invalid' : '' }}">
@@ -119,7 +119,7 @@
 
             @if($fieldsToEdit === null || in_array('base', $fieldsToEdit))
 
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="base">Основание</label>
                     <input name="base" class="form-control {{ $errors->has('base') ? 'is-invalid' : '' }}"
                            id="base" type="text" value="{{ old('base', $task->base)  }}">
@@ -132,7 +132,7 @@
             @endif
             @if($fieldsToEdit === null || in_array('setting_date', $fieldsToEdit))
 
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="setting_date">Дата постановки</label>
                     <input name="setting_date"
                            class="form-control {{ $errors->has('setting_date') ? 'is-invalid' : '' }}"
@@ -146,7 +146,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('task_creator', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2 w-50">
                     <label for="task_creator">Постановщик</label>
                     <input name="task_creator"
                            class="form-control {{ $errors->has('task_creator') ? 'is-invalid' : '' }}"
@@ -160,7 +160,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('priority', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2 w-25">
                     <label for="priority">Приоритет</label>
                     <select name="priority" id="priority"
                             class="form-control {{ $errors->has('priority') ? 'is-invalid' : '' }}">
@@ -179,7 +179,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('type', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="type">Тип</label>
                     <select name="type" id="type" class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}">
                         @foreach(\App\Models\Task::All_TYPE as $value => $label )
@@ -197,7 +197,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('theme', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="theme">Тема</label>
                     <input name="theme" class="form-control {{ $errors->has('theme') ? 'is-invalid' : '' }}"
                            id="theme" type="text" value="{{ old('theme', $task->theme)  }}">
@@ -210,7 +210,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('main_task', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="main_task">Основная задача</label>
                     <input name="main_task" class="form-control {{ $errors->has('main_task') ? 'is-invalid' : '' }}"
                            id="main_task" type="text" value="{{ old('main_task', $task->main_task)  }}">
@@ -222,7 +222,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('name', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="name">Задача</label>
                     <textarea name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
                               id="name" rows="3">{{ old('name', $task->name) }} </textarea>
@@ -234,16 +234,14 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('user_id', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-50 mt-2">
                     <label for="userId">Ответственный</label>
                     <select name="user_id" class="form-control {{ $errors->has('user_id') ? 'is-invalid' : '' }}"
                             id="userId" required>
                         @foreach($users as $user )
                             <option value="{{ $user->id }}"
                                     @if( $user->id == old('user_id',$task->user_id) ) selected @endif>
-                                {{ $user->surname }}
-                                {{ $user->name }}
-                                {{ $user->patronymic }}
+                                {{ $user->labelFull() }}
                             </option>
                         @endforeach
                     </select>
@@ -255,7 +253,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('coperformers', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="coperformers">Соисполнители</label>
                     <select name="coperformers[]"
                             class="select2 form-control {{ $errors->has('coperformers') ? 'is-invalid' : '' }}"
@@ -265,9 +263,7 @@
                                     @if(in_array($user->id,
                                     old('coperformers',$task->coperformers()->allRelatedIds()->toArray()))) selected
                                 @endif>
-                                {{ $user->name }}
-                                {{ $user->surname }}
-                                {{ $user->patronymic }}
+                                {{ $user->label }}
                             </option>
                         @endforeach
                     </select>
@@ -281,9 +277,10 @@
 
 
             @if($fieldsToEdit === null || in_array('end_date', $fieldsToEdit))
-                <div class="form-group">
-                    <label for="end_date">Дата в протокол/плане/поручении</label>
-                    <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'is-invalid' : '' }}"
+                <div class="form-group w-25 mt-2">
+                    <label for="end_date">Дата в поручении</label>
+                    <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'is-invalid' : ''
+                     }}"
                            id="end_date" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}"
                            required>
@@ -295,7 +292,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('end_date_plan', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="end_date_plan">Дата окончания план</label>
                     <input name="end_date_plan" class="form-control {{ $errors->has('end_date_plan') ? 'is-invalid' : '' }}"
                            id="end_date_plan" type="date"
@@ -309,7 +306,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('end_date_fact', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="end_date_fact">Дата окончания факт</label>
                     <input name="end_date_fact" class="form-control {{ $errors->has('end_date_fact') ? 'is-invalid' : '' }}"
                            id="end_date_fact" type="date"
@@ -323,7 +320,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('execute', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="execute">Приступить</label>
                     <select name="execute" id="execute"
                             class="form-control {{ $errors->has('execute') ? 'is-invalid' : '' }}"
@@ -343,7 +340,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('status', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="status">Статус выполнения</label>
                     <select name="status" id="status"
                             class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}"
@@ -363,7 +360,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('execute_time_plan', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="execute_time_plan">Кол-во ч/ч, план</label>
                     <input name="execute_time_plan"
                            class="form-control {{ $errors->has('execute_time_plan') ? 'is-invalid' : '' }}"
@@ -378,7 +375,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('execute_time_fact', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group w-25 mt-2">
                     <label for="execute_time_fact">Кол-во ч/ч, факт</label>
                     <input name="execute_time_fact"
                            class="form-control {{ $errors->has('execute_time_fact') ? 'is-invalid' : '' }}"
@@ -393,7 +390,7 @@
                 </div>
             @endif
             @if($fieldsToEdit === null || in_array('comment', $fieldsToEdit))
-                <div class="form-group">
+                <div class="form-group mt-2">
                     <label for="comment">Комментарии</label>
                     <textarea name="comment" class="form-control {{ $errors->has('comment') ? 'is-invalid' : '' }}"
                               id="comment" rows="3">{{ old('comment', $task->comment)  }}</textarea>

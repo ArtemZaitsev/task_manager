@@ -17,7 +17,9 @@ class SubgroupListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'subgroups' => Subgroup::paginate()
+            'subgroups' => Subgroup::query()
+                ->filters()
+                ->paginate()
         ];
     }
 

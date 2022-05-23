@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 class TaskColumnController extends BaseController
 {
     const COLUMNS =[
+        'created_at' => 'Дата создания',
+        'updated_at' => 'Дата редактирования',
         'project' => 'Проект',
         'family' => 'Семейство',
         'product' => 'Продукт',

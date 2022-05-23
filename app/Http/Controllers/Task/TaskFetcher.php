@@ -38,6 +38,16 @@ class TaskFetcher
 
     private function applyFilters(InputBag $query, Builder $tasksQuery)
     {
+        if ($query->has('created_at')) {
+            $createdAtDateFilter = $query->get('created_at');
+            $this->applyDateFilter($createdAtDateFilter, $tasksQuery, 'tasks.created_at');
+        }
+
+        if ($query->has('updated_at')) {
+            $updatedAtDateFilter = $query->get('updated_at');
+            $this->applyDateFilter($updatedAtDateFilter, $tasksQuery, 'tasks.updated_at');
+        }
+
         if ($query->has('project')) {
             $project = $query->get('project');
             if (!empty($project)) {
@@ -252,6 +262,8 @@ class TaskFetcher
     private function applySort(InputBag $query, Builder $tasksQuery)
     {
         $orderColumns = [
+            'created_at' => 'created_at',
+            'updated_at' => 'updated_at',
             'base' => 'base',
             'setting_date' => 'setting_date',
             'task_creator' => 'task_creator',
@@ -306,7 +318,7 @@ class TaskFetcher
 
         $tasksQuery = $this->createQueryBuilder($query);
 
-        $tasks = $tasksQuery->paginate(300);
+        $tasks = $tasksQuery->paginate(50);
         return $tasks;
     }
 

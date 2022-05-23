@@ -8,6 +8,7 @@ use Orchid\Filters\Filter;
 use Orchid\Platform\Models\Role;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Select;
+use function React\Promise\map;
 
 class UserGroupFilter extends Filter
 {
@@ -44,12 +45,15 @@ class UserGroupFilter extends Filter
      */
     public function display(): array
     {
+        $groups = $this->request->get('groups') ?? [];
+        $groups = array_map(fn($group) => (int)$group, $groups);
+
         return [
             Select::make('groups')
                 ->fromModel(Group::class, 'title')
                 ->empty()
-                ->value($this->request->get('groups'))
-                ->title( 'Группы')
+                ->value($groups)
+                ->title('Группы')
                 ->multiple(),
         ];
     }
@@ -60,6 +64,12 @@ class UserGroupFilter extends Filter
     public function value(): string
     {
 //        return $this->name() . ': ' . Role::where('slug', $this->request->get('role'))->first()->name;
-        return 'test';
+
+        $groups = $this->request->get('groups');
+
+        $dbGroups = Group::query()->whereIn('id', $groups)->get()->toArray();
+        $dbGroups = array_map(fn(array $dbGroup) => $dbGroup['title'], $dbGroups);
+        $groupStr = implode(", ", $dbGroups);
+        return $this->name() . ': ' . $groupStr;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Group;
 
 use App\Models\Group;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -35,6 +36,7 @@ class GroupListLayout extends Table
                     return $group->direction->title;
                 }),
             TD::make('title', 'Название группы')
+                ->filter(Input::make())
                 ->render(function (Group $group) {
                     return Link::make($group->title)
                         ->route('platform.group.edit', $group);

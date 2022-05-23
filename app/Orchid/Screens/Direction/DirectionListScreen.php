@@ -17,7 +17,9 @@ class DirectionListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'directions' => Direction::paginate()
+            'directions' => Direction::query()
+                ->filters()
+                ->paginate()
         ];
     }
 

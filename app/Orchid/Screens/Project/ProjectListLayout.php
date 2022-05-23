@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Project;
 use App\Models\Project;
 use App\Models\User;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -29,6 +30,7 @@ class ProjectListLayout extends Table
     {
         return [
             TD::make('title', 'Название проекта')
+                ->filter(Input::make())
                 ->render(function (Project $project) {
                     return Link::make($project->title)
                         ->route('platform.project.edit', $project);

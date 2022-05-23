@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Subgroup;
 
 use App\Models\Subgroup;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 
@@ -38,6 +39,7 @@ class SubgroupListLayout extends Table
                 }),
 
             TD::make('title', 'Название подгруппы')
+                ->filter(Input::make())
                 ->render(function (Subgroup $subgroup) {
                     return Link::make($subgroup->title)
                         ->route('platform.subgroup.edit', $subgroup);
