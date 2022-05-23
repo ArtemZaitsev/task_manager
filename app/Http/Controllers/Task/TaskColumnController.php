@@ -10,19 +10,25 @@ class TaskColumnController extends BaseController
     const COLUMNS =[
         'created_at' => 'Дата создания',
         'updated_at' => 'Дата редактирования',
-        'project' => 'Проект',
-        'family' => 'Семейство',
-        'product' => 'Продукт',
-        'direction' => 'Направление',
-        'group' => 'Группа',
-        'subgroup' => 'Подгруппа',
+        'priority' => 'Приоритет',
+        'type' => 'Тип',
         'base' => 'Основание',
         'setting_date' => 'Дата постановки',
         'task_creator' => 'Постановщик',
-        'priority' => 'Приоритет',
-        'type' => 'Тип',
+        'direction' => 'Направление',
+        'group' => 'Группа',
+        'subgroup' => 'Подгруппа',
+        'project' => 'Проект',
+        'family' => 'Семейство',
+        'product' => 'Продукт',
         'theme' => 'Тема',
         'main_task' => 'Основная задача',
+        'execute' => 'Приступить',
+        'status' => 'Статус выполнения',
+        'execute_time_plan' => 'Кол-во ч/ч, план',
+        'execute_time_fact' => 'Кол-во ч/ч, факт',
+        'comment' => 'Коментарии',
+
         ];
 
     public function index(){

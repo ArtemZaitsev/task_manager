@@ -347,52 +347,62 @@
                             </a>
                         </div>
                     </th>
-                    <th scope="col" class="text-center">
-                        @include('filters.enum_filter', [
-                            'filter_name' => 'execute',
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
-                            'filter_data' => \App\Models\Task::ALL_EXECUTIONS
-                            ])
-                        <div scope="col" class="text-center for-headers">
-                            @include('sort_field', [
-                                'sortColumn' => 'execute',
-                                'label' => 'Приступить'
-                            ])
-                        </div>
-                    </th>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('execute'))
+                        <th scope="col" class="text-center">
+                            @include('filters.enum_filter', [
+                                'filter_name' => 'execute',
+                                'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                                'filter_data' => \App\Models\Task::ALL_EXECUTIONS
+                                ])
+                            <div scope="col" class="text-center for-headers">
+                                @include('sort_field', [
+                                    'sortColumn' => 'execute',
+                                    'label' => 'Приступить'
+                                ])
+                            </div>
+                        </th>
+                    @endif
 
-                    <th scope="col" class="text-center">
-                        @include('filters.enum_filter', [
-                            'filter_name' => 'status',
-                            'filter_data' => \App\Models\Task::ALL_STATUSES,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                        <div class="text-center for-headers">
-                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('status'))
+                        <th scope="col" class="text-center">
+                            @include('filters.enum_filter', [
+                                'filter_name' => 'status',
+                                'filter_data' => \App\Models\Task::ALL_STATUSES,
+                                'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                                ])
+                            <div class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
                     'status', request())  }}">Статус выполнения
-                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('status', request()) ?>
-                            </a>
-                        </div>
-                    </th>
-                    <th scope="col" class="text-center">
-                        <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
-                            план
-                        </div>
-                        <div class="text-center">{{ $sum['execute_time_plan']  }}</div>
-                    </th>
-                    <th scope="col" class="text-center">
-                        <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
-                            факт
-                        </div>
-                        <div class="text-center">{{ $sum['execute_time_fact']  }}</div>
-                    </th>
-                    <th scope="col" class="text-center" style="min-width: 400px;">
-                        @include('filters.string_filter', [
-                            'filter_name' => 'comment',
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                        <div scope="col" class="text-center for-headers">Комментарии</div>
-                    </th>
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('status', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('execute_time_plan'))
+                        <th scope="col" class="text-center">
+                            <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
+                                план
+                            </div>
+                            <div class="text-center">{{ $sum['execute_time_plan']  }}</div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('execute_time_fact'))
+                        <th scope="col" class="text-center">
+                            <div scope="col" class="text-center for-headers" style="min-width: 100px;">Кол-во ч/ч,
+                                факт
+                            </div>
+                            <div class="text-center">{{ $sum['execute_time_fact']  }}</div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('comment'))
+                        <th scope="col" class="text-center" style="min-width: 400px;">
+                            @include('filters.string_filter', [
+                                'filter_name' => 'comment',
+                                'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                                ])
+                            <div scope="col" class="text-center for-headers">Комментарии</div>
+                        </th>
+                    @endif
                     <th scope="col" class="text-center">
                         @include('filters.enum_filter', [
                             'filter_name' => 'task_log_status',
@@ -606,25 +616,35 @@
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_fact) }}
                     </td>
-                    <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ $task->execute === null ? '' : \App\Models\Task::ALL_EXECUTIONS[$task->execute] }}</td>
-                    {{--                    <td class="text-left align-middle">{{ $task->progress }}</td>--}}
-                    @include('task_status', [
-                           'status' => $task->status,
-                           ])
-                    <td class="text-center align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ $task->execute_time_plan }}
-                    </td>
-                    <td class="text-center align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ $task->execute_time_fact }}
-                    </td>
-                    <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ $task->comment }}
-                    </td>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('execute'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->execute === null ? '' : \App\Models\Task::ALL_EXECUTIONS[$task->execute] }}</td>
+                        {{--                    <td class="text-left align-middle">{{ $task->progress }}</td>--}}
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('status'))
+                        @include('task_status', [
+                               'status' => $task->status,
+                               ])
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('execute_time_plan'))
+                        <td class="text-center align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->execute_time_plan }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('execute_time_fact'))
+                        <td class="text-center align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->execute_time_fact }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('comment'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->comment }}
+                        </td>
+                    @endif
                     <td class="text-center align-middle">
                         @if ( count($task->logs) > 0 )
                             {{ \App\Models\TaskLog::ALL_STATUSES[$task->logs[0]->status]}}

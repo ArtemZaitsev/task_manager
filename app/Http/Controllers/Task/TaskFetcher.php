@@ -276,7 +276,7 @@ class TaskFetcher
             'end_date_plan' => 'end_date_plan',
             'end_date_fact' => 'end_date_fact',
             'execute' => 'execute',
-            'status' => 'status'
+            'status' => 'status',
 
 
         ];
