@@ -45,7 +45,15 @@ class TaskAddController extends Controller
     {
         $task = new Task();
         $request->store($task);
-        return redirect()->route('tasks.list')->with('success', __('messages.task_add_success'));
+
+        if ($request->query->has('back')) {
+            $backUrl = $request->query->get('back');
+            $response = redirect()->to($backUrl);
+        } else {
+            $response = redirect()->route('tasks.list');
+        }
+
+        return $response->with('success', __('messages.task_add_success'));
     }
 
 //    private function findPreviosSortNumber(?Task $parentTask): ?int

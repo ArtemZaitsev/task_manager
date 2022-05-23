@@ -10,35 +10,44 @@
                 {{ Session::get('success')}}
             </div>
         @endif
-
-        <div><b>{{ Illuminate\Support\Facades\Auth::user()->labelFull() }}</b></div>
-
-        <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
-            <button type="button" class="btn btn-outline-success"
-                    data-text="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы"
-                    onclick="copyToClipboard(this)">Скопировать путь
-            </button>
+        <div class="">
+            <div class="position-absolute top-0 end-0">
+                <div><b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()
+        }}</b></div>
+                <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
+                    <button type="button" class="btn btn-outline-success"
+                            data-text="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы"
+                            onclick="copyToClipboard(this)">Скопировать путь
+                    </button>
+                </div>
+            </div>
+            <div class="left">
+                @if($taskVoter->canCreate())
+                    <a class="btn btn-outline-success m-3"
+                       href="{{ route('task.showFormAdd', ['back' => url()->full()]) }}">
+                        Создать задачу
+                    </a>
+                @endif
+                <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
+                        btn-outline-dark m-1">
+                    Очистить фильтры
+                </a>
+                <a class="btn btn-outline-info m-3"
+                   href="{{ route('task.setupColumns.show') }}">
+                    Настроить столбцы
+                </a>
+                @if($taskVoter->canExport())
+                    <a href="{{ $exportUrl }}" class="btn btn-outline-warning m-1">
+                        Экспорт в Excel
+                    </a>
+                @endif
+                <a class="btn btn-outline-danger m-1 "
+                   href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
+                    Выход из системы
+                </a>
+            </div>
         </div>
 
-
-        <a href="{{ route(\App\Http\Controllers\Task\TaskController::ACTION_LIST) }}" class="btn
-                        btn-success m-1">Очистить фильтры</a>
-        @if($taskVoter->canCreate())
-            <a class="btn btn-success m-3" href="{{ route('task.showFormAdd') }}">
-                Создать задачу
-            </a>
-        @endif
-        <a class="btn btn-info m-3" href="{{ route('task.setupColumns.show') }}">
-            Настроить столбцы
-        </a>
-        @if($taskVoter->canExport())
-            <a href="{{ $exportUrl }}" class="btn btn-warning m-1">
-                Экспорт в Excel
-            </a>
-        @endif
-        <a class="btn btn-danger m-1 " href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
-            Выход из системы
-        </a>
 
         @impersonating()
         <a class="btn btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под

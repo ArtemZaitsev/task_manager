@@ -49,8 +49,6 @@ class TaskColumnController extends BaseController
 
         $request->session()->put('task_columns', $columns);
 
-
-
         return redirect()->route('tasks.list');
 
     }
