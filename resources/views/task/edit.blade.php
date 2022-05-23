@@ -278,7 +278,7 @@
 
             @if($fieldsToEdit === null || in_array('end_date', $fieldsToEdit))
                 <div class="form-group w-25 mt-2">
-                    <label for="end_date">Дата в поручении</label>
+                    <label for="end_date">Дата установленная руководителем</label>
                     <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'is-invalid' : ''
                      }}"
                            id="end_date" type="date"

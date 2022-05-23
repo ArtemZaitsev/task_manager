@@ -27,7 +27,7 @@ class TaskColumnController extends BaseController
         'status' => 'Статус выполнения',
         'execute_time_plan' => 'Кол-во ч/ч, план',
         'execute_time_fact' => 'Кол-во ч/ч, факт',
-        'comment' => 'Коментарии',
+        'comment' => 'Комментарии',
 
         ];
 
