@@ -278,8 +278,6 @@ class TaskFetcher
             'end_date_fact' => 'end_date_fact',
             'execute' => 'execute',
             'status' => 'status',
-
-
         ];
 
         if ($query->has('sort')) {
@@ -319,7 +317,7 @@ class TaskFetcher
 
         $tasksQuery = $this->createQueryBuilder($query);
 
-        $tasks = $tasksQuery->paginate(50);
+        $tasks = $tasksQuery->paginate(1000);
         return $tasks;
     }
 
