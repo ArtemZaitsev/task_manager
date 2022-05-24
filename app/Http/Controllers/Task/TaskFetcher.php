@@ -265,6 +265,7 @@ class TaskFetcher
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
             'base' => 'base',
+            'theme' => 'theme',
             'setting_date' => 'setting_date',
             'task_creator' => 'task_creator',
             'priority' => 'priority',
@@ -334,7 +335,7 @@ class TaskFetcher
 
         $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
         $tasksQuery->select('tasks.*');
-        $tasksQuery->orderByDesc('tasks.created_at');
+//        $tasksQuery->orderByDesc('tasks.created_at');
 
         $this->filterByPermissions($tasksQuery);
 

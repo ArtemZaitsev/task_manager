@@ -50,6 +50,7 @@ class UserListLayout extends Table
 
             TD::make('name', __('Name'))
                 ->sort()
+                ->filter(Input::make())
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(function (User $user) {
