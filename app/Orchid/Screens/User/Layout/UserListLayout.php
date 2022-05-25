@@ -48,9 +48,8 @@ class UserListLayout extends Table
                     return $user->subgroup?->title;
                 }),
 
-            TD::make('name', __('Name'))
+            TD::make('surname', 'Фамилия')
                 ->sort()
-                ->filter(Input::make())
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(function (User $user) {

@@ -160,7 +160,7 @@ class TaskFetcher
 
         if ($query->has('status')) {
             $status = $query->get('status');
-                $this->applyMultipleValuesFilter($status, $tasksQuery, 'status');
+            $this->applyMultipleValuesFilter($status, $tasksQuery, 'status');
         }
 
         if ($query->has('user')) {
@@ -309,6 +309,8 @@ class TaskFetcher
                         break;
                 }
             }
+        } else {
+            $tasksQuery->orderByDesc('tasks.id');
         }
     }
 
@@ -317,23 +319,25 @@ class TaskFetcher
 
         $tasksQuery = $this->createQueryBuilder($query);
 
-        $tasks = $tasksQuery->paginate(1000);
+        $tasks = $tasksQuery->paginate(30)->withQueryString();
         return $tasks;
     }
 
-    public function sumByColumn(string $field, InputBag $query): float {
+    public function sumByColumn(string $field, InputBag $query): float
+    {
         $qb = $this->createQueryBuilder($query);
         $result = $qb->sum("tasks.$field");
         return $result;
     }
 
-    private function createQueryBuilder(InputBag $query): Builder {
+    private function createQueryBuilder(InputBag $query): Builder
+    {
         $tasksQuery = Task::with('user')
             ->with('logs');
 
         $tasksQuery->leftJoin('users', 'users.id', '=', 'tasks.user_id');
         $tasksQuery->select('tasks.*');
-//        $tasksQuery->orderByDesc('tasks.created_at');
+
 
         $this->filterByPermissions($tasksQuery);
 

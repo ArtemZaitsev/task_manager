@@ -58,6 +58,8 @@ class User extends Authenticatable
     protected $allowedFilters = [
         'id',
         'name',
+        'surname',
+        'patronymic',
         'email',
         'permissions',
     ];
