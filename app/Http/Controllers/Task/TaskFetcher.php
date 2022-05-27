@@ -319,7 +319,7 @@ class TaskFetcher
 
         $tasksQuery = $this->createQueryBuilder($query);
 
-        $tasks = $tasksQuery->paginate(30)->withQueryString();
+        $tasks = $tasksQuery->paginate(3000)->withQueryString();
         return $tasks;
     }
 
