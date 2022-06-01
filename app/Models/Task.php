@@ -14,6 +14,7 @@ class Task extends Model
     const STATUS_INFO = 4;
     const STATUS_REFUSE = 5;
     const STATUS_BLOCKED = 6;
+    const STATUS_DELEGATE = 7;
 
     const ALL_STATUSES = [
         self::STATUS_BLOCKED => 'Заблокирована',
@@ -22,6 +23,7 @@ class Task extends Model
         self::STATUS_IN_PROGRESS => 'В процессе',
         self::STATUS_INFO => 'Информационная',
         self::STATUS_REFUSE => 'Снята',
+        self::STATUS_DELEGATE=> 'Делегирована',
     ];
 
 

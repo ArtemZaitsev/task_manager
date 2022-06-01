@@ -6,6 +6,7 @@
     4 => 'table-primary',
     5 => 'table-secondary',
     6 => 'table-danger',
+    7 => 'table-info',
     default => '',
     };
 @endphp

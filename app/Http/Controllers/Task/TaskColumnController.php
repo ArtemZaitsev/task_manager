@@ -23,6 +23,8 @@ class TaskColumnController extends BaseController
         'product' => 'Продукт',
         'theme' => 'Тема',
         'main_task' => 'Основная задача',
+        'coperformers' => 'Соисполнители',
+        'end_date_fact' => 'Дата окончания факт',
         'execute' => 'Приступить',
         'status' => 'Статус выполнения',
         'execute_time_plan' => 'Кол-во ч/ч, план',

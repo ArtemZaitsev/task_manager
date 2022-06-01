@@ -303,17 +303,18 @@
                             </a>
                         </div>
                     </th>
-
-                    <th scope="col" class="text-center" style="max-width: 150px;">
-                        @include('filters.entity_filter', [
-                            'filter_name' => 'coperformer',
-                            'filter_data' => $users,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                        <div scope="col" class="text-center for-headers">
-                            Соисполнители
-                        </div>
-                    </th>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('coperformers'))
+                        <th scope="col" class="text-center" style="max-width: 150px;">
+                            @include('filters.entity_filter', [
+                                'filter_name' => 'coperformer',
+                                'filter_data' => $users,
+                                'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                                ])
+                            <div scope="col" class="text-center for-headers">
+                                Соисполнители
+                            </div>
+                        </th>
+                    @endif
 
                     <th scope="col" class="text-center ">
                         @include('filters.date_filter', [
@@ -342,20 +343,21 @@
                             </a>
                         </div>
                     </th>
-                    <th scope="col" class="text-center ">
-                        @include('filters.date_filter', [
-                            'filter_name' => 'end_date_fact',
-                              'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-
-                        <div scope="col" class="text-center for-headers">
-                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('end_date_fact'))
+                        <th scope="col" class="text-center ">
+                            @include('filters.date_filter', [
+                                'filter_name' => 'end_date_fact',
+                                  'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                                ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
                     'end_date_fact', request())  }}">Дата окончания факт
-                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date_fact', request()
-                                ) ?>
-                            </a>
-                        </div>
-                    </th>
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('end_date_fact', request()
+                                    ) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('execute'))
                         <th scope="col" class="text-center">
                             @include('filters.enum_filter', [
@@ -603,16 +605,17 @@
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ $task->user->label() }}
                     </td>
-                    <td class="text-left align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        @foreach($task->coperformers as $coperformer)
-                            {{ $coperformer->label() }}
-                            @if(!$loop->last)
-                                <br>
-                            @endif
-                        @endforeach
-                    </td>
-
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('coperformers'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            @foreach($task->coperformers as $coperformer)
+                                {{ $coperformer->label() }}
+                                @if(!$loop->last)
+                                    <br>
+                                @endif
+                            @endforeach
+                        </td>
+                    @endif
                     <td class="text-center align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date) }}
@@ -643,10 +646,12 @@
                         </td>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('execute_time_fact'))
-                        <td class="text-center align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->execute_time_fact }}
-                        </td>
+                        @if( \App\Utils\ColumnUtils::isColumnEnabled('execute_time_fact'))
+                            <td class="text-center align-middle"
+                                @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                                {{ $task->execute_time_fact }}
+                            </td>
+                        @endif
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('comment'))
                         <td class="text-left align-middle"
