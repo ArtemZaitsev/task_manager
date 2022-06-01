@@ -83,7 +83,7 @@ class TasksExportController extends Controller
     private function writeData(Worksheet $sheet, InputBag $query)
     {
         $fetcher = new TaskFetcher();
-        $tasks = $fetcher->fetchTasks($query);
+        $tasks = $fetcher->tasksForExport($query);
 
         /**
          * @var $task Task

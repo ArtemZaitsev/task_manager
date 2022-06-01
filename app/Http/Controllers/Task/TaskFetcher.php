@@ -319,7 +319,15 @@ class TaskFetcher
 
         $tasksQuery = $this->createQueryBuilder($query);
 
-        $tasks = $tasksQuery->paginate(3000)->withQueryString();
+        $tasks = $tasksQuery->paginate(30)->withQueryString();
+        return $tasks;
+    }
+
+    public function tasksForExport(InputBag $query)
+    {
+
+        $tasksQuery = $this->createQueryBuilder($query);
+        $tasks = $tasksQuery->get();
         return $tasks;
     }
 
