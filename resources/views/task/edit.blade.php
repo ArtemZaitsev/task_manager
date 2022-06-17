@@ -33,9 +33,10 @@
                         <input type="date" name="task_log[__id__][date_refresh_fact]">
                     </td>
                     <td>
-                        <input type="text" name="task_log[__id__][trouble]" required>
+                        <textarea name="task_log[__id__][trouble]" style="width: 100%;" rows="3" required></textarea>
                     </td>
-                    <td><input type="text" name="task_log[__id__][what_to_do]">
+                    <td>
+                        <textarea name="task_log[__id__][what_to_do]" style="width: 100%;" rows="3"></textarea>
                     </td>
                     <td>
                         <a class="btn btn-danger" onclick="deleteTaskLog(this)">Удалить</a>

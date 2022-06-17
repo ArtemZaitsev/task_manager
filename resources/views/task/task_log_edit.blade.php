@@ -1,13 +1,20 @@
 <table class="table table-bordered table-hover mt-5" id="task-logs">
-
-    <thead id="task-logs-thead" @if (count($logs) == 0) style="display: none" @endif>
-    <tr style="background-color: #d1f4ff ;">
-        <th>Статус решения</th>
-        <th>Дата обновления план</th>
-        <th>Дата обновления факт</th>
-        <th>Что мешает</th>
-        <th>Что делаем</th>
-        <th>Действия</th>
+    <colgroup>
+        <col  span="1" style="width: 10%;" >
+        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 10%;">
+    </colgroup>
+    <thead id="task-logs-thead" @if (count($logs) == 0) style="display: none;" @endif>
+    <tr  style="background-color: #d1f4ff ; ">
+        <th class="align-middle" style="text-align: center; border-color: rgb(222, 226, 230);">Статус решения</th>
+        <th class="align-middle" style="text-align: center;border-color: rgb(222, 226, 230); ">Дата обновления план</th>
+        <th class="align-middle" style="text-align: center;border-color: rgb(222, 226, 230);">Дата обновления факт</th>
+        <th class="align-middle" style="text-align: center;border-color: rgb(222, 226, 230);">Что мешает</th>
+        <th class="align-middle" style="text-align: center;border-color: rgb(222, 226, 230);">Что делаем</th>
+        <th class="align-middle" style="text-align: center;border-color: rgb(222, 226, 230);">Действия</th>
     </tr>
     </thead>
 
@@ -49,17 +56,19 @@
                 @endif
             </td>
             <td>
-                <input type="text" name="task_log[{{$log->id}}][trouble]"
-                       value="{{ old("task_log.{$log->id}.trouble", $log->trouble)  }} "
-                       required>
+                <textarea name="task_log[{{$log->id}}][trouble]" style="width: 100%;" rows="3" required>{{ old("task_log
+                .{$log->id}
+                .trouble",
+                $log->trouble) }}</textarea>
                 @if ($errors->has("task_log.{$log->id}.trouble"))
                     <div class="error">
                         {{ $errors->first("task_log.{$log->id}.trouble") }}
                     </div>
                 @endif
             </td>
-            <td><input type="text" name="task_log[{{$log->id}}][what_to_do]"
-                       value="{{($log->what_to_do)}}">
+            <td>
+                <textarea type="text" name="task_log[{{$log->id}}][what_to_do]" style="width: 100%;" rows="3">{{
+                ($log->what_to_do)}}</textarea>
                 @if ($errors->has("task_log.{$log->id}.what_to_do"))
                     <div class="error">
                         {{ $errors->first("task_log.{$log->id}.what_to_do") }}

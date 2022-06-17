@@ -624,10 +624,12 @@
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_plan) }}
                     </td>
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('end_date_fact'))
                     <td class="text-center align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_fact) }}
                     </td>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('execute'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>

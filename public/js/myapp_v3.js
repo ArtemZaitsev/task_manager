@@ -4,7 +4,7 @@ function addTaskLog() {
     var rowTemplate = document.getElementById('task-log-template');
     var newRow = rowTemplate.cloneNode(true);
 
-    var allInputs = newRow.querySelectorAll('input,select');
+    var allInputs = newRow.querySelectorAll('input,select,textarea');
     var lastIdx = taskLogsTable.hasAttribute('data-last-idx') ? taskLogsTable.getAttribute('data-last-idx')
         : 0;
     lastIdx--;
