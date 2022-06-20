@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Task\Request;
 
 use App\BuisinessLogick\TaskVoter;
+use App\Models\Audit;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
@@ -10,6 +11,7 @@ use App\Models\Task;
 use App\Models\TaskLog;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -138,6 +140,13 @@ abstract class BaseTaskRequest extends FormRequest
                 $task->products()->sync($data['product']);
             }
 
+            (new Audit([
+                'user_id' => Auth::id(),
+                'event_type' => Audit::EVENT_TYPE_EDIT,
+                'table_name' => (new Task())->getTable(),
+                'entity_id' => $task->id,
+                'meta_inf' => [],
+            ]))->save();
 
             $requestTaskLogs = $data['task_log'] ?? [];
             foreach ($requestTaskLogs as $row) {
@@ -146,6 +155,15 @@ abstract class BaseTaskRequest extends FormRequest
                     $taskLog->fill($row);
                     $taskLog->task_id = $task->id;
                     $taskLog->save();
+
+                    (new Audit([
+                        'user_id' => Auth::id(),
+                        'event_type' => Audit::EVENT_TYPE_CREATE,
+                        'table_name' => (new TaskLog())->getTable(),
+                        'entity_id' => $taskLog->id,
+                        'meta_inf' => [],
+                    ]))->save();
+
                 } else {
                     /** @var TaskLog $existingLog */
                     $existingLog = $taskLogsIdMap[$row['id']] ?? null;
@@ -153,6 +171,13 @@ abstract class BaseTaskRequest extends FormRequest
                         $existingLog->fill($row);
                         $existingLog->save();
                     }
+                    (new Audit([
+                        'user_id' => Auth::id(),
+                        'event_type' => Audit::EVENT_TYPE_EDIT,
+                        'table_name' => (new TaskLog())->getTable(),
+                        'entity_id' => $existingLog->id,
+                        'meta_inf' => [],
+                    ]))->save();
                 }
             }
 
@@ -162,7 +187,20 @@ abstract class BaseTaskRequest extends FormRequest
             foreach (array_keys($taskLogsIdMap) as $existingId) {
                 if (!in_array($existingId, $ids)) {
                     $taskLogsIdMap[$existingId]->delete();
+
+                    (new Audit([
+                        'user_id' => Auth::id(),
+                        'event_type' => Audit::EVENT_TYPE_DELETE,
+                        'table_name' => (new TaskLog())->getTable(),
+                        'entity_id' => $existingId,
+                        'meta_inf' => [
+                            "task_name" => $task->name,
+                            "taskLog_name" => $taskLogsIdMap[$existingId]->trouble,
+                            ],
+                    ]))->save();
+
                 }
+
             }
 
 

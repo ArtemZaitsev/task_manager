@@ -455,28 +455,27 @@ class TaskFetcher
             // направление в котором находятся группы /группа
             $groupsDirections = Group::where('head_id', $userId)
                 ->distinct()
-                ->select('direction_id')
+                ->select('id')
                 ->get()
-                ->map(fn($group) => $group['direction_id'])
+                ->map(fn($group) => $group['id'])
                 ->toArray();
 
             if (count($groupsDirections) > 0) {
-                $baseQuery->orWhereIn('users.direction_id', $groupsDirections);
+                $baseQuery->orWhereIn('users.group_id', $groupsDirections);
             }
 
             // Если пользователь является руководителем подгруппы A и B, то ограничить задачи, которые входят в
             // направление в котором находятся подгруппы /подгруппа
 
-            $subgroupsDirections = Subgroup::where('subgroups.head_id', $userId)
-                ->leftJoin('groups', 'subgroups.group_id', '=', 'groups.id')
+            $subgroupsDirections = Subgroup::where('head_id', $userId)
                 ->distinct()
-                ->select('groups.direction_id')
+                ->select('id')
                 ->get()
-                ->map(fn($subgroup) => $subgroup['direction_id'])
+                ->map(fn($subgroup) => $subgroup['id'])
                 ->toArray();
 
             if (count($subgroupsDirections) > 0) {
-                $baseQuery->orWhereIn('users.direction_id', $subgroupsDirections);
+                $baseQuery->orWhereIn('users.subgroup_id', $subgroupsDirections);
             }
 
             // Если пользователь является руководителем семейства, то ограничить задачи, которые входят в
