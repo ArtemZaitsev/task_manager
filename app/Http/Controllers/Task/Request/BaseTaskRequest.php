@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task\Request;
 
+use App\BuisinessLogick\AuditService;
 use App\BuisinessLogick\TaskVoter;
 use App\Models\Audit;
 use App\Models\Family;
@@ -18,10 +19,13 @@ use Illuminate\Validation\Rule;
 abstract class BaseTaskRequest extends FormRequest
 {
     protected array $rules = [];
+    protected AuditService $auditService;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
+        $this->auditService = new AuditService();
 
         $this->rules [TaskVoter::ROLE_PERFORMER] = [
             'end_date_plan' => 'nullable|date',
@@ -29,7 +33,7 @@ abstract class BaseTaskRequest extends FormRequest
             'execute' => ['nullable', Rule::in(array_keys(Task::ALL_EXECUTIONS))],
             'status' => ['required', Rule::in(array_keys(Task::ALL_STATUSES))],
             'comment' => 'nullable',
-            'execute_time_fact' => ['nullable','numeric','min:0','max:10000'],
+            'execute_time_fact' => ['nullable', 'numeric', 'min:0', 'max:10000'],
             'task_log.*.id' => ['nullable'],
             'task_log.*.status' => ['required', Rule::in(array_keys(TaskLog::ALL_STATUSES))],
             'task_log.*.date_refresh_plan' => ['nullable', 'date'],
@@ -81,7 +85,7 @@ abstract class BaseTaskRequest extends FormRequest
             'coperformers' => 'nullable|array',
             'coperformers.*' => Rule::exists(User::class, 'id'),
             'end_date' => 'required|date',
-            'execute_time_plan' => ['nullable','numeric','min:0','max:10000'],
+            'execute_time_plan' => ['nullable', 'numeric', 'min:0', 'max:10000'],
         ]);
 
     }
@@ -97,7 +101,8 @@ abstract class BaseTaskRequest extends FormRequest
     }
 
 
-    protected function setDefaultFields() {
+    protected function setDefaultFields()
+    {
         $fields = ['project', 'coperformers', 'family', 'product'];
         foreach ($fields as $field) {
             if (!$this->has($field)) {
@@ -125,28 +130,30 @@ abstract class BaseTaskRequest extends FormRequest
 
         DB::transaction(function () use ($task, $data, $taskLogsIdMap) {
             $task->fill($data);
+            $dirty = $task->isDirty();
             $task->save();
+            if ($dirty) {
+                $this->auditService->editEntity($task);
+            }
 
             if (isset($data['coperformers'])) {
-                $task->coperformers()->sync($data['coperformers']);
-            }
-            if (isset($data['project'])) {
-                $task->projects()->sync($data['project']);
-            }
-            if (isset($data['family'])) {
-                $task->families()->sync($data['family']);
-            }
-            if (isset($data['product'])) {
-                $task->products()->sync($data['product']);
+                $changes = $task->coperformers()->sync($data['coperformers']);
+                $this->auditService->editEntityRelation($changes, $task, 'coperformers');
             }
 
-            (new Audit([
-                'user_id' => Auth::id(),
-                'event_type' => Audit::EVENT_TYPE_EDIT,
-                'table_name' => (new Task())->getTable(),
-                'entity_id' => $task->id,
-                'meta_inf' => [],
-            ]))->save();
+            if (isset($data['project'])) {
+                $changes = $task->projects()->sync($data['project']);
+                $this->auditService->editEntityRelation($changes, $task, 'projects');
+            }
+            if (isset($data['family'])) {
+                $changes = $task->families()->sync($data['family']);
+                $this->auditService->editEntityRelation($changes, $task, 'families');
+            }
+            if (isset($data['product'])) {
+                $changes = $task->products()->sync($data['product']);
+                $this->auditService->editEntityRelation($changes, $task, 'products');
+            }
+
 
             $requestTaskLogs = $data['task_log'] ?? [];
             foreach ($requestTaskLogs as $row) {
@@ -155,29 +162,20 @@ abstract class BaseTaskRequest extends FormRequest
                     $taskLog->fill($row);
                     $taskLog->task_id = $task->id;
                     $taskLog->save();
-
-                    (new Audit([
-                        'user_id' => Auth::id(),
-                        'event_type' => Audit::EVENT_TYPE_CREATE,
-                        'table_name' => (new TaskLog())->getTable(),
-                        'entity_id' => $taskLog->id,
-                        'meta_inf' => [],
-                    ]))->save();
+                    $this->auditService->createEntity($taskLog, ['task_id' => $task->id]);
 
                 } else {
                     /** @var TaskLog $existingLog */
                     $existingLog = $taskLogsIdMap[$row['id']] ?? null;
                     if ($existingLog !== null) {
                         $existingLog->fill($row);
+                        $dirty = $existingLog->isDirty();
                         $existingLog->save();
+
+                        if ($dirty) {
+                            $this->auditService->editEntity($existingLog, ['task_id' => $task->id]);
+                        }
                     }
-                    (new Audit([
-                        'user_id' => Auth::id(),
-                        'event_type' => Audit::EVENT_TYPE_EDIT,
-                        'table_name' => (new TaskLog())->getTable(),
-                        'entity_id' => $existingLog->id,
-                        'meta_inf' => [],
-                    ]))->save();
                 }
             }
 
@@ -186,24 +184,14 @@ abstract class BaseTaskRequest extends FormRequest
 
             foreach (array_keys($taskLogsIdMap) as $existingId) {
                 if (!in_array($existingId, $ids)) {
-                    $taskLogsIdMap[$existingId]->delete();
-
-                    (new Audit([
-                        'user_id' => Auth::id(),
-                        'event_type' => Audit::EVENT_TYPE_DELETE,
-                        'table_name' => (new TaskLog())->getTable(),
-                        'entity_id' => $existingId,
-                        'meta_inf' => [
-                            "task_name" => $task->name,
-                            "taskLog_name" => $taskLogsIdMap[$existingId]->trouble,
-                            ],
-                    ]))->save();
-
+                    $deletingLog = $taskLogsIdMap[$existingId];
+                    $deletingLog->delete();
+                    $this->auditService->deleteEntity($deletingLog, [
+                        "task_name" => $task->name,
+                        "taskLog_name" => $deletingLog->trouble,
+                    ]);
                 }
-
             }
-
-
         });
     }
 
