@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Direction;
+use App\Orchid\Screens\Audit\AuditListScreen;
 use App\Orchid\Screens\Direction\DirectionEditScreen;
 use App\Orchid\Screens\Direction\DirectionListScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
@@ -50,6 +51,9 @@ Route::screen('email', EmailSenderScreen::class)
             ->parent('platform.index')
             ->push('Email sender');
     });
+
+Route::screen('audit', AuditListScreen::class)
+    ->name('platform.audit.list');
 
 Route::screen('projects', ProjectListScreen::class)
     ->name('platform.project.list');

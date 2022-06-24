@@ -59,6 +59,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('envelope-letter')
                 ->route('platform.product.list'),
 
+
+            Menu::make('Аудит')
+                ->icon('envelope-letter')
+                ->route('platform.audit.list')
+                ->title('Аудит'),
 //            Menu::make('Example screen')
 //                ->icon('monitor')
 //                ->route('platform.example')
