@@ -35,7 +35,7 @@ class ExampleLayoutsScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Components for laying out your project';
+        return 'Component for laying out your project';
     }
 
     /**

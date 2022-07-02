@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Orchid;
 
+use App\Orchid\Screens\Component\Detail\DetailListScreen;
+use App\Orchid\Screens\Component\Subsystem\SubsystemListScreen;
+use App\Orchid\Screens\Component\System\SystemListScreen;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
 use Orchid\Screen\Actions\Menu;
-use Orchid\Support\Color;
 
 class PlatformProvider extends OrchidServiceProvider
 {
@@ -64,6 +66,18 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('envelope-letter')
                 ->route('platform.audit.list')
                 ->title('Аудит'),
+
+            Menu::make('Системы')
+                ->icon('envelope-letter')
+                ->route(SystemListScreen::ROUTE_NAME)
+                ->title('Состав'),
+            Menu::make('Подсистемы')
+                ->icon('envelope-letter')
+                ->route(SubsystemListScreen::ROUTE_NAME),
+            Menu::make('Компоненты')
+                ->icon('envelope-letter')
+                ->route(DetailListScreen::ROUTE_NAME),
+
 //            Menu::make('Example screen')
 //                ->icon('monitor')
 //                ->route('platform.example')

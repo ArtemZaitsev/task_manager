@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 use App\Models\Direction;
 use App\Orchid\Screens\Audit\AuditListScreen;
+use App\Orchid\Screens\Component\Detail\DetailEditScreen;
+use App\Orchid\Screens\Component\Detail\DetailListScreen;
+use App\Orchid\Screens\Component\Subsystem\SubsystemEditScreen;
+use App\Orchid\Screens\Component\Subsystem\SubsystemListScreen;
 use App\Orchid\Screens\Direction\DirectionEditScreen;
 use App\Orchid\Screens\Direction\DirectionListScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
@@ -26,6 +30,9 @@ use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\Subgroup\SubgroupEditScreen;
 use App\Orchid\Screens\Subgroup\SubgroupListScreen;
+use App\Orchid\Screens\Component\System\SystemEditScreen;
+use App\Orchid\Screens\Component\System\SystemListLayout;
+use App\Orchid\Screens\Component\System\SystemListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -51,6 +58,25 @@ Route::screen('email', EmailSenderScreen::class)
             ->parent('platform.index')
             ->push('Email sender');
     });
+
+Route::screen('systems', SystemListScreen::class)
+    ->name(SystemListScreen::ROUTE_NAME);
+
+Route::screen('system/{entity?}', SystemEditScreen::class)
+    ->name(SystemEditScreen::ROUTE_NAME);
+
+Route::screen('subsystems', SubsystemListScreen::class)
+    ->name(SubsystemListScreen::ROUTE_NAME);
+
+Route::screen('subsystem/{entity?}', SubsystemEditScreen::class)
+    ->name(SubsystemEditScreen::ROUTE_NAME);
+
+Route::screen('details', DetailListScreen::class)
+    ->name(DetailListScreen::ROUTE_NAME);
+
+Route::screen('detail/{entity?}', DetailEditScreen::class)
+    ->name(DetailEditScreen::ROUTE_NAME);
+
 
 Route::screen('audit', AuditListScreen::class)
     ->name('platform.audit.list');

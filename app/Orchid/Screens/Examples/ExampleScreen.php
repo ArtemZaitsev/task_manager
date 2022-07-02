@@ -90,7 +90,7 @@ class ExampleScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Sample Screen Components';
+        return 'Sample Screen Component';
     }
 
     /**
