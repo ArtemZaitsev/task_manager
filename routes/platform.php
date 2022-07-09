@@ -6,6 +6,8 @@ use App\Models\Direction;
 use App\Orchid\Screens\Audit\AuditListScreen;
 use App\Orchid\Screens\Component\Detail\DetailEditScreen;
 use App\Orchid\Screens\Component\Detail\DetailListScreen;
+use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectEditScreen;
+use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectListScreen;
 use App\Orchid\Screens\Component\Subsystem\SubsystemEditScreen;
 use App\Orchid\Screens\Component\Subsystem\SubsystemListScreen;
 use App\Orchid\Screens\Direction\DirectionEditScreen;
@@ -58,6 +60,12 @@ Route::screen('email', EmailSenderScreen::class)
             ->parent('platform.index')
             ->push('Email sender');
     });
+
+Route::screen('physical_objects', PhysicalObjectListScreen::class)
+    ->name(PhysicalObjectListScreen::ROUTE_NAME);
+
+Route::screen('physical_object/{entity?}', PhysicalObjectEditScreen::class)
+    ->name(PhysicalObjectEditScreen::ROUTE_NAME);
 
 Route::screen('systems', SystemListScreen::class)
     ->name(SystemListScreen::ROUTE_NAME);

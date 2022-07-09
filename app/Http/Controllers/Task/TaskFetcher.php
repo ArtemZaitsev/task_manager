@@ -78,6 +78,34 @@ class TaskFetcher
                 });
             }
         }
+
+        if ($query->has('physical_object')) {
+            $physical_object = $query->get('physical_object');
+            if (!empty($physical_object)) {
+                $this->applyMultipleValuesFilter($physical_object, $tasksQuery, 'tasks.physical_object_id');
+            }
+        }
+
+        if ($query->has('system')) {
+            $system = $query->get('system');
+            if (!empty($system)) {
+                $this->applyMultipleValuesFilter($system, $tasksQuery, 'tasks.system_id');
+            }
+        }
+        if ($query->has('subsystem')) {
+            $subsystem = $query->get('subsystem');
+            if (!empty($subsystem)) {
+                $this->applyMultipleValuesFilter($subsystem, $tasksQuery, 'tasks.subsystem_id');
+            }
+        }
+        if ($query->has('detail')) {
+            $detail = $query->get('detail');
+            if (!empty($detail)) {
+                $this->applyMultipleValuesFilter($detail, $tasksQuery, 'tasks.detail_id');
+            }
+        }
+
+
         if ($query->has('direction')) {
             $execute = $query->get('direction');
             $this->applyMultipleValuesFilter($execute, $tasksQuery, 'directions.id');

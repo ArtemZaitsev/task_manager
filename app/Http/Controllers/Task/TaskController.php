@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Task;
 
 use App\BuisinessLogick\TaskService;
 use App\BuisinessLogick\TaskVoter;
+use App\Models\Component\Detail;
+use App\Models\Component\PhysicalObject;
+use App\Models\Component\Subsystem;
+use App\Models\Component\System;
 use App\Models\Direction;
 use App\Models\Family;
 use App\Models\Group;
@@ -52,6 +56,10 @@ class TaskController extends BaseController
             'projects' => Project::all(),
             'families' => Family::all(),
             'products' => Product::all(),
+            'physical_objects' => PhysicalObject::all(),
+            'systems' => System::all(),
+            'subsystems' => Subsystem::all(),
+            'details' => Detail::all(),
             'directions' => Direction::all(),
             'groups' => Group::all(),
             'subgroups' => Subgroup::all(),

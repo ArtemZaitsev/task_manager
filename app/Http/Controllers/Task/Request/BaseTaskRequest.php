@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Task\Request;
 use App\BuisinessLogick\AuditService;
 use App\BuisinessLogick\TaskVoter;
 use App\Models\Audit;
+use App\Models\Component\Detail;
+use App\Models\Component\PhysicalObject;
+use App\Models\Component\Subsystem;
+use App\Models\Component\System;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
@@ -28,6 +32,9 @@ abstract class BaseTaskRequest extends FormRequest
         $this->auditService = new AuditService();
 
         $this->rules [TaskVoter::ROLE_PERFORMER] = [
+
+            'progress' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'start_date' => 'nullable|date',
             'end_date_plan' => 'nullable|date',
             'end_date_fact' => 'nullable|date',
             'execute' => ['nullable', Rule::in(array_keys(Task::ALL_EXECUTIONS))],
@@ -73,6 +80,10 @@ abstract class BaseTaskRequest extends FormRequest
                 },
             ],
             'product.*' => Rule::exists(Product::class, 'id'),
+            'system_id' => ['nullable','integer',Rule::exists(System::class, 'id')],
+            'subsystem_id' => ['nullable','integer',Rule::exists(Subsystem::class, 'id')],
+            'detail_id' => ['nullable','integer',Rule::exists(Detail::class, 'id')],
+            'physical_object_id' => ['nullable','integer',Rule::exists(PhysicalObject::class, 'id')],
             'base' => 'nullable|max:255',
             'setting_date' => 'nullable|date',
             'task_creator' => 'nullable|max:255',
@@ -80,6 +91,9 @@ abstract class BaseTaskRequest extends FormRequest
             'type' => ['nullable', Rule::in(array_keys(Task::All_TYPE))],
             'theme' => 'nullable|max:255',
             'main_task' => 'nullable|max:255',
+            'parent_id' => ['nullable', Rule::exists(Task::class, 'id')],
+            'prev_tasks' => ['nullable','array'],
+            'prev_tasks.*' =>  [Rule::exists(Task::class, 'id')],
             'name' => 'required',
             'user_id' => ['required', Rule::exists(User::class, 'id')],
             'coperformers' => 'nullable|array',
@@ -152,6 +166,10 @@ abstract class BaseTaskRequest extends FormRequest
             if (isset($data['product'])) {
                 $changes = $task->products()->sync($data['product']);
                 $this->auditService->editEntityRelation($changes, $task, 'products');
+            }
+            if (isset($data['prev_tasks'])) {
+                $changes = $task->prev()->sync($data['prev_tasks']);
+                $this->auditService->editEntityRelation($changes, $task, 'prev_tasks');
             }
 
 

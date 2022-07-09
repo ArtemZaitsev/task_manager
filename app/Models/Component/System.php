@@ -24,5 +24,7 @@ class System extends Model
     public function head(){
         return $this->belongsTo(User::class);
     }
-
+    public function label(){
+        return $this->name;
+    }
 }

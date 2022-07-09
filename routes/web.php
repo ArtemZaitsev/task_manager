@@ -11,6 +11,8 @@ use App\Http\Controllers\Task\TaskDelController;
 use App\Http\Controllers\Task\TaskEditController;
 use App\Http\Controllers\Task\TaskLogController;
 use App\Http\Controllers\Task\TasksExportController;
+use App\Http\Controllers\TaskTree\TaskTreeProjectController;
+use App\Http\Controllers\TaskTree\TaskTreeProjectSaveController;
 use App\Http\Controllers\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +39,12 @@ Route::post('/setupcolumns', [TaskColumnController::class, 'processForm'])->name
 Route::get('/', [TaskController::class, 'list'])
     ->name(TaskController::ACTION_LIST)
     ->middleware('auth');
+
+Route::get('/tasks/project/{id}/tree', [TaskTreeProjectController::class, 'index']);
+
+Route::post('/tasks/project/{id}/save', [TaskTreeProjectSaveController::class, 'save'])
+    ->name(TaskTreeProjectSaveController::ROUTE_NAME);
+
 
 Route::get('/task/add', [TaskAddController::class, 'index'])->name('task.showFormAdd');
 Route::post('/task/add', [TaskAddController::class, 'processForm'])->name('task.store');

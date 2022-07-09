@@ -247,6 +247,56 @@
                             </div>
                         </th>
                     @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('physical_object'))
+                        <th scope="col" class="text-center" style="max-width: 150px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'physical_object',
+                            'filter_data' => $physical_objects,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Объект
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('system'))
+                        <th scope="col" class="text-center" style="max-width: 150px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'system',
+                            'filter_data' => $systems,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Система
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subsystem'))
+                        <th scope="col" class="text-center" style="max-width: 150px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'subsystem',
+                            'filter_data' => $subsystems,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Подсистема
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('detail'))
+                        <th scope="col" class="text-center" style="max-width: 150px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'detail',
+                            'filter_data' => $details,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Компонент
+                            </div>
+                        </th>
+                    @endif
+
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
@@ -329,6 +379,21 @@
                             </a>
                         </div>
                     </th>
+
+                    <th scope="col" class="text-center ">
+                        @include('filters.date_filter', [
+                            'filter_name' => 'start_date',
+                              'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+
+                        <div scope="col" class="text-center for-headers">
+                            <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'start_date', request())  }}">Дата начала план
+                                <?php \App\Http\Controllers\Task\TaskController::sortColumn('start_date', request()) ?>
+                            </a>
+                        </div>
+                    </th>
+
                     <th scope="col" class="text-center ">
                         @include('filters.date_filter', [
                             'filter_name' => 'end_date_plan',
@@ -358,6 +423,24 @@
                             </div>
                         </th>
                     @endif
+
+
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('progress'))
+                        <th scope="col" class="text-center" style="min-width: 200px;">
+                            @include('filters.string_filter', [
+                              'filter_name' => 'progress',
+                              'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                <a style="text-decoration:none" href="{{ App\Utils\UrlUtils::sortUrl(\App\Http\Controllers\Task\TaskController::ACTION_LIST,
+                    'progress', request())  }}">% выполнения
+                                    <?php \App\Http\Controllers\Task\TaskController::sortColumn('progress', request()) ?>
+                                </a>
+                            </div>
+                        </th>
+                    @endif
+
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('execute'))
                         <th scope="col" class="text-center">
                             @include('filters.enum_filter', [
@@ -588,6 +671,34 @@
                         </td>
                     @endif
 
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('physical_object'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->physicalObject?->name }}
+
+                        </td>
+                    @endif
+
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('system'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->system?->name }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subsystem'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->subsystem?->name }}
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('detail'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->detail?->name }}
+                        </td>
+                    @endif
+
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->theme }}
@@ -616,9 +727,14 @@
                             @endforeach
                         </td>
                     @endif
+
                     <td class="text-center align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date) }}
+                    </td>
+                    <td class="text-center align-middle"
+                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                        {{ \App\Utils\DateUtils::dateToDisplayFormat($task->start_date) }}
                     </td>
                     <td class="text-center align-middle"
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
@@ -629,6 +745,12 @@
                         @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                         {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_fact) }}
                     </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('progress'))
+                        <td class="text-center align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->progress }}
+                        </td>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('execute'))
                         <td class="text-left align-middle"

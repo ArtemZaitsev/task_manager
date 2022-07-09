@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TaskColumnController extends BaseController
 {
-    const COLUMNS =[
+    const COLUMNS = [
         'created_at' => 'Дата создания',
         'updated_at' => 'Дата редактирования',
         'priority' => 'Приоритет',
@@ -21,30 +21,37 @@ class TaskColumnController extends BaseController
         'project' => 'Проект',
         'family' => 'Семейство',
         'product' => 'Продукт',
+        'physical_object' => 'Объект',
+        'system' => 'Система',
+        'subsystem' => 'Подсистема',
+        'detail' => 'Компонент',
         'theme' => 'Тема',
         'main_task' => 'Основная задача',
         'coperformers' => 'Соисполнители',
         'end_date_fact' => 'Дата окончания факт',
+        'progress' => '% выполнения',
         'execute' => 'Приступить',
         'status' => 'Статус выполнения',
         'execute_time_plan' => 'Кол-во ч/ч, план',
         'execute_time_fact' => 'Кол-во ч/ч, факт',
         'comment' => 'Комментарии',
 
-        ];
+    ];
 
-    public function index(){
-        return view('task.setup_columns',['columns' => self::COLUMNS]);
+    public function index()
+    {
+        return view('task.setup_columns', ['columns' => self::COLUMNS]);
     }
 
-    public function processForm(Request $request){
+    public function processForm(Request $request)
+    {
 
         $columns = [];
 
-        foreach ( self::COLUMNS as $name => $label){
-            if ($request->request->has($name)){
+        foreach (self::COLUMNS as $name => $label) {
+            if ($request->request->has($name)) {
                 $columns[$name] = true;
-            } else{
+            } else {
                 $columns[$name] = false;
             }
         }

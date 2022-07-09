@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Component\Detail;
+use App\Models\Component\PhysicalObject;
+use App\Models\Component\Subsystem;
+use App\Models\Component\System;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +27,7 @@ class Task extends Model
         self::STATUS_IN_PROGRESS => 'В процессе',
         self::STATUS_INFO => 'Информационная',
         self::STATUS_REFUSE => 'Снята',
-        self::STATUS_DELEGATE=> 'Делегирована',
+        self::STATUS_DELEGATE => 'Делегирована',
     ];
 
 
@@ -70,11 +74,18 @@ class Task extends Model
         'type',
         'theme',
         'main_task',
+        'parent_id',
         'name',
         'user_id',
+        'system_id',
+        'subsystem_id',
+        'detail_id',
+        'physical_object_id',
+        'start_date',
         'end_date',
         'end_date_plan',
         'end_date_fact',
+        'progress',
         'execute',
         'status',
         'comment',
@@ -90,26 +101,61 @@ class Task extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function parent()
-    {
-//        return $this->hasOne(Task::class);
-        return $this->belongsTo(Task::class);
-    }
+
     public function logs()
     {
         return $this->hasMany(TaskLog::class);
     }
+
     public function coperformers()
     {
-        return $this->belongsToMany(User::class,'task_coperformer');
+        return $this->belongsToMany(User::class, 'task_coperformer');
     }
-    public function products(){
+
+    public function products()
+    {
         return $this->belongsToMany(Product::class, 'task_product');
     }
-    public function families(){
+
+    public function families()
+    {
         return $this->belongsToMany(Family::class, 'task_family');
     }
-    public function projects(){
+
+    public function projects()
+    {
         return $this->belongsToMany(Project::class, 'task_project');
     }
+
+    public function system()
+    {
+        return $this->belongsTo(System::class);
+    }
+
+    public function subsystem()
+    {
+        return $this->belongsTo(Subsystem::class);
+    }
+
+    public function detail()
+    {
+        return $this->belongsTo(Detail::class);
+    }
+
+    public function physicalObject()
+    {
+        return $this->belongsTo(PhysicalObject::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Task::class);
+    }
+
+    public function prev()
+    {
+        return $this->belongsToMany(Task::class, 'tasks_prev','task_id', 'task_prev_id');
+    }
+
+
 }

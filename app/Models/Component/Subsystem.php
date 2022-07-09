@@ -29,4 +29,7 @@ class Subsystem extends Model
     public function system(){
         return $this->belongsTo(System::class);
     }
+    public function label(){
+        return $this->name;
+    }
 }

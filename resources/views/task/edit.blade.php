@@ -10,7 +10,6 @@
 
     @endphp
 
-
     <div class="container">
         <h3>{{ $title }}</h3>
 
@@ -118,6 +117,95 @@
                 </div>
             @endif
 
+            @if($fieldsToEdit === null || in_array('physical_objects', $fieldsToEdit))
+                <div class="form-group mt-2">
+                    <label for="physical_object_id">Объект</label>
+                    <select name="physical_object_id"
+                            class="select2 form-control {{ $errors->has('physical_object_id') ? 'is-invalid' : '' }}"
+                            id="physical_object_id">
+                        <option value=""></option>
+                        @foreach($physical_objects as $entity )
+                            <option value="{{ $entity->id }}"
+                                    @if($entity->id === old('physical_object_id',$task->physical_object_id)) selected @endif>
+                                {{ $entity->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('physical_object_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('physical_object_id') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if($fieldsToEdit === null || in_array('system_id', $fieldsToEdit))
+                <div class="form-group mt-2">
+                    <label for="system_id">Система</label>
+                    <select name="system_id"
+                            class="select2 form-control {{ $errors->has('system_id') ? 'is-invalid' : '' }}"
+                            id="system_id">
+                        <option value=""></option>
+                        @foreach($systems as $entity )
+                            <option value="{{ $entity->id }}"
+                                    @if($entity->id === old('system_id',$task->system_id)) selected @endif>
+                                {{ $entity->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('system_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('system_id') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if($fieldsToEdit === null || in_array('subsystem_id', $fieldsToEdit))
+                <div class="form-group mt-2">
+                    <label for="subsystem_id">Подсистема</label>
+                    <select name="subsystem_id"
+                            class="select2 form-control {{ $errors->has('subsystem_id') ? 'is-invalid' : '' }}"
+                            id="subsystem_id">
+                        <option value=""></option>
+                        @foreach($subsystems as $entity )
+                            <option value="{{ $entity->id }}"
+                                    @if($entity->id === old('subsystem_id',$task->subsystem_id)) selected @endif>
+                                {{ $entity->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('subsystem_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('subsystem_id') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if($fieldsToEdit === null || in_array('detail_id', $fieldsToEdit))
+                <div class="form-group mt-2">
+                    <label for="detail_id">Деталь</label>
+                    <select name="detail_id"
+                            class="select2 form-control {{ $errors->has('detail_id') ? 'is-invalid' : '' }}"
+                            id="detail_id">
+
+                        @foreach($details as $entity )
+                            <option value="{{ $entity->id }}"
+                                    @if($entity->id === old('detail_id',$task->detail_id)) selected @endif>
+                                {{ $entity->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('detail_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('detail_id') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+
             @if($fieldsToEdit === null || in_array('base', $fieldsToEdit))
 
                 <div class="form-group mt-2">
@@ -179,7 +267,8 @@
                     @endif
                 </div>
             @endif
-            @if($fieldsToEdit === null || in_array('type', $fieldsToEdit))
+
+        @if($fieldsToEdit === null || in_array('type', $fieldsToEdit))
                 <div class="form-group w-25 mt-2">
                     <label for="type">Тип</label>
                     <select name="type" id="type" class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}">
@@ -196,6 +285,8 @@
                     @endif
                 </div>
             @endif
+
+
 
             @if($fieldsToEdit === null || in_array('theme', $fieldsToEdit))
                 <div class="form-group mt-2">
@@ -222,11 +313,57 @@
                     @endif
                 </div>
             @endif
+
+            @if($fieldsToEdit === null || in_array('parent_id', $fieldsToEdit))
+                <div class="form-group w-50 mt-2">
+                    <label for="parent_id">Родительская задача</label>
+                    <select name="parent_id" class="select2 form-control {{ $errors->has('parent_id') ? 'is-invalid'
+                    : '' }}" id="parent_id">
+                        @foreach($tasks as $item)
+                            <option value="{{ $item->id }}"
+                                    @if( $item->id == old('parent_id',$task->parent_id) ) selected @endif>
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('parent_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('parent_id') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+
+            @if($fieldsToEdit === null || in_array('prev_tasks', $fieldsToEdit))
+                <div class="form-group w-50 mt-2">
+                    <label for="prev_tasks">Предыдущие задачи</label>
+                    <select name="prev_tasks[]" class="select2 form-control {{ $errors->has('prev_tasks') ? 'is-invalid'
+                    : ''
+                     }}" id="prev_tasks" multiple>
+                        @foreach($tasks as $item )
+                            <option value="{{ $item->id }}"
+                                    @if(in_array($item->id,
+                                   old('prev_tasks',$task->prev()->allRelatedIds()->toArray()))) selected @endif>
+
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('prev_tasks'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('prev_tasks') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+
             @if($fieldsToEdit === null || in_array('name', $fieldsToEdit))
                 <div class="form-group mt-2">
                     <label for="name">Задача</label>
                     <textarea name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
-                              id="name" rows="3">{{ old('name', $task->name) }} </textarea>
+                              id="name" rows="3">{{ old('name', $task->name) }}</textarea>
                     @if ($errors->has('name'))
                         <div class="invalid-feedback">
                             {{ $errors->first('name') }}
@@ -277,14 +414,14 @@
             @endif
 
 
+
             @if($fieldsToEdit === null || in_array('end_date', $fieldsToEdit))
                 <div class="form-group w-25 mt-2">
                     <label for="end_date">Дата установленная руководителем</label>
                     <input name="end_date" class="form-control {{ $errors->has('end_date') ? 'is-invalid' : ''
                      }}"
                            id="end_date" type="date"
-                           value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}"
-                           required>
+                           value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date', $task->end_date)) }}">
                     @if ($errors->has('end_date'))
                         <div class="invalid-feedback">
                             {{ $errors->first('end_date') }}
@@ -292,10 +429,27 @@
                     @endif
                 </div>
             @endif
+
+            @if($fieldsToEdit === null || in_array('start_date', $fieldsToEdit))
+                <div class="form-group w-25 mt-2">
+                    <label for="start_date">Дата начала план</label>
+                    <input name="start_date" class="form-control {{ $errors->has('start_date') ? 'is-invalid' : ''
+                     }}"
+                           id="start_date" type="date"
+                           value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('start_date', $task->start_date)) }}">
+                    @if ($errors->has('start_date'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('start_date') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
             @if($fieldsToEdit === null || in_array('end_date_plan', $fieldsToEdit))
                 <div class="form-group w-25 mt-2">
                     <label for="end_date_plan">Дата окончания план</label>
-                    <input name="end_date_plan" class="form-control {{ $errors->has('end_date_plan') ? 'is-invalid' : '' }}"
+                    <input name="end_date_plan"
+                           class="form-control {{ $errors->has('end_date_plan') ? 'is-invalid' : '' }}"
                            id="end_date_plan" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date_plan', $task->end_date_plan))
                             }}">
@@ -309,7 +463,8 @@
             @if($fieldsToEdit === null || in_array('end_date_fact', $fieldsToEdit))
                 <div class="form-group w-25 mt-2">
                     <label for="end_date_fact">Дата окончания факт</label>
-                    <input name="end_date_fact" class="form-control {{ $errors->has('end_date_fact') ? 'is-invalid' : '' }}"
+                    <input name="end_date_fact"
+                           class="form-control {{ $errors->has('end_date_fact') ? 'is-invalid' : '' }}"
                            id="end_date_fact" type="date"
                            value="{{ \App\Utils\DateUtils::dateToHtmlInput(old('end_date_fact', $task->end_date_fact))
                             }}">
@@ -320,6 +475,21 @@
                     @endif
                 </div>
             @endif
+
+            @if($fieldsToEdit === null || in_array('progress', $fieldsToEdit))
+                <div class="form-group w-25 mt-2">
+                    <label for="progress">% выполнения</label>
+                    <input name="progress" class="form-control {{ $errors->has('progress') ? 'is-invalid' : '' }}"
+                           id="progress" type="number" value="{{ old('progress', $task->progress)  }}" min="0"
+                           max="100" step="1">
+                    @if ($errors->has('progress'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('progress') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
             @if($fieldsToEdit === null || in_array('execute', $fieldsToEdit))
                 <div class="form-group w-25 mt-2">
                     <label for="execute">Приступить</label>
