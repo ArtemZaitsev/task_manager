@@ -75,13 +75,11 @@
 
 </style>
 
-<form id="gimmeBack" style="display:none;" action="../gimmeBack.jsp" method="post" target="_blank"><input type="hidden"
-                                                                                                          name="prj"
-                                                                                                          id="gimBaPrj">
-</form>
 
 <script type="text/javascript">
     var project = JSON.parse('{!! $tasks !!}');
+
+
     var ge;
     $(function () {
         var canWrite = true; //this is the default for test purposes
@@ -186,15 +184,6 @@
                 window.URL.revokeObjectURL(url);
             }, 0);
         }
-    }
-
-    function newProject() {
-        clearGantt();
-    }
-
-
-    function clearGantt() {
-        ge.reset();
     }
 
     //-------------------------------------------  Get project file as JSON (used for migrate project from gantt to Teamwork) ------------------------------------------------------
@@ -515,13 +504,13 @@
 
                 <th class="gdfColHeader" align="center" style="width:17px;" title="Start date is a milestone."><span
                         class="teamworkIcon" style="font-size: 8px;">^</span></th>
-                <th class="gdfColHeader gdfResizable" style="width:80px;">start</th>
+                <th class="gdfColHeader gdfResizable" style="width:80px;">Дата начала</th>
                 <th class="gdfColHeader" align="center" style="width:17px;" title="End date is a milestone."><span
                         class="teamworkIcon" style="font-size: 8px;">^</span></th>
-                <th class="gdfColHeader gdfResizable" style="width:80px;">End</th>
-                <th class="gdfColHeader gdfResizable" style="width:50px;">dur.</th>
-                <th class="gdfColHeader gdfResizable" style="width:20px;">%</th>
-                <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">depe.</th>
+                <th class="gdfColHeader gdfResizable" style="width:80px;">Дата окончания</th>
+                <th class="gdfColHeader gdfResizable" style="width:50px;">Продолжительность</th>
+                <th class="gdfColHeader gdfResizable" style="width:20px;">% выполнения</th>
+                <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">Зависит</th>
 
             </tr>
             </thead>
@@ -532,8 +521,13 @@
     <div class="__template__" type="TASKROW">
         <!--
   <tr id="tid_(#=obj.id#)" taskId="(#=obj.id#)" class="taskEditRow (#=obj.isParent()?'isParent':''#) (#=obj.collapsed?'collapsed':''#)" level="(#=level#)">
-    <th class="gdfCell edit" align="right" style="cursor:pointer;">
+    <th class="gdfCell" align="right" style="cursor:pointer;">
     <span class="taskRowIndex">(#=obj.getRow()+1#)</span>
+    <a href="/task/(#=obj.id#)/edit" target="_blank">
+        <svg width="12" height="12" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
+        </svg>
+    </span>
      </th>
     <td class="gdfCell noClip" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
     <td class="gdfCell"><input type="text" name="code" value="(#=obj.id?obj.id:''#)" placeholder="(#=obj.userName?obj

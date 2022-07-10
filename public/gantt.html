@@ -37,7 +37,7 @@
   <script src="ganttDrawerSVG.js"></script>
   <script src="ganttZoom.js"></script>
   <script src="ganttGridEditor.js"></script>
-  <script src="ganttMaster.js"></script>  
+  <script src="ganttMaster.js"></script>
 
 
   <!--<script src="libs/profiling.js"></script>-->
@@ -178,12 +178,12 @@ function loadGanttFromServer(taskId, callback) {
 
 function upload(uploadedFile) {
   var fileread = new FileReader();
-  
+
   fileread.onload = function(e) {
     var content = e.target.result;
     var intern = JSON.parse(content); // Array of Objects.
     //console.log(intern); // You can index every object
-    
+
     ge.loadProject(intern);
     ge.checkpoint(); //empty the undo stack
 
@@ -260,8 +260,8 @@ function download(data, filename, type) {
     a.click();
     setTimeout(function() {
       document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);  
-    }, 0); 
+      window.URL.revokeObjectURL(url);
+    }, 0);
   }
 }
 
@@ -575,7 +575,10 @@ function showBaselineInfo (event,element){
 
 <div class="__template__" type="TASKROW"><!--
   <tr id="tid_(#=obj.id#)" taskId="(#=obj.id#)" class="taskEditRow (#=obj.isParent()?'isParent':''#) (#=obj.collapsed?'collapsed':''#)" level="(#=level#)">
-    <th class="gdfCell edit" align="right" style="cursor:pointer;"><span class="taskRowIndex">(#=obj.getRow()+1#)</span> <span class="teamworkIcon" style="font-size:12px;" >e</span></th>
+    <th class="gdfCell edit" align="right" style="cursor:pointer;">
+    <span class="taskRowIndex">(#=obj.getRow()+1#)</span>
+    <span class="teamworkIcon" style="font-size:12px;" >e</span>
+    </th>
     <td class="gdfCell noClip" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
     <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)" placeholder="code/short name"></td>
     <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10+18#)px;">

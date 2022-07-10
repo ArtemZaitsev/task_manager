@@ -136,7 +136,7 @@ class TaskTreeProjectController extends Controller
     {
         /** @var Task $task */
         $task = $item->getData();
-        return [
+        $taskData = [
             "id" => $task->id,
             "name" => $task->name,
             "progress" => 0,
@@ -168,6 +168,7 @@ class TaskTreeProjectController extends Controller
             "userName" => $task->user->label,
             'comment' => $task->comment
         ];
+        return $taskData;
     }
 
     private function duration(Task $task): int
@@ -175,12 +176,15 @@ class TaskTreeProjectController extends Controller
         $startDate = $task->start_date ?? $task->created_at;
         $endDate = $task->end_date_plan ?? ($task->start_date !== null ? $task->start_date : $task->created_at);
 
-        return (new \DateTime($startDate))->diff(new \DateTime($endDate))->days;
+        $diff = (new \DateTime($startDate))->diff(new \DateTime($endDate))->days;
+        return $diff+1;
     }
 
     private function dateToTimestamp(string $data): int
     {
-        return (new \DateTime($data))->getTimestamp() * 1000;
+        return (new \DateTime($data))
+                ->setTimezone(new \DateTimeZone('Europe/Moscow'))
+                ->getTimestamp() * 1000;
     }
 
 

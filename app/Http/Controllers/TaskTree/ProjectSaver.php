@@ -66,6 +66,7 @@ class ProjectSaver
             ->format('Y-m-d') :
             (new \DateTime())
                 ->setTimestamp((int)($date / 1000))
+                ->setTimezone( new \DateTimeZone('Europe/Moscow'))
                 ->format('Y-m-d');
         return $date;
     }

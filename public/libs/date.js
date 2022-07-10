@@ -27,15 +27,15 @@ Date.dayAbbreviations = new Array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
 Date.preferAmericanFormat = true;
 
 // Set to 0=SUn for American 1=Mon for european
-Date.firstDayOfWeek = 0;
+Date.firstDayOfWeek = 1;
 
-//default 
+//default
 Date.defaultFormat="dd/MM/yyyy";
 
 // If the getFullYear() method is not defined, create it
-if (!Date.prototype.getFullYear) { 
+if (!Date.prototype.getFullYear) {
 	Date.prototype.getFullYear = function() { var yy=this.getYear(); return (yy<1900?yy+1900:yy); } ;
-} 
+}
 
 // Parse a string and convert it to a Date object.
 // If no format is passed, try a list of common formats.
@@ -52,8 +52,8 @@ Date.parseString = function(val, format,lenient) {
 			var l=checkList[i];
 			for (var j=0; j<l.length; j++) {
 				var d=Date.parseString(val,l[j]);
-				if (d!=null) { 
-					return d; 
+				if (d!=null) {
+					return d;
 				}
 			}
 		}
@@ -62,8 +62,8 @@ Date.parseString = function(val, format,lenient) {
 
 	this.isInteger = function(val) {
 		for (var i=0; i < val.length; i++) {
-			if ("1234567890".indexOf(val.charAt(i))==-1) { 
-				return false; 
+			if ("1234567890".indexOf(val.charAt(i))==-1) {
+				return false;
 			}
 		}
 		return true;
@@ -71,11 +71,11 @@ Date.parseString = function(val, format,lenient) {
 	this.getInt = function(str,i,minlength,maxlength) {
 		for (var x=maxlength; x>=minlength; x--) {
 			var token=str.substring(i,i+x);
-			if (token.length < minlength) { 
-				return null; 
+			if (token.length < minlength) {
+				return null;
 			}
-			if (this.isInteger(token)) { 
-				return token; 
+			if (this.isInteger(token)) {
+				return token;
 			}
 		}
 	return null;
@@ -352,16 +352,16 @@ Date.isValid = function(val,format,lenient) {
 
 // Check if a date object is before another date object
 Date.prototype.isBefore = function(date2) {
-	if (date2==null) { 
-		return false; 
+	if (date2==null) {
+		return false;
 	}
 	return (this.getTime()<date2.getTime());
 };
 
 // Check if a date object is after another date object
 Date.prototype.isAfter = function(date2) {
-	if (date2==null) { 
-		return false; 
+	if (date2==null) {
+		return false;
 	}
 	return (this.getTime()>date2.getTime());
 };
@@ -390,16 +390,16 @@ Date.prototype.isOutOfRange = function (minDate, maxDate) {
 
 // Check if two date objects have equal dates and times
 Date.prototype.equals = function(date2) {
-	if (date2==null) { 
-		return false; 
+	if (date2==null) {
+		return false;
 	}
 	return (this.getTime()==date2.getTime());
 };
 
 // Check if two date objects have equal dates, disregarding times
 Date.prototype.equalsIgnoreTime = function(date2) {
-	if (date2==null) { 
-		return false; 
+	if (date2==null) {
+		return false;
 	}
 	var d1 = new Date(this.getTime()).clearTime();
 	var d2 = new Date(date2.getTime()).clearTime();
@@ -469,11 +469,11 @@ Date.prototype.format = function(format) {
 	value["k"]=value["H"]+1;
 	value["KK"]=Date.LZ(value["K"]);
 	value["kk"]=Date.LZ(value["k"]);
-	if (H > 11) { 
-		value["a"]="PM"; 
+	if (H > 11) {
+		value["a"]="PM";
 	}
-	else { 
-		value["a"]="AM"; 
+	else {
+		value["a"]="AM";
 	}
 	value["m"]=m;
 	value["mm"]=Date.LZ(m);
@@ -485,23 +485,23 @@ Date.prototype.format = function(format) {
 		while ((format.charAt(i_format)==c) && (i_format < format.length)) {
 			token += format.charAt(i_format++);
 		}
-		if (typeof(value[token])!="undefined") { 
-			result=result + value[token]; 
+		if (typeof(value[token])!="undefined") {
+			result=result + value[token];
 		}
-		else { 
-			result=result + token; 
+		else {
+			result=result + token;
 		}
 	}
 	return result;
 };
 
 // Get the full name of the day for a date
-Date.prototype.getDayName = function() { 
+Date.prototype.getDayName = function() {
 	return Date.dayNames[this.getDay()];
 };
 
 // Get the abbreviation of the day for a date
-Date.prototype.getDayAbbreviation = function() { 
+Date.prototype.getDayAbbreviation = function() {
 	return Date.dayAbbreviations[this.getDay()];
 };
 
@@ -511,23 +511,23 @@ Date.prototype.getMonthName = function() {
 };
 
 // Get the abbreviation of the month for a date
-Date.prototype.getMonthAbbreviation = function() { 
+Date.prototype.getMonthAbbreviation = function() {
 	return Date.monthAbbreviations[this.getMonth()];
 };
 
 // Clear all time information in a date object
 Date.prototype.clearTime = function() {
-  this.setHours(0); 
+  this.setHours(0);
   this.setMinutes(0);
-  this.setSeconds(0); 
+  this.setSeconds(0);
   this.setMilliseconds(0);
   return this;
 };
 
 // Add an amount of time to a date. Negative numbers can be passed to subtract time.
 Date.prototype.add = function(interval, number) {
-	if (typeof(interval)=="undefined" || interval==null || typeof(number)=="undefined" || number==null) { 
-		return this; 
+	if (typeof(interval)=="undefined" || interval==null || typeof(number)=="undefined" || number==null) {
+		return this;
 	}
 	number = +number;
 	if (interval=='y') { // year
@@ -546,7 +546,7 @@ Date.prototype.add = function(interval, number) {
 		this.setSeconds(this.getSeconds() + number);
 	}
 	return this;
-  
+
 };
 
 Date.prototype.toInt = function () {
@@ -566,7 +566,7 @@ Date.prototype.isHoliday=function(){
 };
 
 Date.prototype.isToday=function(){
-  return this.toInt()==new Date().toInt();  
+  return this.toInt()==new Date().toInt();
 };
 
 
