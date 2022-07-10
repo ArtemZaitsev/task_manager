@@ -5,6 +5,7 @@ namespace App\Http\Controllers\TaskTree;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProjectSaver
 {
@@ -15,9 +16,11 @@ class ProjectSaver
         $this->saveNewTasks($projectJson, $project);
 
         $tasks = $this->fetchTasks($projectJson);
+        $taskHasDeps = $this->fetchTaskHasDeps($tasks);
+
         $this->saveChanges($projectJson['tasks'], $tasks);
         $this->saveHierarchy($projectJson['tasks'], $tasks);
-        $this->saveDependences($projectJson['tasks'], $tasks);
+        $this->saveDependences($projectJson['tasks'], $tasks, $taskHasDeps);
     }
 
     private function saveNewTasks(array &$projectJson, Project $project): void
@@ -130,18 +133,24 @@ class ProjectSaver
         }
     }
 
-    private function saveDependences(array $sourceTasks, array $tasks): void
+    private function saveDependences(array $sourceTasks, array $tasks, array $taskHasDeps): void
     {
         foreach ($sourceTasks as $sourceTask) {
+            /** @var Task $task */
+            $task = $tasks[$sourceTask['id']];
+
             if (!empty($sourceTask['depends'])) {
                 $dependIdxs = explode(',', $sourceTask['depends']);
                 $dependIdxs = array_map(fn($data) => (int)$data, $dependIdxs);
                 $dependIds = array_map(fn(int $idx) => $sourceTasks[$idx - 1]['id'], $dependIdxs);
 
-                /** @var Task $task */
-                $task = $tasks[$sourceTask['id']];
                 $task->prev()->sync($dependIds);
+            } else {
+                if(isset($taskHasDeps[$task->id])) {
+                    $task->prev()->sync([]);
+                }
             }
+
         }
     }
 
@@ -159,5 +168,20 @@ class ProjectSaver
         foreach ($tasks as $task) {
             $task->delete();
         }
+    }
+
+    private function fetchTaskHasDeps(array $tasks): array
+    {
+        $rows = DB::table('tasks_prev')
+            ->whereIn('task_id', array_keys($tasks))
+            ->get()
+            ->all();
+
+        $hasDeps = [];
+        foreach ($rows as $row) {
+            $hasDeps[$row->task_id] = true;
+        }
+
+        return $hasDeps;
     }
 }

@@ -498,8 +498,8 @@
             <tr style="height:40px">
                 <th class="gdfColHeader" style="width:35px; border-right: none"></th>
                 <th class="gdfColHeader" style="width:25px;"></th>
-                <th class="gdfColHeader gdfResizable" style="width:100px;">Ответственный</th>
-                <th class="gdfColHeader gdfResizable" style="width:300px;">Название</th>
+                <th class="gdfColHeader gdfResizable" style="width:100px;">Отв.</th>
+                <th class="gdfColHeader gdfResizable" style="width:300px;">Задача</th>
                  <th class="gdfColHeader gdfResizable" style="width:300px;">Примечание</th>
 
                 <th class="gdfColHeader" align="center" style="width:17px;" title="Start date is a milestone."><span
@@ -508,7 +508,7 @@
                 <th class="gdfColHeader" align="center" style="width:17px;" title="End date is a milestone."><span
                         class="teamworkIcon" style="font-size: 8px;">^</span></th>
                 <th class="gdfColHeader gdfResizable" style="width:80px;">Дата окончания</th>
-                <th class="gdfColHeader gdfResizable" style="width:50px;">Продолжительность</th>
+                <th class="gdfColHeader gdfResizable" style="width:50px;">Дни</th>
                 <th class="gdfColHeader gdfResizable" style="width:20px;">% выполнения</th>
                 <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">Зависит</th>
 

@@ -147,7 +147,7 @@ class TaskTreeProjectController extends Controller
             "description" => "",
             "code" => "",
             "level" => $item->level(),
-            "status" => "STATUS_ACTIVE",
+            "status" => $this->taskStatus($task),
             "depends" => "",
             "start" => $task->start_date === null
                 ? $this->dateToTimestamp($task->created_at)
@@ -177,7 +177,7 @@ class TaskTreeProjectController extends Controller
         $endDate = $task->end_date_plan ?? ($task->start_date !== null ? $task->start_date : $task->created_at);
 
         $diff = (new \DateTime($startDate))->diff(new \DateTime($endDate))->days;
-        return $diff+1;
+        return $diff + 1;
     }
 
     private function dateToTimestamp(string $data): int
@@ -209,5 +209,19 @@ class TaskTreeProjectController extends Controller
         }
 
         return $prevMap;
+    }
+
+    private function taskStatus(Task $task): string
+    {
+        return match($task->status) {
+            Task::STATUS_NOT_DONE => 'STATUS_UNDEFINED',
+            Task::STATUS_DONE => 'STATUS_DONE',
+            Task::STATUS_IN_PROGRESS => 'STATUS_ACTIVE',
+            Task::STATUS_INFO => 'STATUS_ACTIVE',
+            Task::STATUS_REFUSE => 'STATUS_SUSPENDED',
+            Task::STATUS_BLOCKED => 'STATUS_SUSPENDED',
+            Task::STATUS_DELEGATE => 'STATUS_SUSPENDED',
+            default => 'STATUS_UNDEFINED',
+        };
     }
 }
