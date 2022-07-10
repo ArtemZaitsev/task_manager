@@ -214,9 +214,9 @@ class TaskTreeProjectController extends Controller
     private function taskStatus(Task $task): string
     {
         return match($task->status) {
-            Task::STATUS_NOT_DONE => 'STATUS_UNDEFINED',
-            Task::STATUS_DONE => 'STATUS_DONE',
-            Task::STATUS_IN_PROGRESS => 'STATUS_ACTIVE',
+            Task::STATUS_NOT_DONE => 'STATUS_ACTIVE',
+            Task::STATUS_DONE => 'STATUS_UNDEFINED',
+            Task::STATUS_IN_PROGRESS => 'STATUS_DONE',
             Task::STATUS_INFO => 'STATUS_ACTIVE',
             Task::STATUS_REFUSE => 'STATUS_SUSPENDED',
             Task::STATUS_BLOCKED => 'STATUS_SUSPENDED',
