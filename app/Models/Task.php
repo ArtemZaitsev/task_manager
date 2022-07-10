@@ -67,6 +67,7 @@ class Task extends Model
     ];
 
     protected $fillable = [
+        'number',
         'base',
         'setting_date',
         'task_creator',
@@ -91,10 +92,6 @@ class Task extends Model
         'comment',
         'execute_time_plan',
         'execute_time_fact'
-    ];
-
-    protected $casts = [
-        'number' => 'json',
     ];
 
     public function user()

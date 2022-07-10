@@ -13,8 +13,8 @@
     <link rel=stylesheet href="/ganttPrint.css" type="text/css" media="print">
     <link rel=stylesheet href="/libs/jquery/valueSlider/mb.slider.css" type="text/css" media="print">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/js/jquery_3.1.1.min.js"></script>
+    <script src="/js/jquery-ui.1.12.1.min.js"></script>
 
     <script src="/libs/jquery/jquery.livequery.1.1.1.min.js"></script>
     <script src="/libs/jquery/jquery.timers.js"></script>
@@ -47,13 +47,6 @@
 <body style="background-color: #fff;">
 
 
-<div id="ndo"
-     style="position:absolute;right:5px;top:5px;width:378px;padding:5px;background-color: #FFF5E6; border:1px solid #F9A22F; font-size:12px"
-     class="noprint">
-    This Gantt editor is free thanks to <a href="http://twproject.com" target="_blank">Twproject</a> where it can be
-    used on a complete and flexible project management solution.<br> Get your projects done! Give <a
-        href="http://twproject.com" target="_blank">Twproject a try now</a>.
-</div>
 <div id="workSpace"
      style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>
 
@@ -427,8 +420,8 @@
 
         <div class="ganttButtonBar noprint">
             <div class="buttons">
-                <a href="https://gantt.twproject.com/"><img src="res/twGanttLogo.png" alt="Twproject" align="absmiddle"
-                                                            style="max-width: 136px; padding-right: 15px"></a>
+                {{--                <a href="https://gantt.twproject.com/"><img src="res/twGanttLogo.png" alt="Twproject" align="absmiddle"--}}
+                {{--                                                            style="max-width: 136px; padding-right: 15px"></a>--}}
 
                 <button onclick="$('#workSpace').trigger('undo.gantt');return false;"
                         class="button textual icon requireCanWrite" title="undo"><span class="teamworkIcon">&#39;</span>
@@ -509,36 +502,48 @@
 
     </div>
 
-    <div class="__template__" type="TASKSEDITHEAD"><!--
-  <table class="gdfTable" cellspacing="0" cellpadding="0">
-    <thead>
-    <tr style="height:40px">
-      <th class="gdfColHeader" style="width:35px; border-right: none"></th>
-      <th class="gdfColHeader" style="width:25px;"></th>
-      <th class="gdfColHeader gdfResizable" style="width:100px;">code/short name</th>
-      <th class="gdfColHeader gdfResizable" style="width:300px;">name</th>
-      <th class="gdfColHeader"  align="center" style="width:17px;" title="Start date is a milestone."><span class="teamworkIcon" style="font-size: 8px;">^</span></th>
-      <th class="gdfColHeader gdfResizable" style="width:80px;">start</th>
-      <th class="gdfColHeader"  align="center" style="width:17px;" title="End date is a milestone."><span class="teamworkIcon" style="font-size: 8px;">^</span></th>
-      <th class="gdfColHeader gdfResizable" style="width:80px;">End</th>
-      <th class="gdfColHeader gdfResizable" style="width:50px;">dur.</th>
-      <th class="gdfColHeader gdfResizable" style="width:20px;">%</th>
-      <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">depe.</th>
-      <th class="gdfColHeader gdfResizable" style="width:1000px; text-align: left; padding-left: 10px;">assignees</th>
-    </tr>
-    </thead>
-  </table>
-  --></div>
+    <div class="__template__" type="TASKSEDITHEAD">
+        <!--
+        <table class="gdfTable" cellspacing="0" cellpadding="0">
+            <thead>
+            <tr style="height:40px">
+                <th class="gdfColHeader" style="width:35px; border-right: none"></th>
+                <th class="gdfColHeader" style="width:25px;"></th>
+                <th class="gdfColHeader gdfResizable" style="width:100px;">Ответственный</th>
+                <th class="gdfColHeader gdfResizable" style="width:300px;">Название</th>
+                 <th class="gdfColHeader gdfResizable" style="width:300px;">Примечание</th>
 
-    <div class="__template__" type="TASKROW"><!--
+                <th class="gdfColHeader" align="center" style="width:17px;" title="Start date is a milestone."><span
+                        class="teamworkIcon" style="font-size: 8px;">^</span></th>
+                <th class="gdfColHeader gdfResizable" style="width:80px;">start</th>
+                <th class="gdfColHeader" align="center" style="width:17px;" title="End date is a milestone."><span
+                        class="teamworkIcon" style="font-size: 8px;">^</span></th>
+                <th class="gdfColHeader gdfResizable" style="width:80px;">End</th>
+                <th class="gdfColHeader gdfResizable" style="width:50px;">dur.</th>
+                <th class="gdfColHeader gdfResizable" style="width:20px;">%</th>
+                <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">depe.</th>
+
+            </tr>
+            </thead>
+        </table>
+        -->
+    </div>
+
+    <div class="__template__" type="TASKROW">
+        <!--
   <tr id="tid_(#=obj.id#)" taskId="(#=obj.id#)" class="taskEditRow (#=obj.isParent()?'isParent':''#) (#=obj.collapsed?'collapsed':''#)" level="(#=level#)">
-    <th class="gdfCell edit" align="right" style="cursor:pointer;"><span class="taskRowIndex">(#=obj.getRow()+1#)</span> <span class="teamworkIcon" style="font-size:12px;" >e</span></th>
+    <th class="gdfCell edit" align="right" style="cursor:pointer;">
+    <span class="taskRowIndex">(#=obj.getRow()+1#)</span>
+     </th>
     <td class="gdfCell noClip" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
-    <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)" placeholder="code/short name"></td>
+    <td class="gdfCell"><input type="text" name="code" value="(#=obj.id?obj.id:''#)" placeholder="(#=obj.userName?obj
+    .userName:''#)"></td>
     <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10+18#)px;">
       <div class="exp-controller" align="center"></div>
       <input type="text" name="name" value="(#=obj.name#)" placeholder="name">
     </td>
+     <td class="gdfCell"><input type="text" name="code" value="(#=obj.comment?obj.comment:''#)" placeholder="(#=obj
+     .comment?obj.comment:''#)"></td>
     <td class="gdfCell" align="center"><input type="checkbox" name="startIsMilestone"></td>
     <td class="gdfCell"><input type="text" name="start"  value="" class="date"></td>
     <td class="gdfCell" align="center"><input type="checkbox" name="endIsMilestone"></td>
@@ -546,9 +551,9 @@
     <td class="gdfCell"><input type="text" name="duration" autocomplete="off" value="(#=obj.duration#)"></td>
     <td class="gdfCell"><input type="text" name="progress" class="validated" entrytype="PERCENTILE" autocomplete="off" value="(#=obj.progress?obj.progress:''#)" (#=obj.progressByWorklog?"readOnly":""#)></td>
     <td class="gdfCell requireCanSeeDep"><input type="text" name="depends" autocomplete="off" value="(#=obj.depends#)" (#=obj.hasExternalDep?"readonly":""#)></td>
-    <td class="gdfCell taskAssigs">(#=obj.getAssigsString()#)</td>
   </tr>
-  --></div>
+  -->
+    </div>
 
     <div class="__template__" type="TASKEMPTYROW"><!--
   <tr class="taskEditRow emptyRow" >

@@ -11,16 +11,20 @@ use Illuminate\Support\Facades\DB;
 
 class TaskTreeProjectController extends Controller
 {
+    public const ROUTE_NAME = 'project.gantt';
+
     public function index(Request $request, $id)
     {
         $project = Project::findOrFail($id);
 
         /** @var Task[] $tasks */
-        $tasks = Task::query()->whereIn('id', function ($query) use ($project) {
-            $query->select('tproj.task_id')
-                ->from('task_project', 'tproj')
-                ->where('tproj.project_id', $project->id);
-        })
+        $tasks = Task::query()
+            ->whereIn('id', function ($query) use ($project) {
+                $query->select('tproj.task_id')
+                    ->from('task_project', 'tproj')
+                    ->where('tproj.project_id', $project->id);
+            })
+            ->orderBy('number')
             ->get()
             ->all();
 
@@ -160,7 +164,9 @@ class TaskTreeProjectController extends Controller
             "canDelete" => true,
             "canAddIssue" => true,
             "assigs" => [],
-            "hasChild" => true
+            "hasChild" => true,
+            "userName" => $task->user->label,
+            'comment' => $task->comment
         ];
     }
 

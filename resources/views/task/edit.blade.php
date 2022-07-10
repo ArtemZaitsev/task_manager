@@ -189,7 +189,7 @@
                     <select name="detail_id"
                             class="select2 form-control {{ $errors->has('detail_id') ? 'is-invalid' : '' }}"
                             id="detail_id">
-
+                        <option value></option>
                         @foreach($details as $entity )
                             <option value="{{ $entity->id }}"
                                     @if($entity->id === old('detail_id',$task->detail_id)) selected @endif>
@@ -268,7 +268,7 @@
                 </div>
             @endif
 
-        @if($fieldsToEdit === null || in_array('type', $fieldsToEdit))
+            @if($fieldsToEdit === null || in_array('type', $fieldsToEdit))
                 <div class="form-group w-25 mt-2">
                     <label for="type">Тип</label>
                     <select name="type" id="type" class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}">
@@ -319,6 +319,7 @@
                     <label for="parent_id">Родительская задача</label>
                     <select name="parent_id" class="select2 form-control {{ $errors->has('parent_id') ? 'is-invalid'
                     : '' }}" id="parent_id">
+                        <option value></option>
                         @foreach($tasks as $item)
                             <option value="{{ $item->id }}"
                                     @if( $item->id == old('parent_id',$task->parent_id) ) selected @endif>
@@ -376,6 +377,7 @@
                     <label for="userId">Ответственный</label>
                     <select name="user_id" class="form-control {{ $errors->has('user_id') ? 'is-invalid' : '' }}"
                             id="userId" required>
+                        <option value></option>
                         @foreach($users as $user )
                             <option value="{{ $user->id }}"
                                     @if( $user->id == old('user_id',$task->user_id) ) selected @endif>

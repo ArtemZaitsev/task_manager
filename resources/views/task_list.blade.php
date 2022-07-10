@@ -641,7 +641,11 @@
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             @foreach($task->projects as $project)
-                                {{ $project->title }}
+                                <a href="{{route(
+                                App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['id' =>
+                                $project->id])}}"
+                                   target="_blank">{{
+                                $project->title }}</a>
                                 @if(!$loop->last)
                                     <br/>
                                 @endif
@@ -741,10 +745,10 @@
                         {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_plan) }}
                     </td>
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('end_date_fact'))
-                    <td class="text-center align-middle"
-                        @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                        {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_fact) }}
-                    </td>
+                        <td class="text-center align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ \App\Utils\DateUtils::dateToDisplayFormat($task->end_date_fact) }}
+                        </td>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('progress'))
                         <td class="text-center align-middle"

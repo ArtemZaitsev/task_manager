@@ -40,7 +40,8 @@ Route::get('/', [TaskController::class, 'list'])
     ->name(TaskController::ACTION_LIST)
     ->middleware('auth');
 
-Route::get('/tasks/project/{id}/tree', [TaskTreeProjectController::class, 'index']);
+Route::get('/tasks/project/{id}/tree', [TaskTreeProjectController::class, 'index'])
+    ->name(TaskTreeProjectController::ROUTE_NAME);
 
 Route::post('/tasks/project/{id}/save', [TaskTreeProjectSaveController::class, 'save'])
     ->name(TaskTreeProjectSaveController::ROUTE_NAME);
