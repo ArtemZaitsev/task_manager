@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\TaskService;
 use App\BuisinessLogick\TaskVoter;
 use App\Models\Component\Detail;
@@ -32,11 +33,13 @@ class TaskController extends BaseController
 
     private TaskVoter $taskVoter;
     private TaskService $taskService;
+    private PlanerService $planerService;
 
     public function __construct()
     {
         $this->taskVoter = new TaskVoter();
         $this->taskService = new TaskService();
+        $this->planerService = new PlanerService();
     }
 
     public function list(Request $request)
@@ -53,6 +56,7 @@ class TaskController extends BaseController
         return view('task_list', [
             'taskVoter' => $this->taskVoter,
             'taskService' => $this->taskService,
+            'planerService' => $this->planerService,
             'projects' => Project::all(),
             'families' => Family::all(),
             'products' => Product::all(),

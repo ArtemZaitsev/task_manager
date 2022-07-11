@@ -86,6 +86,7 @@
 
         // here starts gantt initialization
         ge = new GanttMaster();
+        ge.resourceUrl = "/res/";
         ge.set100OnClose = true;
 
         ge.shrinkParent = true;
@@ -765,12 +766,12 @@
             "TASK_MOVE_INCONSISTENT_LEVEL": "You cannot exchange tasks of different depth.",
             "CANNOT_MOVE_TASK": "CANNOT_MOVE_TASK",
             "PLEASE_SAVE_PROJECT": "PLEASE_SAVE_PROJECT",
-            "GANTT_SEMESTER": "Semester",
-            "GANTT_SEMESTER_SHORT": "s.",
-            "GANTT_QUARTER": "Quarter",
-            "GANTT_QUARTER_SHORT": "q.",
-            "GANTT_WEEK": "Week",
-            "GANTT_WEEK_SHORT": "w."
+            "GANTT_SEMESTER": "Полугодие",
+            "GANTT_SEMESTER_SHORT": "п.",
+            "GANTT_QUARTER": "Квартал",
+            "GANTT_QUARTER_SHORT": "к.",
+            "GANTT_WEEK": "Неделя",
+            "GANTT_WEEK_SHORT": "н."
         };
     }
 

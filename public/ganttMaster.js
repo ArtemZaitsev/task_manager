@@ -423,7 +423,7 @@ GanttMaster.prototype.addTask = function (task, row) {
     this.gantt.addTask(task);
   }
 
-//trigger addedTask event 
+//trigger addedTask event
   $(this.element).trigger("addedTask.gantt", task);
   return ret;
 };

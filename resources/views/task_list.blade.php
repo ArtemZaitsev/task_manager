@@ -641,15 +641,20 @@
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             @foreach($task->projects as $project)
+                                @if($planerService->userIsPlaner(\Illuminate\Support\Facades\Auth::id()))
                                 <a href="{{route(
                                 App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['id' =>
                                 $project->id])}}"
                                    target="_blank">{{
                                 $project->title }}</a>
+                                @else
+                                    {{ $project->title }}
+                                    @endif
                                 @if(!$loop->last)
                                     <br/>
                                 @endif
                             @endforeach
+
                         </td>
                     @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('family'))
