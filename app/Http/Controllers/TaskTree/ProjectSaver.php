@@ -39,7 +39,6 @@ class ProjectSaver
                     'main_task' => '',
                     'parent_id' => null,
                     'name' => $task['name'],
-                    'user_id' => Auth::id(),
                     'system_id' => null,
                     'subsystem_id' => null,
                     'detail_id' => null,
@@ -48,15 +47,16 @@ class ProjectSaver
                     'end_date_plan' => $this->parseTimestamp($task['end']),
                     'end_date' => null,
                     'end_date_fact' => null,
-                    'progress' => 0,
+                    'progress' => $task['progress'],
                     'execute' => Task::EXECUTE_DONT_KNOW,
                     'status' => Task::STATUS_NOT_DONE,
-                    'comment' => null,
+                    'comment' => $task['comment'],
                     'execute_time_plan' => null,
                     'execute_time_fact' => null
                 ]);
                 $taskEntity->save();
                 $taskEntity->projects()->sync([$project->id]);
+                $taskEntity->user()->sync([$user->label]);
 
                 $task['id'] = $taskEntity->id;
             }

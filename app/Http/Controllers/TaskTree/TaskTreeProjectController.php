@@ -139,7 +139,7 @@ class TaskTreeProjectController extends Controller
         $taskData = [
             "id" => $task->id,
             "name" => $task->name,
-            "progress" => 0,
+            "progress" => $task->progress,
             "progressByWorklog" => false,
             "relevance" => 0,
             "type" => "",

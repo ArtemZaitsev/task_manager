@@ -77,7 +77,8 @@
 
 
 <script type="text/javascript">
-    var project = JSON.parse('{!! $tasks !!}');
+  //  var project = JSON.parse('{!! $tasks !!}');
+    var project = {!! $tasks !!};
 
 
     var ge;
