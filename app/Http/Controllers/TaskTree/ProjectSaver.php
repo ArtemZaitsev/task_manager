@@ -35,28 +35,30 @@ class ProjectSaver
                     'task_creator' => Auth::id(),
                     'priority' => Task::PRIORITY_LOW,
                     'type' => Task::TYPE_PLAN,
+                    'name' => $task['name'],
+                    'user_id' => Auth::id(),
+                    'start_date' => $this->parseTimestamp($task['start']),
+                    'end_date_plan' => $this->parseTimestamp($task['end']),
+                    'progress' => $task['progress']?? 0,
+                    'execute' => Task::EXECUTE_DONT_KNOW,
+                    'comment' => $task['description'] ?? null,
+                    'status' => array_flip(Task::STATUSES_STRING)[$task['status']],
+
                     'theme' => '',
                     'main_task' => '',
                     'parent_id' => null,
-                    'name' => $task['name'],
                     'system_id' => null,
                     'subsystem_id' => null,
                     'detail_id' => null,
                     'physical_object_id' => null,
-                    'start_date' => $this->parseTimestamp($task['start']),
-                    'end_date_plan' => $this->parseTimestamp($task['end']),
                     'end_date' => null,
                     'end_date_fact' => null,
-                    'progress' => $task['progress'],
-                    'execute' => Task::EXECUTE_DONT_KNOW,
-                    'status' => Task::STATUS_NOT_DONE,
-                    'comment' => $task['comment'],
                     'execute_time_plan' => null,
                     'execute_time_fact' => null
                 ]);
                 $taskEntity->save();
                 $taskEntity->projects()->sync([$project->id]);
-                $taskEntity->user()->sync([$user->label]);
+
 
                 $task['id'] = $taskEntity->id;
             }
@@ -104,6 +106,9 @@ class ProjectSaver
                     'name' => $sourceTask['name'],
                     'start_date' => $this->parseTimestamp($sourceTask['start']),
                     'end_date_plan' => $this->parseTimestamp($sourceTask['end']),
+                    'status' => array_flip(Task::STATUSES_STRING)[$sourceTask['status']],
+                    'progress' => $sourceTask['progress'] ?? 0,
+                    'comment' => $sourceTask['description'] ?? null,
                 ])
                 ->save();
         }

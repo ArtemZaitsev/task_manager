@@ -30,6 +30,16 @@ class Task extends Model
         self::STATUS_DELEGATE => 'Делегирована',
     ];
 
+    const STATUSES_STRING = [
+        self::STATUS_BLOCKED => 'STATUS_BLOCKED',
+        self::STATUS_NOT_DONE => 'STATUS_NOT_DONE',
+        self::STATUS_DONE => 'STATUS_DONE',
+        self::STATUS_IN_PROGRESS => 'STATUS_IN_PROGRESS',
+        self::STATUS_INFO => 'STATUS_INFO',
+        self::STATUS_REFUSE => 'STATUS_REFUSE',
+        self::STATUS_DELEGATE => 'STATUS_DELEGATE',
+    ];
+
 
     const EXECUTE_TODAY = 1;
     const EXECUTE_THIS_WEEK = 2;

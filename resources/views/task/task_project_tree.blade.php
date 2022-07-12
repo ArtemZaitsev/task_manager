@@ -77,7 +77,7 @@
 
 
 <script type="text/javascript">
-  //  var project = JSON.parse('{!! $tasks !!}');
+    //  var project = JSON.parse('{!! $tasks !!}');
     var project = {!! $tasks !!};
 
 
@@ -538,8 +538,8 @@
       <div class="exp-controller" align="center"></div>
       <input type="text" name="name" value="(#=obj.name#)" placeholder="name">
     </td>
-     <td class="gdfCell"><input type="text" name="code" value="(#=obj.comment?obj.comment:''#)" placeholder="(#=obj
-     .comment?obj.comment:''#)"></td>
+     <td class="gdfCell"><input type="text" name="description" value="(#=obj.description?obj.description:''#)" placeholder="
+     (#=obj.description?obj.description:''#)"></td>
     <td class="gdfCell" align="center"><input type="checkbox" name="startIsMilestone"></td>
     <td class="gdfCell"><input type="text" name="start"  value="" class="date"></td>
     <td class="gdfCell" align="center"><input type="checkbox" name="endIsMilestone"></td>
@@ -584,14 +584,13 @@
 
     <div class="__template__" type="CHANGE_STATUS"><!--
     <div class="taskStatusBox">
-    <div class="taskStatus cvcColorSquare" status="STATUS_ACTIVE" title="Active"></div>
-    <div class="taskStatus cvcColorSquare" status="STATUS_DONE" title="Completed"></div>
-    <div class="taskStatus cvcColorSquare" status="STATUS_FAILED" title="Failed"></div>
-    <div class="taskStatus cvcColorSquare" status="STATUS_SUSPENDED" title="Suspended"></div>
-    <div class="taskStatus cvcColorSquare" status="STATUS_WAITING" title="Waiting" style="display: none;"></div>
-    <div class="taskStatus cvcColorSquare" status="STATUS_UNDEFINED" title="Undefined"></div>
-    </div>
-  --></div>
+
+    @foreach(\App\Models\Task::ALL_STATUSES as $value => $label)
+        <div class="taskStatus cvcColorSquare"
+        status="{{ \App\Models\Task::STATUSES_STRING[$value] }}" title="{{ $label }}"></div>
+    @endforeach
+        </div>
+--></div>
 
 
     <div class="__template__" type="TASK_EDITOR"><!--

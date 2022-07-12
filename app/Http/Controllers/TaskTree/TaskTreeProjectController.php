@@ -144,7 +144,7 @@ class TaskTreeProjectController extends Controller
             "relevance" => 0,
             "type" => "",
             "typeId" => "",
-            "description" => "",
+            "description" => $task->comment,
             "code" => "",
             "level" => $item->level(),
             "status" => $this->taskStatus($task),
@@ -166,7 +166,7 @@ class TaskTreeProjectController extends Controller
             "assigs" => [],
             "hasChild" => true,
             "userName" => $task->user->label,
-            'comment' => $task->comment
+
         ];
         return $taskData;
     }
@@ -213,15 +213,6 @@ class TaskTreeProjectController extends Controller
 
     private function taskStatus(Task $task): string
     {
-        return match($task->status) {
-            Task::STATUS_NOT_DONE => 'STATUS_ACTIVE',
-            Task::STATUS_DONE => 'STATUS_UNDEFINED',
-            Task::STATUS_IN_PROGRESS => 'STATUS_DONE',
-            Task::STATUS_INFO => 'STATUS_ACTIVE',
-            Task::STATUS_REFUSE => 'STATUS_SUSPENDED',
-            Task::STATUS_BLOCKED => 'STATUS_SUSPENDED',
-            Task::STATUS_DELEGATE => 'STATUS_SUSPENDED',
-            default => 'STATUS_UNDEFINED',
-        };
+        return Task::STATUSES_STRING[$task->status];
     }
 }
