@@ -19,12 +19,14 @@ class Task extends Model
     const STATUS_REFUSE = 5;
     const STATUS_BLOCKED = 6;
     const STATUS_DELEGATE = 7;
+    const STATUS_NOT_DATES = 8;
 
     const ALL_STATUSES = [
-        self::STATUS_BLOCKED => 'Заблокирована',
-        self::STATUS_NOT_DONE => 'Не выполнена',
-        self::STATUS_DONE => 'Выполнена',
+        self::STATUS_NOT_DONE => 'Не выполнена. Есть сроки',
+        self::STATUS_NOT_DATES => 'Не выполнена. Нет сроков',
         self::STATUS_IN_PROGRESS => 'В процессе',
+        self::STATUS_DONE => 'Выполнена',
+        self::STATUS_BLOCKED => 'Заблокирована',
         self::STATUS_INFO => 'Информационная',
         self::STATUS_REFUSE => 'Снята',
         self::STATUS_DELEGATE => 'Делегирована',
@@ -32,12 +34,14 @@ class Task extends Model
 
     const STATUSES_STRING = [
         self::STATUS_BLOCKED => 'STATUS_BLOCKED',
+        self::STATUS_NOT_DATES => 'STATUS_NOT_DATES',
         self::STATUS_NOT_DONE => 'STATUS_NOT_DONE',
         self::STATUS_DONE => 'STATUS_DONE',
         self::STATUS_IN_PROGRESS => 'STATUS_IN_PROGRESS',
         self::STATUS_INFO => 'STATUS_INFO',
         self::STATUS_REFUSE => 'STATUS_REFUSE',
         self::STATUS_DELEGATE => 'STATUS_DELEGATE',
+
     ];
 
 

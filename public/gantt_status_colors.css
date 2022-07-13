@@ -1,0 +1,83 @@
+.taskStatus[status=STATUS_BLOCKED] {
+    background-color: #ff0000;
+    color: #000;
+}
+
+.taskStatus[status=STATUS_NOT_DONE] {
+    background-color: #ffb600;
+    color: #000;
+}
+
+.taskStatus[status=STATUS_NOT_DATES] {
+    background-color: #ef0bda;
+    color: #000;
+}
+
+.taskStatus[status=STATUS_DONE] {
+    background-color: #31ad14;
+    color: #000;
+}
+
+.taskStatus[status=STATUS_IN_PROGRESS] {
+    background-color: #a6ff75;
+    color: #000;
+}
+
+.taskStatus[status=STATUS_INFO] {
+    background-color: #cff4fc;
+    color: #000;
+}
+
+.taskStatus[status=STATUS_REFUSE] {
+    background-color: #d7d5d5;
+    color: #000;
+}
+
+.taskStatus[status=STATUS_DELEGATE] {
+    background-color: #1bf3d4;
+    color: #000;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_BLOCKED] {
+    fill: #ff0000;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_NOT_DONE] {
+    fill: #ffb600;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_NOT_DATES] {
+    fill: #ef0bda;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_DONE] {
+    fill: #31ad14;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_IN_PROGRESS] {
+    fill: #a6ff75;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_INFO] {
+    fill: #cff4fc;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_REFUSE] {
+    fill: #d7d5d5;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_DELEGATE] {
+    fill: #1bf3d4;
+}
+
+
+.colorByStatus .taskStatusSVG[status=STATUS_UNDEFINED] .taskLayout {
+    stroke: #ccc;
+    stroke-width: 1;
+}
+
+.colorByStatus .taskStatusSVG[status=STATUS_DONE] .textPerc,
+.colorByStatus .taskStatusSVG[status=STATUS_ACTIVE] .textPerc,
+.colorByStatus .taskStatusSVG[status=STATUS_FAILED] .textPerc {
+    fill: #fff;
+}

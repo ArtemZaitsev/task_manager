@@ -501,7 +501,7 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
       self.master.endTransaction();
       el.attr("status", task.status);
     });
-    el.oneTime(3000, "hideChanger", function () {
+    el.oneTime(15000, "hideChanger", function () {
       changer.remove();
     });
     el.after(changer);

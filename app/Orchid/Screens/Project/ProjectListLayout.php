@@ -46,6 +46,13 @@ class ProjectListLayout extends Table
                 ->render(function (Project $project) {
                     return $project->planer?->label;
                 }),
+            TD::make('watchers', 'Наблюдатели проекта')
+                ->render(function (Project $project) {
+                    $users = $project->watchers()->get()->all();
+                    $users = array_map(fn(User $user)=>$user->label(),$users);
+                    $label = implode("</br>", $users);
+                    return $label;
+                }),
 
             TD::make('created_at', 'Created'),
             TD::make('updated_at', 'Last edit'),

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="ru">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -10,6 +10,7 @@
     <link rel=stylesheet href="/libs/jquery/dateField/jquery.dateField.css" type="text/css">
 
     <link rel=stylesheet href="/gantt.css" type="text/css">
+    <link rel=stylesheet href="/gantt_status_colors.css" type="text/css">
     <link rel=stylesheet href="/ganttPrint.css" type="text/css" media="print">
     <link rel=stylesheet href="/libs/jquery/valueSlider/mb.slider.css" type="text/css" media="print">
 
@@ -88,6 +89,7 @@
         // here starts gantt initialization
         ge = new GanttMaster();
         ge.resourceUrl = "/res/";
+        ge.permissions.canSeePopEdit = false;
         ge.set100OnClose = true;
 
         ge.shrinkParent = true;
@@ -408,14 +410,14 @@
 
 <div id="gantEditorTemplates" style="display:none;">
     <div class="__template__" type="GANTBUTTONS">
-
+    <!--
         <div class="ganttButtonBar noprint">
             <div class="buttons">
                 {{--                <a href="https://gantt.twproject.com/"><img src="res/twGanttLogo.png" alt="Twproject" align="absmiddle"--}}
-                {{--                                                            style="max-width: 136px; padding-right: 15px"></a>--}}
+    {{--                                                            style="max-width: 136px; padding-right: 15px"></a>--}}
 
-                <button onclick="$('#workSpace').trigger('undo.gantt');return false;"
-                        class="button textual icon requireCanWrite" title="undo"><span class="teamworkIcon">&#39;</span>
+        <button onclick="$('#workSpace').trigger('undo.gantt');return false;"
+                class="button textual icon requireCanWrite" title="undo"><span class="teamworkIcon">&#39;</span>
                 </button>
                 <button onclick="$('#workSpace').trigger('redo.gantt');return false;"
                         class="button textual icon requireCanWrite" title="redo"><span
@@ -482,15 +484,17 @@
             </div>
 
             <div>
+            @if($projectVoter->canEditGantt($project))
                 <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="Save">Save</button>
-                <button class="button login" title="login/enroll" onclick="loginEnroll($(this));" style="display:none;">
-                    login/enroll
-                </button>
-                <button class="button opt collab" title="Start with Twproject" onclick="collaborate($(this));"
-                        style="display:none;"><em>collaborate</em></button>
-            </div>
-        </div>
-
+            @endif
+        <button class="button login" title="login/enroll" onclick="loginEnroll($(this));" style="display:none;">
+            login/enroll
+        </button>
+        <button class="button opt collab" title="Start with Twproject" onclick="collaborate($(this));"
+                style="display:none;"><em>collaborate</em></button>
+    </div>
+</div>
+-->
     </div>
 
     <div class="__template__" type="TASKSEDITHEAD">
@@ -574,7 +578,6 @@
       <div class="taskStatus" status="(#=obj.status#)"></div>
       <div class="taskProgress" style="width:(#=obj.progress>100?100:obj.progress#)%; background-color:(#=obj.progress>100?'red':'rgb(153,255,51);'#);"></div>
       <div class="milestone (#=obj.startIsMilestone?'active':''#)" ></div>
-
       <div class="taskLabel"></div>
       <div class="milestone end (#=obj.endIsMilestone?'active':''#)" ></div>
     </div>

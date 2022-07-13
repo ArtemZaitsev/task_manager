@@ -98,7 +98,7 @@ abstract class BaseTaskRequest extends FormRequest
             'user_id' => ['required', Rule::exists(User::class, 'id')],
             'coperformers' => 'nullable|array',
             'coperformers.*' => Rule::exists(User::class, 'id'),
-            'end_date' => 'required|date',
+            'end_date' => 'nullable|date',
             'execute_time_plan' => ['nullable', 'numeric', 'min:0', 'max:10000'],
         ]);
 

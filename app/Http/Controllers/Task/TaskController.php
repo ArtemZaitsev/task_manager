@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Task;
 
 use App\BuisinessLogick\PlanerService;
+use App\BuisinessLogick\ProjectVoter;
 use App\BuisinessLogick\TaskService;
 use App\BuisinessLogick\TaskVoter;
 use App\Models\Component\Detail;
@@ -31,15 +32,15 @@ class TaskController extends BaseController
 {
     const ACTION_LIST = 'tasks.list';
 
-    private TaskVoter $taskVoter;
-    private TaskService $taskService;
-    private PlanerService $planerService;
 
-    public function __construct()
+    public function __construct(
+        private TaskVoter     $taskVoter,
+        private TaskService   $taskService,
+        private PlanerService $planerService,
+        private ProjectVoter  $projectVoter,
+    )
     {
-        $this->taskVoter = new TaskVoter();
-        $this->taskService = new TaskService();
-        $this->planerService = new PlanerService();
+
     }
 
     public function list(Request $request)
@@ -55,6 +56,7 @@ class TaskController extends BaseController
 
         return view('task_list', [
             'taskVoter' => $this->taskVoter,
+            'projectVoter' => $this->projectVoter,
             'taskService' => $this->taskService,
             'planerService' => $this->planerService,
             'projects' => Project::all(),

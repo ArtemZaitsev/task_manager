@@ -641,7 +641,7 @@
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             @foreach($task->projects as $project)
-                                @if($planerService->userIsPlaner(\Illuminate\Support\Facades\Auth::id()))
+                                @if($projectVoter->canSeeGantt($project))
                                 <a href="{{route(
                                 App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['id' =>
                                 $project->id])}}"

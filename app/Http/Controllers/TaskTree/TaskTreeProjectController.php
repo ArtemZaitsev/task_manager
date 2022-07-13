@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\TaskTree;
 
+use App\BuisinessLogick\ProjectVoter;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Task;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\DB;
 class TaskTreeProjectController extends Controller
 {
     public const ROUTE_NAME = 'project.gantt';
+
+    public function __construct(
+        private ProjectVoter $projectVoter
+    )
+    {
+    }
 
     public function index(Request $request, $id)
     {
@@ -95,6 +102,7 @@ class TaskTreeProjectController extends Controller
 
         return view('task/task_project_tree', [
             'project' => $project,
+            'projectVoter' => $this->projectVoter,
             'tasks' => json_encode($result)
         ]);
 

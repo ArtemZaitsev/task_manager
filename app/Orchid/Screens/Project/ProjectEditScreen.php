@@ -96,6 +96,12 @@ class ProjectEditScreen extends Screen
                     ->title('Планер проекта')
                     ->fromModel(User::class, 'surname')
                     ->displayAppend('label'),
+
+                Relation::make('project.watchers.')
+                    ->title('Наблюдатели проекта')
+                    ->fromModel(User::class, 'surname')
+                    ->multiple()
+                    ->displayAppend('label'),
             ])
         ];
     }
@@ -103,9 +109,11 @@ class ProjectEditScreen extends Screen
     public function createOrUpdate(Project $project, Request $request)
     {
         $request->validate([
-
             'project.heads' => 'required|array|min:1',
             'project.heads.*' => Rule::exists(User::class, 'id'),
+            'project.watchers' => 'nullable|array',
+            'project.watchers.*' => Rule::exists(User::class, 'id'),
+
             'project.planer_id' => [
                 'nullable',
                 'integer',
@@ -118,7 +126,8 @@ class ProjectEditScreen extends Screen
         ]);
         DB::transaction(function () use ($request, $project) {
             $project->fill($request->get('project'))->save();
-            $project->heads()->sync($request->get('project')['heads'] ?? []);
+            $project->heads()->sync($request->input('project.heads') ?? []);
+            $project->watchers()->sync($request->input('project.watchers') ?? []);
         });
 
         Alert::info('You have successfully created an post.');
