@@ -134,7 +134,7 @@
         delete prj.roles;
 
         if (ge.deletedTaskIds.length > 0) {
-            if (!confirm("TASK_THAT_WILL_BE_REMOVED\n" + ge.deletedTaskIds.length)) {
+            if (!confirm("Следующие задачи будут удалены\n" + ge.deletedTaskIds.length)) {
                 return;
             }
         }
@@ -485,8 +485,8 @@
 
             <div>
             @if($projectVoter->canEditGantt($project))
-                <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="Save">Save</button>
-            @endif
+        <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="Save">Save</button>
+@endif
         <button class="button login" title="login/enroll" onclick="loginEnroll($(this));" style="display:none;">
             login/enroll
         </button>
@@ -502,21 +502,21 @@
         <table class="gdfTable" cellspacing="0" cellpadding="0">
             <thead>
             <tr style="height:40px">
-                <th class="gdfColHeader" style="width:35px; border-right: none"></th>
+                <th class="gdfColHeader gdfResizable" ></th>
                 <th class="gdfColHeader" style="width:25px;"></th>
                 <th class="gdfColHeader gdfResizable" style="width:100px;">Отв.</th>
                 <th class="gdfColHeader gdfResizable" style="width:300px;">Задача</th>
                  <th class="gdfColHeader gdfResizable" style="width:300px;">Примечание</th>
 
-                <th class="gdfColHeader" align="center" style="width:17px;" title="Start date is a milestone."><span
+                <th class="gdfColHeader gdfResizable" align="center" style="width:17px;" title="Start date is a milestone."><span
                         class="teamworkIcon" style="font-size: 8px;">^</span></th>
                 <th class="gdfColHeader gdfResizable" style="width:80px;">Дата начала</th>
-                <th class="gdfColHeader" align="center" style="width:17px;" title="End date is a milestone."><span
+                <th class="gdfColHeader gdfResizable" align="center" style="width:17px;" title="End date is a milestone."><span
                         class="teamworkIcon" style="font-size: 8px;">^</span></th>
                 <th class="gdfColHeader gdfResizable" style="width:80px;">Дата окончания</th>
                 <th class="gdfColHeader gdfResizable" style="width:50px;">Дни</th>
                 <th class="gdfColHeader gdfResizable" style="width:20px;">% выполнения</th>
-                <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">Зависит</th>
+                <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:50px;">Зависит от</th>
 
             </tr>
             </thead>
@@ -528,12 +528,16 @@
         <!--
   <tr id="tid_(#=obj.id#)" taskId="(#=obj.id#)" class="taskEditRow (#=obj.isParent()?'isParent':''#) (#=obj.collapsed?'collapsed':''#)" level="(#=level#)">
     <th class="gdfCell" align="right" style="cursor:pointer;">
-    <span class="taskRowIndex">(#=obj.getRow()+1#)</span>
+
+    (# if(obj.hasOwnProperty('canEdit') && obj.canEdit) { #)
     <a href="/task/(#=obj.id#)/edit" target="_blank">
         <svg width="12" height="12" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
         <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"></path>
         </svg>
+        </a>
+        (# } #)
     </span>
+    <span class="taskRowIndex">(#=obj.getRow()+1#)</span>
      </th>
     <td class="gdfCell noClip" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
     <td class="gdfCell"><input type="text" name="code" value="(#=obj.id?obj.id:''#)" placeholder="(#=obj.userName?obj

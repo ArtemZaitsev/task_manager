@@ -40,7 +40,7 @@ class TaskVoter
 
     public function canExport(): bool
     {
-        return $this->userIsPlaner();
+        return true;
     }
 
     public function canDelete(Task $task): bool

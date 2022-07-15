@@ -32,7 +32,7 @@ class ProjectSaver
                     //'base',
                     //'setting_date',
                     'number' => $idx + 1,
-                    'task_creator' => Auth::id(),
+                    'task_creator' => null,
                     'priority' => Task::PRIORITY_LOW,
                     'type' => Task::TYPE_PLAN,
                     'name' => $task['name'],
