@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Teamwork</title>
+    <title>Диаграмма Гантта</title>
 
     <link rel=stylesheet href="/gantt/platform.css" type="text/css">
     <link rel=stylesheet href="/gantt/libs/jquery/dateField/jquery.dateField.css" type="text/css">
@@ -485,7 +485,8 @@
 
             <div>
             @if($projectVoter->canEditGantt($project))
-        <button onclick="saveGanttOnServer();" class="button first big requireWrite" title="Save">Save</button>
+        <button onclick="saveGanttOnServer();" class="button first big requireWrite"
+        title="Сохранить">Сохранить</button>
 @endif
         <button class="button login" title="login/enroll" onclick="loginEnroll($(this));" style="display:none;">
             login/enroll
@@ -502,7 +503,7 @@
         <table class="gdfTable" cellspacing="0" cellpadding="0">
             <thead>
             <tr style="height:40px">
-                <th class="gdfColHeader gdfResizable" ></th>
+                <th class="gdfColHeader gdfResizable" style="min-width:35px;"></th>
                 <th class="gdfColHeader" style="width:25px;"></th>
                 <th class="gdfColHeader gdfResizable" style="width:100px;">Отв.</th>
                 <th class="gdfColHeader gdfResizable" style="width:300px;">Задача</th>
