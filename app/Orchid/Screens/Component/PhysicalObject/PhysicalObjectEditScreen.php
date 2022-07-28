@@ -2,17 +2,11 @@
 
 namespace App\Orchid\Screens\Component\PhysicalObject;
 
-use App\Models\Component\Detail;
 use App\Models\Component\PhysicalObject;
-use App\Models\Component\Subsystem;
-use App\Models\Component\System;
-use App\Models\User;
-use App\Orchid\Screens\Component\Detail\DetailListScreen;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;

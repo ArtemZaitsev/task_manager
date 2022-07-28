@@ -138,76 +138,7 @@
                     @endif
                 </div>
             @endif
-
-            @if($fieldsToEdit === null || in_array('system_id', $fieldsToEdit))
-                <div class="form-group mt-2">
-                    <label for="system_id">Система</label>
-                    <select name="system_id"
-                            class="select2 form-control {{ $errors->has('system_id') ? 'is-invalid' : '' }}"
-                            id="system_id">
-                        <option value=""></option>
-                        @foreach($systems as $entity )
-                            <option value="{{ $entity->id }}"
-                                    @if($entity->id === old('system_id',$task->system_id)) selected @endif>
-                                {{ $entity->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('system_id'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('system_id') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
-
-            @if($fieldsToEdit === null || in_array('subsystem_id', $fieldsToEdit))
-                <div class="form-group mt-2">
-                    <label for="subsystem_id">Подсистема</label>
-                    <select name="subsystem_id"
-                            class="select2 form-control {{ $errors->has('subsystem_id') ? 'is-invalid' : '' }}"
-                            id="subsystem_id">
-                        <option value=""></option>
-                        @foreach($subsystems as $entity )
-                            <option value="{{ $entity->id }}"
-                                    @if($entity->id === old('subsystem_id',$task->subsystem_id)) selected @endif>
-                                {{ $entity->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('subsystem_id'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('subsystem_id') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
-
-            @if($fieldsToEdit === null || in_array('detail_id', $fieldsToEdit))
-                <div class="form-group mt-2">
-                    <label for="detail_id">Деталь</label>
-                    <select name="detail_id"
-                            class="select2 form-control {{ $errors->has('detail_id') ? 'is-invalid' : '' }}"
-                            id="detail_id">
-                        <option value></option>
-                        @foreach($details as $entity )
-                            <option value="{{ $entity->id }}"
-                                    @if($entity->id === old('detail_id',$task->detail_id)) selected @endif>
-                                {{ $entity->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('detail_id'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('detail_id') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
-
-
             @if($fieldsToEdit === null || in_array('base', $fieldsToEdit))
-
                 <div class="form-group mt-2">
                     <label for="base">Основание</label>
                     <input name="base" class="form-control {{ $errors->has('base') ? 'is-invalid' : '' }}"

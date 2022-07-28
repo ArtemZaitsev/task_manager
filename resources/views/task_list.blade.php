@@ -259,44 +259,6 @@
                             </div>
                         </th>
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('system'))
-                        <th scope="col" class="text-center" style="max-width: 150px;">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'system',
-                            'filter_data' => $systems,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                            <div scope="col" class="text-center for-headers">
-                                Система
-                            </div>
-                        </th>
-                    @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subsystem'))
-                        <th scope="col" class="text-center" style="max-width: 150px;">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'subsystem',
-                            'filter_data' => $subsystems,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                            <div scope="col" class="text-center for-headers">
-                                Подсистема
-                            </div>
-                        </th>
-                    @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('detail'))
-                        <th scope="col" class="text-center" style="max-width: 150px;">
-                            @include('filters.entity_filter', [
-                            'filter_name' => 'detail',
-                            'filter_data' => $details,
-                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
-                            ])
-                            <div scope="col" class="text-center for-headers">
-                                Компонент
-                            </div>
-                        </th>
-                    @endif
-
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
@@ -700,12 +662,7 @@
                             {{ $task->subsystem?->name }}
                         </td>
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('detail'))
-                        <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            {{ $task->detail?->name }}
-                        </td>
-                    @endif
+
 
 
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))

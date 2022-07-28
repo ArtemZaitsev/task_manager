@@ -6,7 +6,12 @@ namespace App\Models;
 use Lab404\Impersonate\Models\Impersonate;
 use Orchid\Platform\Models\User as Authenticatable;
 
-
+/**
+ * @property string $name
+ * @property string $surname
+ * @property string $patronymic
+ * @property ?Direction $direction
+ */
 class User extends Authenticatable
 {
     use Impersonate;

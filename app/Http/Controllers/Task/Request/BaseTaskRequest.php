@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Task\Request;
 
 use App\BuisinessLogick\AuditService;
 use App\BuisinessLogick\TaskVoter;
-use App\Models\Audit;
-use App\Models\Component\Detail;
 use App\Models\Component\PhysicalObject;
-use App\Models\Component\Subsystem;
-use App\Models\Component\System;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
@@ -16,7 +12,6 @@ use App\Models\Task;
 use App\Models\TaskLog;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -80,9 +75,6 @@ abstract class BaseTaskRequest extends FormRequest
                 },
             ],
             'product.*' => Rule::exists(Product::class, 'id'),
-            'system_id' => ['nullable','integer',Rule::exists(System::class, 'id')],
-            'subsystem_id' => ['nullable','integer',Rule::exists(Subsystem::class, 'id')],
-            'detail_id' => ['nullable','integer',Rule::exists(Detail::class, 'id')],
             'physical_object_id' => ['nullable','integer',Rule::exists(PhysicalObject::class, 'id')],
             'base' => 'nullable|max:255',
             'setting_date' => 'nullable|date',

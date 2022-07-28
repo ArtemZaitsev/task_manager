@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\MainController;
+use App\Http\Controllers\Component\ComponentController;
+use App\Http\Controllers\Component\ComponentCreateController;
+use App\Http\Controllers\Component\ComponentEditController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Task\PerformerTaskEditController;
@@ -77,6 +80,20 @@ Route::get('/logout', [LoginController::class, 'logout'])->name(LoginController:
 
 Route::get('/tasks/export', [TasksExportController::class, 'export'])->name(TasksExportController::EXPORT_ACTION);
 
+Route::get('/components', [ComponentController::class, 'index'])
+    ->name(ComponentController::ROUTE_NAME);
+
+Route::get('/component/{id}/edit', [ComponentEditController::class, 'index'])
+    ->where('id', '[0-9]+')
+    ->name(TaskEditController::INDEX_ACTION);
+Route::post('/component/{id}/edit', [ComponentEditController::class, 'processForm'])
+    ->where('id', '[0-9]+')
+    ->name(TaskEditController::EDIT_ACTION);
+
+Route::get('/component/create', [ComponentCreateController::class, 'index'])
+    ->name(ComponentCreateController::INDEX_ACTION);
+Route::post('/component/create', [ComponentCreateController::class, 'processForm'])
+    ->name(ComponentCreateController::PROCESS_FORM_ACTION);
 
 //Route::get('/persons', [\App\Http\Controllers\PersonController::class, 'list'])->name('tasks.list');
 ////Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);

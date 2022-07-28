@@ -6,25 +6,16 @@ use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\ProjectVoter;
 use App\BuisinessLogick\TaskService;
 use App\BuisinessLogick\TaskVoter;
-use App\Models\Component\Detail;
 use App\Models\Component\PhysicalObject;
-use App\Models\Component\Subsystem;
-use App\Models\Component\System;
 use App\Models\Direction;
 use App\Models\Family;
 use App\Models\Group;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Subgroup;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Filters\DateFilter;
-use App\Models\Task;
-use App\Models\TaskLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
-
 use function view;
 
 
@@ -63,9 +54,6 @@ class TaskController extends BaseController
             'families' => Family::all(),
             'products' => Product::all(),
             'physical_objects' => PhysicalObject::all(),
-            'systems' => System::all(),
-            'subsystems' => Subsystem::all(),
-            'details' => Detail::all(),
             'directions' => Direction::all(),
             'groups' => Group::all(),
             'subgroups' => Subgroup::all(),

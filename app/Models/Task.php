@@ -2,11 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Component\Detail;
 use App\Models\Component\PhysicalObject;
-use App\Models\Component\Subsystem;
-use App\Models\Component\System;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
@@ -136,21 +132,6 @@ class Task extends Model
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'task_project');
-    }
-
-    public function system()
-    {
-        return $this->belongsTo(System::class);
-    }
-
-    public function subsystem()
-    {
-        return $this->belongsTo(Subsystem::class);
-    }
-
-    public function detail()
-    {
-        return $this->belongsTo(Detail::class);
     }
 
     public function physicalObject()
