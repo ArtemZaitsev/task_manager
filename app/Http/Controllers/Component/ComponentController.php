@@ -320,7 +320,7 @@ class ComponentController
         $this->applyFilters($query, $request, $grid);
         $this->applySort($query, $request, $grid);
 
-        $components = $query->paginate();
+        $components = $query->paginate(5000);
 
 
         return view('component.list', [

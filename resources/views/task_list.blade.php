@@ -650,21 +650,6 @@
                         </td>
                     @endif
 
-{{--                    @if( \App\Utils\ColumnUtils::isColumnEnabled('system'))--}}
-{{--                        <td class="text-left align-middle"--}}
-{{--                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>--}}
-{{--                            {{ $task->system?->name }}--}}
-{{--                        </td>--}}
-{{--                    @endif--}}
-{{--                    @if( \App\Utils\ColumnUtils::isColumnEnabled('subsystem'))--}}
-{{--                        <td class="text-left align-middle"--}}
-{{--                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>--}}
-{{--                            {{ $task->subsystem?->name }}--}}
-{{--                        </td>--}}
-{{--                    @endif--}}
-
-
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>{{ $task->theme }}
