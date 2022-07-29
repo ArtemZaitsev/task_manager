@@ -56,7 +56,7 @@
         @foreach($data as $row)
             <tr>
                 <td>
-                    <a href="{{route(\App\Http\Controllers\Task\TaskEditController::EDIT_ACTION, ['id' =>
+                    <a href="{{route(\App\Http\Controllers\Component\ComponentEditController::EDIT_ACTION, ['id' =>
                         $row->id])}}">Edit</a>
                 </td>
                 @foreach($grid['columns'] as $column)

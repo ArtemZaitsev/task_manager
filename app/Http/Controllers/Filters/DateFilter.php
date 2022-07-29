@@ -8,7 +8,10 @@ class DateFilter
 {
     const MODE_TODAY = "today";
     const MODE_RANGE = "range";
-    const ALL_MODES = [self::MODE_TODAY, self::MODE_RANGE];
+    const ALL_MODES = [
+        self::MODE_RANGE,
+        self::MODE_TODAY,
+    ];
 
     public static function filterEnabled($filterData): bool
     {

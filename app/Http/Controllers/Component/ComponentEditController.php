@@ -6,8 +6,6 @@ use App\BuisinessLogick\ComponentVoter;
 use App\Http\Controllers\Component\Request\ComponentEditRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Component\Component;
-use App\Models\Component\PhysicalObject;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class ComponentEditController extends Controller

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Component;
 
+use App\Http\Controllers\Component\Filter\DateFilter;
 use App\Http\Controllers\Component\Filter\IntegerFilter;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
 use App\Http\Controllers\Component\Filter\StringFilter;
@@ -10,6 +11,7 @@ use App\Models\Component\Component3dStatus;
 use App\Models\Component\ComponentCalcStatus;
 use App\Models\Component\ComponentDdStatus;
 use App\Models\Component\ComponentManufactorStatus;
+use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
@@ -38,28 +40,49 @@ class ComponentController
                 new GridColumn(
                     'created_at',
                     'Дата создания',
-                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->getAttribute('created_at'))
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->created_at)
                 ),
                 new GridColumn(
                     'updated_at',
                     'Дата редактирования',
-                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->getAttribute('updated_at'))
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->updated_at)
                 ),
                 new GridColumn(
-                    'physical_objects',
-                    'Объекты',
-                    fn(Component $entity) => implode('<br/>', array_map(fn(PhysicalObject $po) => $po->label(),
-                        $entity->physicalObjects->all()))
+                    'physical_object_id',
+                    'Объект',
+                    fn(Component $entity) => $entity->physicalObject?->label(),
+                    null,
+                    new MultiSelectFilter('physical_object_id',
+                        SelectUtils::entityListToLabelMap(
+                            PhysicalObject::all()->all(),
+                            fn(PhysicalObject $o) => $o->label())
+                    )
                 ),
+
                 new GridColumn(
-                    'relative_component',
-                    'Род компонент',
-                    fn(Component $entity) => $entity->relativeComponent?->label()
+                    'quantity_in_object',
+                    'Количество в объекте',
+                    fn(Component $entity) => $entity->quantity_in_object,
+                    'quantity_in_object',
+                    new IntegerFilter('quantity_in_object')
+                ),
+
+                new GridColumn(
+                    'relative_component_id',
+                    'Родительский компонент',
+                    fn(Component $entity) => $entity->relativeComponent?->label(),
+                    null,
+                    new MultiSelectFilter('relative_component_id',
+                        SelectUtils::entityListToLabelMap(
+                            Component::all()->all(),
+                            fn(Component $c) => $c->label())
+                    )
                 ),
                 new GridColumn(
                     'direction',
                     'Направление',
-                    fn(Component $entity) => $entity->constructor?->direction?->label()
+                    fn(Component $entity) => $entity->constructor?->direction?->label(),
+                    null,
                 ),
                 new GridColumn(
                     'title',
@@ -119,8 +142,10 @@ class ComponentController
                 ),
                 new GridColumn(
                     '3d_date_plan',
-                    'Дата планируемая',
-                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->getAttribute('3d_date_plan'))
+                    'Планируемая дата подготовки 3D',
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->getAttribute('3d_date_plan')),
+                    '3d_date_plan',
+                    new DateFilter('3d_date_plan')
                 ),
                 new GridColumn(
                     'dd_status',
@@ -131,7 +156,7 @@ class ComponentController
                 ),
                 new GridColumn(
                     'dd_date_plan',
-                    'Дата планируемая',
+                    'Планируемая дата выдачи КД',
                     fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->dd_date_plan)
                 ),
                 new GridColumn(
@@ -142,9 +167,9 @@ class ComponentController
                     new StringFilter('drawing_files')
                 ),
                 new GridColumn(
-                    'drawing_date_plan',
+                    'drawing_date',
                     'Дата чертежей',
-                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->drawing_date_plan)
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->drawing_date)
                 ),
                 new GridColumn(
                     'calc_status',
@@ -155,7 +180,7 @@ class ComponentController
                 ),
                 new GridColumn(
                     'calc_date_plan',
-                    'Дата планируемая',
+                    'Планируемая дата завершения расчетов',
                     fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->calc_date_plan)
                 ),
                 new GridColumn(
@@ -166,13 +191,13 @@ class ComponentController
                     new StringFilter('tz_files')
                 ),
                 new GridColumn(
-                    'tz_date_plan',
+                    'tz_date',
                     'Дата ТЗ',
-                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->tz_date_plane)
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->tz_date)
                 ),
                 new GridColumn(
                     'constructor_priority',
-                    'Приоритет',
+                    'Приоритет конструктора',
                     fn(Component $entity) => $entity->constructor_priority,
                     null,
                     new IntegerFilter('constructor_priority')
@@ -200,8 +225,93 @@ class ComponentController
                 ),
                 new GridColumn(
                     'manufactor_date_plan',
-                    'Дата планируемая',
+                    'Планируемая дата производства',
                     fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->getAttribute('manufactor_date_plan'))
+                ),
+                new GridColumn(
+                    'manufactor_sz_files',
+                    'СЗ',
+                    fn(Component $entity) => $entity->manufactor_sz_files,
+                    'manufactor_sz_files',
+                    new StringFilter('manufactor_sz_files')
+                ),
+                new GridColumn(
+                    'manufactor_sz_date',
+                    'Дата СЗ',
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->manufactor_sz_date)
+                ),
+                new GridColumn(
+                    'manufactor_sz_quantity',
+                    'Количество в СЗ',
+                    fn(Component $entity) => $entity->manufactor_sz_quantity,
+                    null,
+                    new IntegerFilter('manufactor_sz_quantity')
+                ),
+                new GridColumn(
+                    'manufactor_priority',
+                    'Приоритет производства',
+                    fn(Component $entity) => $entity->manufactor_priority,
+                    null,
+                    new IntegerFilter('manufactor_priority')
+                ),
+                new GridColumn(
+                    'manufactor_comment',
+                    'Примечание ответственного ЗОК',
+                    fn(Component $entity) => $entity->manufactor_comment,
+                    'manufactor_comment',
+                    new StringFilter('manufactor_comment')
+                ),
+                new GridColumn(
+                    'purchaser_id',
+                    'Ответственный закупщик',
+                    fn(Component $entity) => $entity->purchaser?->label(),
+                    null,
+                    new MultiSelectFilter('purchaser_id', $userSelectFilterData)
+                ),
+                new GridColumn(
+                    'purchase_status',
+                    'Статус закупки',
+                    fn(Component $entity) => ComponentPurchaserStatus::LABELS[$entity->purchase_status] ?? '',
+                    'purchase_status',
+                    new MultiSelectFilter('purchase_status', ComponentPurchaserStatus::LABELS)
+                ),
+                new GridColumn(
+                    'purchase_date_plan',
+                    'Планируемая дата поставки',
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->purchase_date_plan)
+                ),
+                new GridColumn(
+                    'purchase_request_files',
+                    'Заявка',
+                    fn(Component $entity) => $entity->purchase_request_files,
+                    'purchase_request_files',
+                    new StringFilter('purchase_request_files')
+                ),
+                new GridColumn(
+                    'purchase_request_date',
+                    'Дата заявки',
+                    fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->purchase_request_date)
+                ),
+                new GridColumn(
+                    'purchase_request_quantity',
+                    'Количество в заявке',
+                    fn(Component $entity) => $entity->purchase_request_quantity,
+                    null,
+                    new IntegerFilter('purchase_request_quantity')
+                ),
+                new GridColumn(
+                    'purchase_request_priority',
+                    'Приоритет закупщика',
+                    fn(Component $entity) => $entity->purchase_request_priority,
+                    null,
+                    new IntegerFilter('purchase_request_priority')
+                ),
+                new GridColumn(
+                    'purchase_comment',
+                    'Примечание закупщика',
+                    fn(Component $entity) => $entity->purchase_comment,
+                    'purchase_comment',
+                    new StringFilter('purchase_comment')
                 ),
             ]
         ];

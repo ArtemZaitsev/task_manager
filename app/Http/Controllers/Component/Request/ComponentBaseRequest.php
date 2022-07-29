@@ -28,9 +28,8 @@ class ComponentBaseRequest extends FormRequest
             'identifier' => ['nullable', 'max:255'],
             'constructor_id' => ['nullable', Rule::exists(User::class, 'id')],
             'source_type' => ['nullable', Rule::in(ComponentSourceType::values())],
-
-            'physical_objects' => ['nullable', 'array'],
-            'physical_objects.*' => Rule::exists(PhysicalObject::class, 'id'),
+            '3d_date_plan' => ['nullable', 'date'],
+            'physical_object_id' => ['nullable', Rule::exists(PhysicalObject::class, 'id')],
             'relative_component_id' => ['nullable', Rule::exists(Component::class, 'id')]
         ]);
     }

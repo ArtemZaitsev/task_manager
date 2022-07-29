@@ -85,10 +85,10 @@ Route::get('/components', [ComponentController::class, 'index'])
 
 Route::get('/component/{id}/edit', [ComponentEditController::class, 'index'])
     ->where('id', '[0-9]+')
-    ->name(TaskEditController::INDEX_ACTION);
+    ->name(ComponentEditController::INDEX_ACTION);
 Route::post('/component/{id}/edit', [ComponentEditController::class, 'processForm'])
     ->where('id', '[0-9]+')
-    ->name(TaskEditController::EDIT_ACTION);
+    ->name(ComponentEditController::EDIT_ACTION);
 
 Route::get('/component/create', [ComponentCreateController::class, 'index'])
     ->name(ComponentCreateController::INDEX_ACTION);
