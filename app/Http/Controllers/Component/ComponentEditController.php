@@ -45,14 +45,7 @@ class ComponentEditController extends Controller
         $entity = Component::findOrFail($id);
         $request->store($entity);
 
-        if ($request->query->has('back')) {
-            $backUrl = $request->query->get('back');
-            $response = redirect()->to($backUrl);
-        } else {
-            $response = redirect()->route(ComponentController::ROUTE_NAME);
-        }
-
-        return $response->with('success', __('messages.task_edit_success'));
+        return RedirectUtils::redirectBack($request, ComponentController::ROUTE_NAME);
     }
 
 

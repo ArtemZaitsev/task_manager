@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Component\ComponentController;
 use App\Http\Controllers\Component\ComponentCreateController;
+use App\Http\Controllers\Component\ComponentDeleteController;
 use App\Http\Controllers\Component\ComponentEditController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -89,6 +90,9 @@ Route::get('/component/{id}/edit', [ComponentEditController::class, 'index'])
 Route::post('/component/{id}/edit', [ComponentEditController::class, 'processForm'])
     ->where('id', '[0-9]+')
     ->name(ComponentEditController::EDIT_ACTION);
+Route::get('/component/{id}/delete', [ComponentDeleteController::class, 'index'])
+    ->where('id', '[0-9]+')
+    ->name(ComponentDeleteController::ROUTE_NAME);
 
 Route::get('/component/create', [ComponentCreateController::class, 'index'])
     ->name(ComponentCreateController::INDEX_ACTION);

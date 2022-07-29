@@ -58,6 +58,9 @@
                 <td>
                     <a href="{{route(\App\Http\Controllers\Component\ComponentEditController::EDIT_ACTION, ['id' =>
                         $row->id])}}">Edit</a>
+                    <a href="{{ route(\App\Http\Controllers\Component\ComponentDeleteController::ROUTE_NAME, ['id' =>
+                     $row->id])
+                    }}">Delete</a>
                 </td>
                 @foreach($grid['columns'] as $column)
                     <td>
