@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Task\Request;
 
 use App\BuisinessLogick\AuditService;
 use App\BuisinessLogick\TaskVoter;
+use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Family;
 use App\Models\Product;
@@ -75,7 +76,8 @@ abstract class BaseTaskRequest extends FormRequest
                 },
             ],
             'product.*' => Rule::exists(Product::class, 'id'),
-            'physical_object_id' => ['nullable','integer',Rule::exists(PhysicalObject::class, 'id')],
+            'component_id' => ['nullable', Rule::exists(Component::class, 'id')],
+            'physical_object_id' => ['nullable', 'integer', Rule::exists(PhysicalObject::class, 'id')],
             'base' => 'nullable|max:255',
             'setting_date' => 'nullable|date',
             'task_creator' => 'nullable|max:255',
@@ -84,8 +86,8 @@ abstract class BaseTaskRequest extends FormRequest
             'theme' => 'nullable|max:255',
             'main_task' => 'nullable|max:255',
             'parent_id' => ['nullable', Rule::exists(Task::class, 'id')],
-            'prev_tasks' => ['nullable','array'],
-            'prev_tasks.*' =>  [Rule::exists(Task::class, 'id')],
+            'prev_tasks' => ['nullable', 'array'],
+            'prev_tasks.*' => [Rule::exists(Task::class, 'id')],
             'name' => 'required',
             'user_id' => ['required', Rule::exists(User::class, 'id')],
             'coperformers' => 'nullable|array',

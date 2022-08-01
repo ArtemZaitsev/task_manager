@@ -2,12 +2,15 @@
 <head>
     <title>@yield('title')</title>
     <script src="/js/jquery_3.6.0.js"></script>
-    <link rel="stylesheet" href="/css/bootstrap_5.1.3.css">
-
+    <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap_bundle_min.js"></script>
-    <link href="/css/select2.css" rel="stylesheet"/>
     <script src="/js/select2.js"></script>
     <script src="/js/myapp_v3.js"></script>
+
+
+    <link rel="stylesheet" href="/css/bootstrap_5.1.3.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link href="/css/select2.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/app.css">
 
     <script>

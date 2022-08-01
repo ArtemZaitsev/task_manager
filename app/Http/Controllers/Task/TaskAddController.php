@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Task\Request\TaskAddRequest;
+use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Family;
 use App\Models\Product;
@@ -36,6 +37,7 @@ class TaskAddController extends Controller
             'projects' => Project::all(),
             'families' => Family::all(),
             'products' => Product::all(),
+            'components' => Component::all('id', 'title', 'identifier'),
             'tasks' => Task::all(),
             'physical_objects' => PhysicalObject::all(),
             'task' => $task,

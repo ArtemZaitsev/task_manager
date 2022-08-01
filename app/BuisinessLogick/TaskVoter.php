@@ -3,7 +3,6 @@
 namespace App\BuisinessLogick;
 
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 

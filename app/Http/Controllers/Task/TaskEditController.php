@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Task;
 use App\BuisinessLogick\TaskVoter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Task\Request\TaskEditRequest;
+use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Family;
 use App\Models\Product;
@@ -56,6 +57,7 @@ class TaskEditController extends Controller
             'projects' => Project::all(),
             'families' => Family::all(),
             'products' => Product::all(),
+            'components' => Component::all('id', 'title', 'identifier'),
 
             'physical_objects' => PhysicalObject::all(),
             'tasks' => Task::all(),

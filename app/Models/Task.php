@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use Illuminate\Database\Eloquent\Model;
 
@@ -101,7 +102,8 @@ class Task extends Model
         'status',
         'comment',
         'execute_time_plan',
-        'execute_time_fact'
+        'execute_time_fact',
+        'component_id'
     ];
 
     public function user()
@@ -137,6 +139,11 @@ class Task extends Model
     public function physicalObject()
     {
         return $this->belongsTo(PhysicalObject::class);
+    }
+
+    public function component()
+    {
+        return $this->belongsTo(Component::class);
     }
 
     public function parent()

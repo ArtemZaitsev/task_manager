@@ -23,8 +23,15 @@ class ComponentControllerViewBuilder
             ),
             'componentsSelectData' =>SelectUtils::entityListToLabelMap(
                 $entity->id === null ?
-                    Component::all()->all() :
-                    Component::query()->where('id', '!=', $entity->id)->get()->all(),
+                    Component::query()
+                        ->where('is_highlevel', 1)
+                        ->get()
+                        ->all() :
+                    Component::query()
+                        ->where('is_highlevel', 1)
+                        ->where('id', '!=', $entity->id)
+                        ->get()
+                        ->all(),
                 fn(Component $component) => $component->label())
         ];
     }

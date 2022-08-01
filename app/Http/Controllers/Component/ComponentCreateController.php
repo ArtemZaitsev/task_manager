@@ -35,13 +35,6 @@ class ComponentCreateController extends Controller
         $entity = new Component();
         $request->store($entity);
 
-        if ($request->query->has('back')) {
-            $backUrl = $request->query->get('back');
-            $response = redirect()->to($backUrl);
-        } else {
-            $response = redirect()->route('tasks.list');
-        }
-
-        return $response->with('success', __('messages.task_add_success'));
+        return RedirectUtils::redirectBack($request, ComponentController::ROUTE_NAME);
     }
 }

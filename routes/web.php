@@ -4,8 +4,11 @@ use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Component\ComponentController;
 use App\Http\Controllers\Component\ComponentCreateController;
 use App\Http\Controllers\Component\ComponentDeleteController;
+use App\Http\Controllers\Component\ComponentDisplayFieldsController;
 use App\Http\Controllers\Component\ComponentEditController;
+use App\Http\Controllers\Component\ComponentExportController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Task\PerformerTaskEditController;
 use App\Http\Controllers\Task\TaskAddController;
@@ -81,6 +84,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name(LoginController:
 
 Route::get('/tasks/export', [TasksExportController::class, 'export'])->name(TasksExportController::EXPORT_ACTION);
 
+
 Route::get('/components', [ComponentController::class, 'index'])
     ->name(ComponentController::ROUTE_NAME);
 
@@ -98,6 +102,13 @@ Route::get('/component/create', [ComponentCreateController::class, 'index'])
     ->name(ComponentCreateController::INDEX_ACTION);
 Route::post('/component/create', [ComponentCreateController::class, 'processForm'])
     ->name(ComponentCreateController::PROCESS_FORM_ACTION);
+Route::post('/component/save-fields', [ComponentDisplayFieldsController::class, 'processForm'])
+    ->name(ComponentDisplayFieldsController::ROUTE_NAME);
+Route::get('/components/export', [ComponentExportController::class, 'export'])->name
+(ComponentExportController::EXPORT_ACTION);
+
+Route::get('/physical_object/{id}/report', [PhysicalObjectReportController::class, 'index'])
+    ->name(PhysicalObjectReportController::ROUTE_NAME);
 
 //Route::get('/persons', [\App\Http\Controllers\PersonController::class, 'list'])->name('tasks.list');
 ////Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);

@@ -138,6 +138,31 @@
                     @endif
                 </div>
             @endif
+
+
+            @if($fieldsToEdit === null || in_array('component_id', $fieldsToEdit))
+                <div class="form-group mt-2">
+                    <label for="component_id">Компонент</label>
+                    <select name="component_id"
+                            class="select2 form-control {{ $errors->has('component_id') ? 'is-invalid' : '' }}"
+                            id="component_id">
+                        <option value=""></option>
+                        @foreach($components as $entity )
+                            <option value="{{ $entity->id }}"
+                                    @if($entity->id === old('component_id',$task->component_id))
+                                    selected @endif>
+                                {{ $entity->label() }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('component_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('component_id') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
             @if($fieldsToEdit === null || in_array('base', $fieldsToEdit))
                 <div class="form-group mt-2">
                     <label for="base">Основание</label>

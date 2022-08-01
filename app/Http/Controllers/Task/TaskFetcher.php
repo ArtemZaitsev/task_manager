@@ -85,6 +85,12 @@ class TaskFetcher
                 $this->applyMultipleValuesFilter($physical_object, $tasksQuery, 'tasks.physical_object_id');
             }
         }
+        if ($query->has('component_id')) {
+            $component = $query->get('component_id');
+            if (!empty($component)) {
+                $this->applyMultipleValuesFilter($component, $tasksQuery, 'tasks.component_id');
+            }
+        }
 
         if ($query->has('system')) {
             $system = $query->get('system');
@@ -358,6 +364,8 @@ class TaskFetcher
         $tasks = $tasksQuery->get();
         return $tasks;
     }
+
+
 
     public function sumByColumn(string $field, InputBag $query): float
     {

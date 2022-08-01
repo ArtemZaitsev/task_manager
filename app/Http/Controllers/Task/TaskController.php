@@ -6,6 +6,7 @@ use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\ProjectVoter;
 use App\BuisinessLogick\TaskService;
 use App\BuisinessLogick\TaskVoter;
+use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Direction;
 use App\Models\Family;
@@ -57,6 +58,7 @@ class TaskController extends BaseController
             'directions' => Direction::all(),
             'groups' => Group::all(),
             'subgroups' => Subgroup::all(),
+            'components' => Component::all('id', 'title', 'identifier'),
             'tasks' => $tasks,
             'sum' => $sum,
             'users' => User::all(),

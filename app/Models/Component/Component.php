@@ -51,6 +51,7 @@ use Orchid\Screen\AsSource;
  * @property $purchase_request_quantity
  * @property $purchase_request_priority
  * @property $purchase_comment
+ * @property boolean $is_highlevel
  *
  * @property $relative_component_id
  * @property ?Component $component
@@ -77,7 +78,7 @@ class Component extends Model
         '3d_date_plan',
         'dd_status',
         'dd_date_plan',
-        'drawings_files',
+        'drawing_files',
         'drawing_date',
         'calc_status',
         'calc_date_plan',
@@ -104,6 +105,7 @@ class Component extends Model
         'relative_component_id',
         'physical_object_id',
         'quantity_in_object',
+        'is_highlevel',
     ];
 
 

@@ -45,6 +45,13 @@
                    href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
                     Выход из системы
                 </a>
+
+                    @if($taskVoter->canCreate())
+                        <a class="btn btn-outline-info m-3"
+                           href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME) }}">
+                            Компоненты
+                        </a>
+                    @endif
             </div>
         </div>
 
@@ -259,6 +266,20 @@
                             </div>
                         </th>
                     @endif
+
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('component_id'))
+                        <th scope="col" class="text-center" style="max-width: 150px;">
+                            @include('filters.entity_filter', [
+                            'filter_name' => 'component_id',
+                            'filter_data' => $components,
+                            'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                            ])
+                            <div scope="col" class="text-center for-headers">
+                                Компонент
+                            </div>
+                        </th>
+                    @endif
+
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
@@ -646,6 +667,14 @@
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             {{ $task->physicalObject?->name }}
+
+                        </td>
+                    @endif
+
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('components'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            {{ $task->component?->label() }}
 
                         </td>
                     @endif

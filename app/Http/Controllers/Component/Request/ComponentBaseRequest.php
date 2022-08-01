@@ -4,7 +4,14 @@ namespace App\Http\Controllers\Component\Request;
 
 use App\BuisinessLogick\ComponentVoter;
 use App\Models\Component\Component;
+use App\Models\Component\Component3dStatus;
+use App\Models\Component\ComponentCalcStatus;
+use App\Models\Component\ComponentDdStatus;
+use App\Models\Component\ComponentManufactorStatus;
+use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
+use App\Models\Component\ComponentType;
+use App\Models\Component\ComponentVersion;
 use App\Models\Component\PhysicalObject;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -21,16 +28,50 @@ class ComponentBaseRequest extends FormRequest
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
         $this->rules[ComponentVoter::ROLE_CONSTRUCTOR] = [
-            //todo add rules
+            'quantity_in_object' => ['nullable', 'numeric'],
+            'entry_level' => ['nullable', 'numeric'],
+            'source_type' => ['nullable', Rule::in(ComponentSourceType::values())],
+            'version' => ['nullable', Rule::in(ComponentVersion::values())],
+            'type' => ['nullable', Rule::in(ComponentType::values())],
+            '3d_status' => ['nullable', Rule::in(Component3dStatus::values())],
+            '3d_date_plan' => ['nullable', 'date'],
+            'dd_status' => ['nullable', Rule::in(ComponentDdStatus::values())],
+            'dd_date_plan' => ['nullable', 'date'],
+            'calc_status' => ['nullable', Rule::in(ComponentCalcStatus::values())],
+            'calc_date_plan' => ['nullable', 'date'],
+            'constructor_priority' => ['nullable', 'numeric'],
+            'constructor_comment' => ['nullable', 'string'],
+
+            'manufactor_id' => ['nullable', Rule::exists(User::class, 'id')],
+            'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],
+            'manufactor_date_plan' => ['nullable', 'date'],
+            'manufactor_sz_files' => ['nullable', 'string'],
+            'manufactor_sz_date' => ['nullable', 'date'],
+            'manufactor_sz_quantity' => ['nullable', 'numeric'],
+            'manufactor_priority' => ['nullable', 'numeric'],
+            'manufactor_comment' => ['nullable', 'string'],
+
+            'purchaser_id' => ['nullable', Rule::exists(User::class, 'id')],
+            'purchase_status' => ['nullable', Rule::in(ComponentPurchaserStatus::values())],
+            'purchase_date_plan' => ['nullable', 'date'],
+            'purchase_request_files' => ['nullable', 'string'],
+            'purchase_request_date' => ['nullable', 'date'],
+            'purchase_request_quantity' => ['nullable', 'numeric'],
+            'purchase_request_priority' => ['nullable', 'numeric'],
+            'purchase_comment' => ['nullable', 'string'],
         ];
         $this->rules[ComponentVoter::ROLE_PLANER] = array_merge($this->rules[ComponentVoter::ROLE_CONSTRUCTOR], [
             'title' => ['required', 'max:255'],
             'identifier' => ['nullable', 'max:255'],
+            'is_highlevel' => ['required', 'boolean'],
             'constructor_id' => ['nullable', Rule::exists(User::class, 'id')],
-            'source_type' => ['nullable', Rule::in(ComponentSourceType::values())],
-            '3d_date_plan' => ['nullable', 'date'],
             'physical_object_id' => ['nullable', Rule::exists(PhysicalObject::class, 'id')],
-            'relative_component_id' => ['nullable', Rule::exists(Component::class, 'id')]
+            'relative_component_id' => ['nullable', Rule::exists(Component::class, 'id')],
+            'drawing_files' => ['nullable', 'string'],
+            'drawing_date' => ['nullable', 'date'],
+            'tz_files' => ['nullable', 'string'],
+            'tz_date' => ['nullable', 'date'],
+
         ]);
     }
 

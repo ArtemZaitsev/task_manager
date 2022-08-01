@@ -60,5 +60,6 @@ class MultiSelectFilter implements Filter
         }
         return ['value' => $filters[$this->name]];
     }
+
 }
 

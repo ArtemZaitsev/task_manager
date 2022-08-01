@@ -22,6 +22,10 @@ class GridColumn
         return $renderer($data);
     }
 
+    public function renderExcel($data){
+        return strip_tags($this->render($data));
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -43,5 +47,12 @@ class GridColumn
     }
 
 
+    public function needDisplay(): bool {
+        $fields = session()->get(ComponentDisplayFieldsController::COMPONENTS_FIELDS_SESSION_NAME, null);
+        if($fields === null) {
+            return true;
+        }
+        return in_array($this->name, $fields);
+    }
 
 }
