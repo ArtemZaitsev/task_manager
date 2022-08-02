@@ -2,6 +2,15 @@
 @section('title') Список задач @endsection
 @section('content')
 
+    <style>
+        .table thead th {
+            top:0;
+            z-index: 1;
+            position: sticky;
+            background-color: #f4fbfd;
+        }
+
+    </style>
 
     <div class="main">
 
@@ -12,8 +21,7 @@
         @endif
         <div class="">
             <div class="position-absolute top-0 end-0">
-                <div><b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()
-        }}</b></div>
+                <div><b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()}}</b></div>
                 <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
                     <button type="button" class="btn btn-outline-success"
                             data-text="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы"
@@ -46,12 +54,10 @@
                     Выход из системы
                 </a>
 
-                    @if($taskVoter->canCreate())
-                        <a class="btn btn-outline-info m-3"
-                           href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME) }}">
-                            Компоненты
-                        </a>
-                    @endif
+                    <a class="btn btn-outline-info m-3"
+                       href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME) }}">
+                        Компоненты
+                    </a>
             </div>
         </div>
 
@@ -61,8 +67,11 @@
             пользователя</a>
         @endImpersonating
 
+
+
+
         <table class="table table-bordered table-hover">
-            <thead class="thead-dark" style="background-color: #d1f4ff; ">
+            <thead class="thead-dark" style="background-color: #f4fbfd; ">
             <form method="GET">
                 <tr>
                     <th scope="col" class="text-center sticky-th">
@@ -266,7 +275,6 @@
                             </div>
                         </th>
                     @endif
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('component_id'))
                         <th scope="col" class="text-center" style="max-width: 150px;">
                             @include('filters.entity_filter', [
@@ -279,7 +287,6 @@
                             </div>
                         </th>
                     @endif
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('theme'))
                         <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
@@ -308,7 +315,6 @@
                             </div>
                         </th>
                     @endif
-
                     <th scope="col" class="text-center">
                         @include('filters.string_filter', [
                             'filter_name' => 'task_name',
@@ -348,7 +354,6 @@
                             </div>
                         </th>
                     @endif
-
                     <th scope="col" class="text-center ">
                         @include('filters.date_filter', [
                             'filter_name' => 'end_date',
@@ -362,7 +367,6 @@
                             </a>
                         </div>
                     </th>
-
                     <th scope="col" class="text-center ">
                         @include('filters.date_filter', [
                             'filter_name' => 'start_date',
@@ -376,7 +380,6 @@
                             </a>
                         </div>
                     </th>
-
                     <th scope="col" class="text-center ">
                         @include('filters.date_filter', [
                             'filter_name' => 'end_date_plan',
@@ -406,8 +409,6 @@
                             </div>
                         </th>
                     @endif
-
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('progress'))
                         <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
@@ -422,8 +423,6 @@
                             </div>
                         </th>
                     @endif
-
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('execute'))
                         <th scope="col" class="text-center">
                             @include('filters.enum_filter', [
@@ -439,7 +438,6 @@
                             </div>
                         </th>
                     @endif
-
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('status'))
                         <th scope="col" class="text-center">
                             @include('filters.enum_filter', [
@@ -488,7 +486,6 @@
                             ])
                         <div scope="col" class="text-center for-headers">Статус проблемы</div>
                     </th>
-
                     <th scope="col" class="text-center">
                         @include('filters.date_filter', [
                             'filter_name' => 'date_refresh_plan',
@@ -496,7 +493,6 @@
                             ])
                         <div scope="col" class="text-center for-headers">Дата обновления проблемы план</div>
                     </th>
-
                     <th scope="col" class="text-center">
                         @include('filters.date_filter', [
                            'filter_name' => 'date_refresh_fact',
@@ -519,18 +515,14 @@
                             ])
                         <div scope="col" class="text-center for-headers">Что делаем</div>
                     </th>
-
-
                 </tr>
-
             </form>
             </thead>
 
             <tbody>
             @foreach ($tasks as $task)
                 <tr>
-                    <th @if ( count($task->logs) > 1 ) rowspan="{{ count
-                    ($task->logs) }} "
+                    <th @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }} "
                         @endif class="align-middle " style="background-color: #f6fdff;">
                         @if($taskVoter->canEdit($task))
                             <a style="text-decoration: none;" href="{{ route
@@ -625,14 +617,14 @@
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             @foreach($task->projects as $project)
                                 @if($projectVoter->canSeeGantt($project))
-                                <a href="{{route(
+                                    <a href="{{route(
                                 App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['id' =>
                                 $project->id])}}"
-                                   target="_blank">{{
+                                       target="_blank">{{
                                 $project->title }}</a>
                                 @else
                                     {{ $project->title }}
-                                    @endif
+                                @endif
                                 @if(!$loop->last)
                                     <br/>
                                 @endif

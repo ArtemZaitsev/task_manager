@@ -121,21 +121,21 @@ class ComponentGrid
                 'Как получаем',
                 fn(Component $entity) => ComponentSourceType::LABELS[$entity->source_type] ?? '',
                 'source_type',
-                new MultiSelectFilter('source_type', ComponentSourceType::LABELS)
+                new MultiSelectFilter('source_type', $this->nullValue(ComponentSourceType::LABELS))
             ),
             new GridColumn(
                 'version',
                 'Версия',
                 fn(Component $entity) => ComponentVersion::LABELS[$entity->version] ?? '',
                 'version',
-                new MultiSelectFilter('version', ComponentVersion::LABELS)
+                new MultiSelectFilter('version', $this->nullValue(ComponentVersion::LABELS))
             ),
             new GridColumn(
                 'type',
                 'Тип компонента',
                 fn(Component $entity) => ComponentType::LABELS[$entity->type] ?? '',
                 'type',
-                new MultiSelectFilter('type', ComponentType::LABELS)
+                new MultiSelectFilter('type', $this->nullValue(ComponentType::LABELS))
             ),
             new GridColumn(
                 'constructor_id',
@@ -149,7 +149,7 @@ class ComponentGrid
                 'Статус 3D-модели',
                 fn(Component $entity) => Component3dStatus::LABELS[$entity->getAttribute('3d_status')] ?? '',
                 '3d_status',
-                new MultiSelectFilter('3d_status', Component3dStatus::LABELS)
+                new MultiSelectFilter('3d_status', $this->nullValue(Component3dStatus::LABELS))
             ),
             new GridColumn(
                 '3d_date_plan',
@@ -163,7 +163,7 @@ class ComponentGrid
                 'Статус КД',
                 fn(Component $entity) => ComponentDdStatus::LABELS[$entity->dd_status] ?? '',
                 'dd_status',
-                new MultiSelectFilter('dd_status', ComponentDdStatus::LABELS)
+                new MultiSelectFilter('dd_status', $this->nullValue(ComponentDdStatus::LABELS))
             ),
             new GridColumn(
                 'dd_date_plan',
@@ -192,7 +192,7 @@ class ComponentGrid
                 'Статус Расчетов',
                 fn(Component $entity) => ComponentCalcStatus::LABELS[$entity->calc_status] ?? '',
                 'calc_status',
-                new MultiSelectFilter('calc_status', ComponentCalcStatus::LABELS)
+                new MultiSelectFilter('calc_status', $this->nullValue(ComponentCalcStatus::LABELS))
             ),
             new GridColumn(
                 'calc_date_plan',
@@ -225,7 +225,7 @@ class ComponentGrid
             new GridColumn(
                 'constructor_comment',
                 'Примечание конструктора',
-                fn(Component $entity) => $entity->drawing_files,
+                fn(Component $entity) => $entity->constructor_comment,
                 'constructor_comment',
                 new StringFilter('constructor_comment')
             ),
@@ -241,7 +241,7 @@ class ComponentGrid
                 'Статус производства',
                 fn(Component $entity) => ComponentManufactorStatus::LABELS[$entity->manufactor_status] ?? '',
                 'manufactor_status',
-                new MultiSelectFilter('manufactor_status', ComponentManufactorStatus::LABELS)
+                new MultiSelectFilter('manufactor_status', $this->nullValue(ComponentManufactorStatus::LABELS))
             ),
             new GridColumn(
                 'manufactor_date_plan',
@@ -297,7 +297,7 @@ class ComponentGrid
                 'Статус закупки',
                 fn(Component $entity) => ComponentPurchaserStatus::LABELS[$entity->purchase_status] ?? '',
                 'purchase_status',
-                new MultiSelectFilter('purchase_status', ComponentPurchaserStatus::LABELS)
+                new MultiSelectFilter('purchase_status', $this->nullValue(ComponentPurchaserStatus::LABELS))
             ),
             new GridColumn(
                 'purchase_date_plan',
@@ -402,5 +402,10 @@ class ComponentGrid
         }
         $orderDirection = $request->query->get('sort_direction') ?? 'ASC';
         $query->orderBy($orderField, $orderDirection);
+    }
+
+    private function nullValue(array $data): array
+    {
+        return array_merge([0 => 'Не указано'], $data);
     }
 }

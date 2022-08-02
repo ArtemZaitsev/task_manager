@@ -13,5 +13,7 @@ interface Filter
 
     public function templateData(Request $request): array;
 
+    public function isEnable(): bool;
+
     public function apply(Builder $query, mixed $data): void;
 }

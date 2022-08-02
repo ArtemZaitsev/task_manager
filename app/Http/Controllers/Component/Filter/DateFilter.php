@@ -33,6 +33,28 @@ class DateFilter implements Filter
         return 'component.filters.date_filter';
     }
 
+    public function isEnable(): bool
+    {
+        $request = request();
+        if(!$request->query->has('filters')) {
+            return false;
+        }
+        $filters = $request->query->get('filters');
+        if(!isset($filters[$this->name])) {
+            return false;
+        }
+        $filterData = $filters[$this->name];
+
+        switch ($filterData['mode']) {
+            case \App\Http\Controllers\Filters\DateFilter::MODE_TODAY:
+                return true;
+            case \App\Http\Controllers\Filters\DateFilter::MODE_RANGE:
+                return !empty($filterData['start']) || !empty($filterData['end']);
+            default:
+                return false;
+        }
+    }
+
     public function apply(Builder $query, mixed $data): void
     {
         if (empty($data)) {

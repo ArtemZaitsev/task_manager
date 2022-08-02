@@ -18,17 +18,13 @@
     background-color: #c3e6cb;
 }
 
-.table thead th {
-    top:0;
-    z-index: 1;
-    position: sticky;
-    background-color: #f4fbfd;
-}
+
 
 .table thead th.sticky-th {
     position: sticky;
     left: 0;
     z-index: 2;
+    background-color: #f4fbfd;
 }
 
 .table tbody th {
@@ -36,6 +32,7 @@
     left: 0;
     background: white;
     z-index: 1;
+
 }
 
 .table tbody th div ul {

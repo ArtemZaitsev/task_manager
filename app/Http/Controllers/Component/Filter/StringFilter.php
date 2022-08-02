@@ -42,6 +42,19 @@ class StringFilter implements Filter
         $query->where($this->fieldName, 'like', '%' . $data . '%');
     }
 
+    public function isEnable(): bool
+    {
+        $request = request();
+        if (!$request->query->has('filters')) {
+            return false;
+        }
+        $filters = $request->query->get('filters');
+        if (!isset($filters[$this->name])) {
+            return false;
+        }
+        $filterData = $filters[$this->name];
+        return !empty($filterData);
+    }
 
     public function templateData(Request $request): array
     {

@@ -2,6 +2,17 @@
 @section('title') Список компонентов @endsection
 @section('content')
 
+    <style>
+        .table thead th {
+            top: 0;
+            z-index: 1;
+            position: sticky;
+            background-color: #f6eecd;
+        }
+
+    </style>
+
+
 
     <div class="main">
 
@@ -13,7 +24,7 @@
     </div>
 
     <div>
-           <a class="btn btn-outline-success m-3"
+        <a class="btn btn-outline-success m-3"
            href="{{ route(\App\Http\Controllers\Component\ComponentCreateController::INDEX_ACTION,
  ['back' => url()->full()]) }}">
             Добавить компонент
@@ -29,6 +40,17 @@
                 Экспорт в Excel
             </a>
         @endif
+
+        @impersonating()
+        <a class="btn btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под
+            пользователя</a>
+        @endImpersonating
+
+
+        <div class="position-absolute top-0 end-0">
+            <div><b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()}}</b></div>
+        </div>
+
 
         <script>
             function saveFields() {
@@ -77,14 +99,11 @@
         </script>
 
 
-
-
-
         <button class="btn btn-outline-info m-3" id="show-display-fields">Настроить столбцы</button>
         <div id="display-fields" style="display: none">
 
 
-            <button  id="fields_select-all">Выбрать все</button>
+            <button id="fields_select-all">Выбрать все</button>
             <form id="display-fields-form"
                   action="{{ route(\App\Http\Controllers\Component\ComponentDisplayFieldsController::ROUTE_NAME) }}">
                 @csrf
@@ -109,49 +128,50 @@
     </div>
 
     <table class="table table-bordered table-hover">
+        <thead class="thead-dark" style="position:sticky; top: 0; z-index: 1;">
         <form method="GET" id="filter_form">
-            <thead>
-            <tr>
-                <th></th>
-                @foreach($columns as $column)
-                    @if($column->needDisplay())
-                        <th>
-                            @if($column->getOrderField() !== null)
-                                <a href="{{  App\Utils\UrlUtils::newSortUrl($column->getOrderField()) }}">{{$column->getLabel()}}</a>
-                            @else
-                                {{$column->getLabel()}}
-                            @endif
-                        </th>
-                    @endif
-                @endforeach
-            </tr>
-            <tr>
-                <td></td>
-                @foreach($columns as $column)
-                    @if($column->needDisplay())
-                        <td>
-                            @if($column->getFilter() != null)
-                                @include($column->getFilter()->template(), [
-                                'filter' => $column->getFilter(),
-                                'filterData' => $column->getFilter()->templateData(request())
-                                ])
-                                <br/>
-                                @include('component.filters.filter_buttons', ['filterName' => $column->getFilter()->name()])
-                            @endif
-                        </td>
-                    @endif
+            <tr class="text-center ">
+                <th scope="col" class="text-center">
+                    <div class="for-headers">
+                        Управление компонентом
+                    </div>
+                </th>
 
+                @foreach($columns as $column)
+                    <th scope="col" class="text-center">
+                        @if($column->needDisplay())
+                            @if($column->getFilter() != null)
+                                <div @if($column->getFilter()->isEnable()) class="filter-applied" @endif>
+                                    @include($column->getFilter()->template(), [
+                                    'filter' => $column->getFilter(),
+                                    'filterData' => $column->getFilter()->templateData(request())
+                                    ])
+                                    @include('component.filters.filter_buttons', ['filterName' => $column->getFilter()->name()])
+                                </div>
+                            @endif
+                            <div scope="col" class="text-center for-headers">
+                                @if($column->getOrderField() !== null)
+                                    <a href="{{  App\Utils\UrlUtils::newSortUrl($column->getOrderField()) }}">{{$column->getLabel()}}</a>
+                                    @include('component.sort_label', ['field' => $column->getOrderField()])
+                                @else
+                                    {{$column->getLabel()}}
+                                @endif
+                            </div>
+                        @endif
+                    </th>
                 @endforeach
+
+
             </tr>
-            </thead>
         </form>
+        </thead>
+
         <tbody>
         @foreach($data as $row)
             <tr>
-
-                <td>
-                    <a href="{{route(\App\Http\Controllers\Component\ComponentEditController::EDIT_ACTION, ['id' =>
-                        $row->id])}}">
+                <td style="position: sticky; left: 0; background-color: #f6eecd;">
+                    <a style="text-decoration: none" href="{{route(\App\Http\Controllers\Component\ComponentEditController::EDIT_ACTION, ['id' =>
+                        $row->id, 'back' => url()->full()])}}">
                         <button type="button" class="btn btn-outline-warning" title="Редактировать">
                             <svg width="16" height="16" fill="currentColor"
                                  class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -160,9 +180,9 @@
                             </svg>
                         </button>
                     </a>
-                    <a onclick="return confirm('Точно удалить?')" href="{{ route(\App\Http\Controllers\Component\ComponentDeleteController::ROUTE_NAME, ['id' =>
-                     $row->id, 'back' => url()->full()])
-                    }}">
+                    <a style="text-decoration: none" onclick="return confirm('Точно удалить?')"
+                       href="{{ route(\App\Http\Controllers\Component\ComponentDeleteController::ROUTE_NAME,
+                            ['id' => $row->id, 'back' => url()->full()])}}">
                         <button type="button" class="btn btn-outline-danger" title="Удалить">
                             <svg width="16" height="16" fill="currentColor" class="bi bi-x-lg"
                                  viewBox="0 0 16 16">

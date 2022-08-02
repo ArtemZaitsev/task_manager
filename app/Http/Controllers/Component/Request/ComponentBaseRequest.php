@@ -41,8 +41,8 @@ class ComponentBaseRequest extends FormRequest
             'calc_date_plan' => ['nullable', 'date'],
             'constructor_priority' => ['nullable', 'numeric'],
             'constructor_comment' => ['nullable', 'string'],
-
-            'manufactor_id' => ['nullable', Rule::exists(User::class, 'id')],
+        ];
+        $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
             'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],
             'manufactor_date_plan' => ['nullable', 'date'],
             'manufactor_sz_files' => ['nullable', 'string'],
@@ -50,8 +50,9 @@ class ComponentBaseRequest extends FormRequest
             'manufactor_sz_quantity' => ['nullable', 'numeric'],
             'manufactor_priority' => ['nullable', 'numeric'],
             'manufactor_comment' => ['nullable', 'string'],
+        ];
 
-            'purchaser_id' => ['nullable', Rule::exists(User::class, 'id')],
+        $this->rules[ComponentVoter::ROLE_PURCHASER] = [
             'purchase_status' => ['nullable', Rule::in(ComponentPurchaserStatus::values())],
             'purchase_date_plan' => ['nullable', 'date'],
             'purchase_request_files' => ['nullable', 'string'],
@@ -60,19 +61,26 @@ class ComponentBaseRequest extends FormRequest
             'purchase_request_priority' => ['nullable', 'numeric'],
             'purchase_comment' => ['nullable', 'string'],
         ];
-        $this->rules[ComponentVoter::ROLE_PLANER] = array_merge($this->rules[ComponentVoter::ROLE_CONSTRUCTOR], [
-            'title' => ['required', 'max:255'],
-            'identifier' => ['nullable', 'max:255'],
-            'is_highlevel' => ['required', 'boolean'],
-            'constructor_id' => ['nullable', Rule::exists(User::class, 'id')],
-            'physical_object_id' => ['nullable', Rule::exists(PhysicalObject::class, 'id')],
-            'relative_component_id' => ['nullable', Rule::exists(Component::class, 'id')],
-            'drawing_files' => ['nullable', 'string'],
-            'drawing_date' => ['nullable', 'date'],
-            'tz_files' => ['nullable', 'string'],
-            'tz_date' => ['nullable', 'date'],
 
-        ]);
+        $this->rules[ComponentVoter::ROLE_PLANER] = array_merge(
+            $this->rules[ComponentVoter::ROLE_CONSTRUCTOR],
+            $this->rules[ComponentVoter::ROLE_PURCHASER],
+            $this->rules[ComponentVoter::ROLE_MANUFACTOR],
+            [
+                'purchaser_id' => ['nullable', Rule::exists(User::class, 'id')],
+                'manufactor_id' => ['nullable', Rule::exists(User::class, 'id')],
+                'title' => ['required', 'max:255'],
+                'identifier' => ['nullable', 'max:255'],
+                'is_highlevel' => ['required', 'boolean'],
+                'constructor_id' => ['nullable', Rule::exists(User::class, 'id')],
+                'physical_object_id' => ['nullable', Rule::exists(PhysicalObject::class, 'id')],
+                'relative_component_id' => ['nullable', Rule::exists(Component::class, 'id')],
+                'drawing_files' => ['nullable', 'string'],
+                'drawing_date' => ['nullable', 'date'],
+                'tz_files' => ['nullable', 'string'],
+                'tz_date' => ['nullable', 'date'],
+
+            ]);
     }
 
     public function authorize()
