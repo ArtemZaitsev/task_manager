@@ -113,7 +113,7 @@ class ComponentGrid
             new GridColumn(
                 'entry_level',
                 'Уровень входимости',
-                fn(Component $entity) => $entity->entry_level,
+                fn(Component $entity) => $entity->entry_level === 0 ? '' : $entity->entry_level,
                 null,
                 new IntegerFilter('entry_level')
             ),
@@ -275,7 +275,7 @@ class ComponentGrid
             new GridColumn(
                 'manufactor_sz_quantity',
                 'Количество в СЗ',
-                fn(Component $entity) => $entity->manufactor_sz_quantity,
+                fn(Component $entity) => $entity->manufactor_sz_quantity ===0 ? '': $entity->manufactor_sz_quantity,
                 null,
                 new IntegerFilter('manufactor_sz_quantity')
             ),
@@ -331,7 +331,7 @@ class ComponentGrid
             new GridColumn(
                 'purchase_request_quantity',
                 'Количество в заявке',
-                fn(Component $entity) => $entity->purchase_request_quantity,
+                fn(Component $entity) => $entity->purchase_request_quantity === 0 ? '': $entity->purchase_request_quantity,
                 null,
                 new IntegerFilter('purchase_request_quantity')
             ),
