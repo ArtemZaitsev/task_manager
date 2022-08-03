@@ -50,7 +50,6 @@
                         {{ $label }}
                     </th>
                 @endforeach
-                <th class="not-specified">Не указано</th>
             @endforeach
         </tr>
         @foreach($report['rows'] as $row)
@@ -69,10 +68,10 @@
                             </a>
                         </td>
                     @endforeach
-                    <td class="value">
-                        <a target="_blank" href="{{ $filterUrl($row['component']->id, [ $field => [0]]) }}">
-                            {{$row['byStatus'][$field][0] ?? 0 }}</a>
-                    </td>
+{{--                    <td class="value">--}}
+{{--                        <a target="_blank" href="{{ $filterUrl($row['component']->id, [ $field => [0]]) }}">--}}
+{{--                            {{$row['byStatus'][$field][0] ?? 0 }}</a>--}}
+{{--                    </td>--}}
                 @endforeach
             </tr>
         @endforeach
@@ -83,7 +82,7 @@
                 @foreach($statusData as $value => $label)
                     <th class="value">{{$report['footer']['status'][$field][$value] ?? 0 }}</th>
                 @endforeach
-                <th class="value">{{$report['footer']['status'][$field][0] ?? 0 }}</th>
+{{--                <th class="value">{{$report['footer']['status'][$field][0] ?? 0 }}</th>--}}
             @endforeach
         </tr>
     </table>
