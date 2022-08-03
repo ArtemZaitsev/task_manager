@@ -1,4 +1,4 @@
-<div class="form-group mt-2">
+<div class="form-group">
     <label for="base" @if($required)class="required"@endif>{{ $label }}</label>
     <input
         name="{{ $fieldName }}"

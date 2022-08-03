@@ -10,10 +10,10 @@ class Component3dStatus
     public const DONE = 4;
 
     public const LABELS = [
-        self::NOT_REQUIRED => 'не требуется',
-        self::DOES_NOT_HAVE => 'нет',
-        self::IN_PROGRESS => 'в процессе',
-        self::DONE => 'готово',
+        self::NOT_REQUIRED => 'Не требуется',
+        self::DOES_NOT_HAVE => 'Нет',
+        self::IN_PROGRESS => 'В процессе',
+        self::DONE => 'Готово',
     ];
 
     public static function values(): array

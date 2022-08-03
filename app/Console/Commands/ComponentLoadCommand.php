@@ -3,8 +3,16 @@
 namespace App\Console\Commands;
 
 use App\Models\Component\Component;
+use App\Models\Component\Component3dStatus;
+use App\Models\Component\ComponentCalcStatus;
+use App\Models\Component\ComponentDdStatus;
+use App\Models\Component\ComponentManufactorStartWay;
+use App\Models\Component\ComponentManufactorStatus;
+use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
+use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
+use App\Models\Component\PhysicalObject;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -48,7 +56,7 @@ class ComponentLoadCommand extends Command
 
         $iterator = $this->csvRecordIterator($filePath);
         foreach ($iterator as $idx => $record) {
-            $this->processRecord($record);
+            $this->processRecord($record, $idx + 2);
         }
         return 0;
     }
@@ -97,27 +105,63 @@ class ComponentLoadCommand extends Command
         fclose($handle);
     }
 
-    private function processRecord(array $record): void
+    private function processRecord(array $record, int $lineNumber): void
     {
-        $relativeComponentId = $this->findOrCreateRelativeComponent($record['Относится к']);
-      //  $sourceType = $this->convertEnum($record['Тип элемента'], ComponentSourceType::LABELS);
-      //  $version = $this->convertEnum($record['Версия компонента'], ComponentVersion::LABELS);
+        $relativeComponentId = $this->findOrCreateRelativeComponent($record['Относится к'], $lineNumber);
+        $physicalObjectId = $this->findOrCreatePhysicalObject($record['Объект'], $lineNumber);
 
         $entity = (new Component())
             ->fill([
                 'is_highlevel' => 0,
                 'identifier' => $record['Идентификатор (можно с ревизией)'],
                 'title' => $record['Наименование'],
-                'entry_level' => $record['Уровень входимости'],
+                'entry_level' => (int)$record['Уровень входимости'],
+                'physical_object_id' => $physicalObjectId,
                 'relative_component_id' => $relativeComponentId,
-                'constructor_id' => $this->findUser($record['УГК - Ответственный УГК'])
+                'quantity_in_object' => (int)$record['Количество для ПС_19л_Сед_PHEV01'],
+
+                'constructor_id' => $this->findUser($record['УГК - Ответственный УГК']),
+                'manufactor_id' => $this->findUser($record['ЗОК - Ответственный Производство']),
+
+                'type' => $this->convertEnum($record, 'Тип элемента', ComponentType::LABELS, $lineNumber),
+                'version' => $this->convertEnum($record, 'Версия компонента', ComponentVersion::LABELS, $lineNumber),
+                'source_type' => $this->convertEnum($record, 'Тип', ComponentSourceType::LABELS, $lineNumber),
+                '3d_status' => $this->convertEnum($record, 'УГК - Статус 3D модели', Component3dStatus::LABELS,
+                    $lineNumber),
+                'dd_status' => $this->convertEnum($record, 'УГК - Статус КД', ComponentDdStatus::LABELS, $lineNumber),
+                'calc_status' => $this->convertEnum($record, 'УГК - Статус расчеты', ComponentCalcStatus::LABELS,
+                    $lineNumber),
+                'manufactor_status' => $this->convertEnum($record, 'ЗОК - Статус Производство',
+                    ComponentManufactorStatus::LABELS, $lineNumber),
+                'purchase_status' => $this->convertEnum($record, 'Закупки - Статус Закупки',
+                    ComponentPurchaserStatus::LABELS, $lineNumber),
+                'manufactor_start_way' => $this->convertEnum($record, 'Способ запуска в производство',
+                    ComponentManufactorStartWay::LABELS, $lineNumber),
+
+                '3d_date_plan' => $this->convertDate($record['УГК - Планируемая дата подготовки 3D']),
+                'dd_date_plan' => $this->convertDate($record['УГК - Планируемая дата подготовки КД']),
+                'manufactor_date_plan' => $this->convertDate($record['УГК - Планируемая дата выполнения расчетов']),
+                'purchase_date_plan' => $this->convertDate($record['ЗОК - Планируемая дата изготовления']),
+
+                'constructor_comment' => $record['УГК - Примечание'],
+                'manufactor_sz_files' => $record['ЗОК - СЗ'],
+                'manufactor_sz_date' => $this->convertDate($record['ЗОК - Дата СЗ']),
+                'manufactor_sz_quantity' => (int)$record['ЗОК - Дата СЗ'],
+                'manufactor_priority' => (int)$record['ЗОК - Приоритет'],
+
+                'purchase_request_files' => $record['Закупки - Заявка'],
+                'purchase_request_quantity' => (int)$record['Закупки - Количество в заявке, шт.'],
             ]);
         $entity->save();
         echo sprintf("Created component %s\n", $entity->title);
     }
 
-    private function findOrCreateRelativeComponent(string $title): int
+    private function findOrCreateRelativeComponent(string $title, int $lineNumber): int
     {
+        if (empty($title)) {
+            throw new \Exception(sprintf('Line %d - Empty relative component', $lineNumber));
+        }
+
         $components = Component::query()
             ->where('title', $title)
             ->where('is_highlevel', 1)
@@ -136,18 +180,51 @@ class ComponentLoadCommand extends Command
             throw new \Exception(sprintf('Multiple component found - %s', $title));
         }
 
+        throw new \LogicException();
+
     }
 
-    private function convertEnum(string $label, array $values): int
+    private function findOrCreatePhysicalObject(string $name, int $lineNumber): int
+    {
+        if (empty($name)) {
+            throw new \Exception(sprintf('Line %d - empty physical object', $lineNumber));
+        }
+        $po = PhysicalObject::query()
+            ->where('name', $name)
+            ->where('id', 5)
+            ->get()
+            ->all();
+        if (count($po) === 1) {
+            return $po[0]->id;
+        }
+        if (count($po) === 0) {
+            $entity = (new PhysicalObject())
+                ->fill(['name' => $name, 'id' => 5]);
+            $entity->save();
+            return $entity->id;
+        }
+        if (count($po) > 1) {
+            throw new \Exception(sprintf('Multiple phys objects found - %s', $name));
+        }
+        throw new \LogicException();
+    }
+
+    private function convertEnum(array $record, string $fieldName, array $values, int $lineNumber): ?int
     {
         $values = array_flip($values);
-        if (!isset($values[$label])) {
-            throw new \Exception(sprintf('Invalid enum value - %s', $label));
+        $recordValue = $record[$fieldName];
+        if (empty($recordValue)) {
+            return null;
         }
-        return $values[$label];
+
+        if (!isset($values[$recordValue])) {
+            throw new \Exception(sprintf('Line %d, column %s - Invalid enum value - "%s"',
+                $lineNumber, $fieldName, $recordValue));
+        }
+        return $values[$recordValue];
     }
 
-    private function findUser(string $fio): int
+    private function findUser(string $fio): ?int
     {
         $fioParts = explode(' ', $fio);
         $fioParts = array_map('trim', $fioParts);
@@ -157,10 +234,23 @@ class ComponentLoadCommand extends Command
             ->get()
             ->all();
         return match (count($users)) {
-            0 => throw new \Exception(sprintf('No user %s', $fio)),
+            0 => null,
             1 => $users[0]->id,
             default => throw  new \Exception(sprintf('Too many users for %s', $fio))
         };
+    }
+
+    private function convertDate(string $value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        try {
+            return new \DateTime($value);
+        } catch (\Exception $e) {
+            echo sprintf("Invalid date: %s", $value);
+            throw $e;
+        }
     }
 
 }

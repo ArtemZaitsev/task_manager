@@ -1,4 +1,4 @@
-<div class="form-group mt-2">
+<div class="form-group">
     <label for="base" @if($required)class="required"@endif>{{ $label }}</label>
     <input name="{{ $fieldName }}" class="form-control {{ $errors->has($fieldName) ? 'is-invalid' : '' }}"
            id="{{ $fieldName }}" type="text" value="{{ old($fieldName, $currentValue)  }}">

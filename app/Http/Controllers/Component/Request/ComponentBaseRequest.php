@@ -7,6 +7,7 @@ use App\Models\Component\Component;
 use App\Models\Component\Component3dStatus;
 use App\Models\Component\ComponentCalcStatus;
 use App\Models\Component\ComponentDdStatus;
+use App\Models\Component\ComponentManufactorStartWay;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
@@ -17,7 +18,6 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Orchid\Platform\Models\Role;
 
 class ComponentBaseRequest extends FormRequest
 {
@@ -41,6 +41,7 @@ class ComponentBaseRequest extends FormRequest
             'calc_date_plan' => ['nullable', 'date'],
             'constructor_priority' => ['nullable', 'numeric'],
             'constructor_comment' => ['nullable', 'string'],
+            'manufactor_start_way' => ['nullable', Rule::in(ComponentManufactorStartWay::values())],
         ];
         $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
             'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],

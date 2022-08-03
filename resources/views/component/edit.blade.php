@@ -2,6 +2,12 @@
 @section('title') {{ $title }} @endsection
 @section('content')
 
+    <style>
+        div.form-group {
+            margin-bottom: 20px !important;
+        }
+    </style>
+
     <form method="post">
         <div class="container">
             @csrf
@@ -106,6 +112,17 @@
                         'currentValue' => $entity->type,
                         'multiple' => false,
                         'data' =>  App\Models\Component\ComponentType::LABELS
+                ])
+            @endif
+
+            @if($fieldsToEdit === null || in_array('manufactor_start_way', $fieldsToEdit))
+                @include('component.fields.select', [
+                        'required' => false,
+                        'label' => 'Способ запуска в производство',
+                        'fieldName' => 'manufactor_start_way',
+                        'currentValue' =>$entity->manufactor_start_way,
+                        'multiple' => false,
+                        'data' => \App\Models\Component\ComponentManufactorStartWay::LABELS
                 ])
             @endif
 

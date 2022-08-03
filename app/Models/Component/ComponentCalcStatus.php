@@ -11,11 +11,11 @@ class ComponentCalcStatus
     public const DONE = 5;
 
     public const LABELS = [
-        self::NOT_REQUIRED => 'не требуется',
-        self::PLANNED => 'запланирован',
-        self::WRITING_TZ => 'написание ТЗ',
-        self::IN_PROGRESS => 'в процессе',
-        self::DONE => 'готово',
+        self::NOT_REQUIRED => 'Не требуется',
+        self::PLANNED => 'Запланирован',
+        self::WRITING_TZ => 'Написание ТЗ',
+        self::IN_PROGRESS => 'В процессе',
+        self::DONE => 'Готово',
     ];
 
     public static function values(): array

@@ -11,6 +11,7 @@ use App\Models\Component\Component;
 use App\Models\Component\Component3dStatus;
 use App\Models\Component\ComponentCalcStatus;
 use App\Models\Component\ComponentDdStatus;
+use App\Models\Component\ComponentManufactorStartWay;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
@@ -68,7 +69,7 @@ class ComponentGrid
             new GridColumn(
                 'quantity_in_object',
                 'Количество в объекте',
-                fn(Component $entity) => $entity->quantity_in_object,
+                fn(Component $entity) => $entity->quantity_in_object === 0 ? '': $entity->quantity_in_object,
                 'quantity_in_object',
                 new IntegerFilter('quantity_in_object')
             ),
@@ -136,6 +137,13 @@ class ComponentGrid
                 fn(Component $entity) => ComponentType::LABELS[$entity->type] ?? '',
                 'type',
                 new MultiSelectFilter('type', $this->nullValue(ComponentType::LABELS))
+            ),
+            new GridColumn(
+                'manufactor_start_way',
+                'Способ запуска в производство',
+                fn(Component $entity) => ComponentManufactorStartWay::LABELS[$entity->manufactor_start_way] ?? '',
+                'manufactor_start_way',
+                new MultiSelectFilter('manufactor_start_way', $this->nullValue(ComponentManufactorStartWay::LABELS))
             ),
             new GridColumn(
                 'constructor_id',
@@ -274,7 +282,7 @@ class ComponentGrid
             new GridColumn(
                 'manufactor_priority',
                 'Приоритет производства',
-                fn(Component $entity) => $entity->manufactor_priority,
+                fn(Component $entity) => $entity->manufactor_priority === 0 ? '': $entity->manufactor_priority,
                 null,
                 new IntegerFilter('manufactor_priority')
             ),
@@ -330,7 +338,7 @@ class ComponentGrid
             new GridColumn(
                 'purchase_request_priority',
                 'Приоритет закупщика',
-                fn(Component $entity) => $entity->purchase_request_priority,
+                fn(Component $entity) => $entity->purchase_request_priority === 0 ? '' : $entity->purchase_request_priority,
                 null,
                 new IntegerFilter('purchase_request_priority')
             ),

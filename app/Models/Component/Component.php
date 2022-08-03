@@ -59,6 +59,7 @@ use Orchid\Screen\AsSource;
  * @property PhysicalObject $physicalObject
  * @property ?Component $relativeComponent
  * @property int $quantity_in_object
+ * @property int $manufactor_start_way
  */
 class Component extends Model
 {
@@ -73,6 +74,7 @@ class Component extends Model
         'source_type',
         'version',
         'type',
+        'manufactor_start_way',
         'constructor_id',
         '3d_status',
         '3d_date_plan',
@@ -136,7 +138,8 @@ class Component extends Model
 
     public function label(): string
     {
-        return sprintf('%s (%s)', $this->title, $this->identifier);
+        return empty($this->identifier) ? $this->title :
+            sprintf('%s (%s)', $this->title, $this->identifier);
     }
 
 }
