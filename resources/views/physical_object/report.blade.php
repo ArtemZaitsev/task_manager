@@ -53,7 +53,7 @@
         }
     </style>
 
-    <table class="table" id="report-table">
+    <table class="table table-bordered table-hover" id="report-table">
         <tr>
             <th colspan="3" class="fixed-left">{{$report['object']->label()}}</th>
             @foreach($report['status'] as $status => $statusData)
