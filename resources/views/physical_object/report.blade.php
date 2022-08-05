@@ -28,23 +28,23 @@
         }
 
         #report-table .status-3d_status {
-            background-color: #fdf5dc;
+            background-color: #d7d7ff;
         }
 
         #report-table .status-dd_status {
-            background-color: #e9ffd8;
+            background-color: #f6e3c5;
         }
 
         #report-table .status-calc_status {
-            background-color: #dce5fd;
+            background-color: #d7d7ff   ;
         }
 
         #report-table .status-manufactor_status {
-            background-color: #fadcfd;
+            background-color: #f6e3c5;
         }
 
         #report-table .status-purchase_status {
-            background-color: #dcfdf4;
+            background-color: #d7d7ff;
         }
 
 
