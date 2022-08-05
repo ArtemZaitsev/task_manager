@@ -108,7 +108,8 @@ class ComponentLoadCommand extends Command
     private function processRecord(array $record, int $lineNumber): void
     {
         $physicalObjectId = $this->findOrCreatePhysicalObject($record['Объект'], $lineNumber);
-        $relativeComponentId = $this->findOrCreateRelativeComponent($record['Относится к'], $physicalObjectId,
+        $relativeComponentId = $this->findOrCreateRelativeComponent($record['Верхнеуровневый компонент'],
+            $physicalObjectId,
             $lineNumber);
 
         $entity = (new Component())
@@ -119,7 +120,7 @@ class ComponentLoadCommand extends Command
                 'entry_level' => (int)$record['Уровень входимости'],
                 'physical_object_id' => $physicalObjectId,
                 'relative_component_id' => $relativeComponentId,
-                'quantity_in_object' => (int)$record['Количество для ПС_19л_Сед_PHEV01'],
+                'quantity_in_object' => (int)$record['Количество для объекта'],
 
                 'constructor_id' => $this->findUser($record['УГК - Ответственный УГК']),
                 'manufactor_id' => $this->findUser($record['ЗОК - Ответственный Производство']),
@@ -196,7 +197,6 @@ class ComponentLoadCommand extends Command
         }
         $po = PhysicalObject::query()
             ->where('name', $name)
-            ->where('id', 5)
             ->get()
             ->all();
         if (count($po) === 1) {
@@ -204,7 +204,7 @@ class ComponentLoadCommand extends Command
         }
         if (count($po) === 0) {
             $entity = (new PhysicalObject())
-                ->fill(['name' => $name, 'id' => 5]);
+                ->fill(['name' => $name]);
             $entity->save();
             return $entity->id;
         }

@@ -28,23 +28,23 @@
         }
 
         #report-table .status-3d_status {
-            background-color: #d7d7ff;
+            background-color: #e7e7ff;
         }
 
         #report-table .status-dd_status {
-            background-color: #f6e3c5;
+            background-color: #fdf0db;
         }
 
         #report-table .status-calc_status {
-            background-color: #d7d7ff   ;
+            background-color: #e7e7ff   ;
         }
 
         #report-table .status-manufactor_status {
-            background-color: #f6e3c5;
+            background-color: #fdf0db;
         }
 
         #report-table .status-purchase_status {
-            background-color: #d7d7ff;
+            background-color: #e7e7ff;
         }
 
 
@@ -70,7 +70,7 @@
             <th class="fixed-left">Всего позиций</th>
             @foreach($report['status'] as $status => $statusData)
                 @foreach($statusData as $value => $label)
-                    <th class="status-header status-{{$status}}">
+                    <th class="status-header status-{{$status}}" >
                         {{ $label }}
                     </th>
                 @endforeach
@@ -81,20 +81,26 @@
             <tr>
                 <td class="fixed-left">{{ $row['component']->constructor?->direction?->label() }}</td>
                 <td class="fixed-left component">{{ $row['component']->label() }}</td>
-                <td class="value fixed-left">
-                    <a target="_blank" href="{{ $filterUrl($row['component']->id) }}">{{
+                <td style="font-size: 22px;  font-weight: bold; text-decoration: none;" class="value
+                fixed-left">
+                    <a style="font-size: 22px;  font-weight: bold; text-decoration:
+                    none; color: #02189f;" target="_blank" href="{{ $filterUrl($row['component']->id) }}">{{
                     $row['total'] }}</a>
                 </td>
                 @foreach($report['status'] as $field => $statusData)
                     @foreach($statusData as $value => $label)
                         <td class="value status-{{$field}}">
-                            <a target="_blank" href="{{ $filterUrl($row['component']->id, [ $field => [$value]]) }}">
+                            <a style="font-size: 22px;  font-weight: bold; text-decoration:
+                    none; color: #02189f;" target="_blank" href="{{ $filterUrl($row['component']->id, [ $field =>
+                            [$value]])
+                            }}">
                                 {{$row['byStatus'][$field][$value] ?? 0 }}
                             </a>
                         </td>
                     @endforeach
-                    <td class="value status-{{$field}}">
-                        <a target="_blank" href="{{ $filterUrl($row['component']->id, [ $field => [0]]) }}">
+                    <td class="value status-{{$field}}"  >
+                        <a style="font-size: 22px;  font-weight: bold; text-decoration:
+                    none; color: #02189f;" target="_blank" href="{{ $filterUrl($row['component']->id, [ $field => [0]]) }}">
                             {{$row['byStatus'][$field][0] ?? 0 }}</a>
                     </td>
                 @endforeach
@@ -105,7 +111,7 @@
             <th class="value fixed-left">{{$report['footer']['total']}}</th>
             @foreach($report['status'] as $field => $statusData)
                 @foreach($statusData as $value => $label)
-                    <th class="value status-{{$field}}">{{$report['footer']['status'][$field][$value] ?? 0 }}</th>
+                    <th  class="value status-{{$field}}">{{$report['footer']['status'][$field][$value] ?? 0 }}</th>
                 @endforeach
                 <th class="value status-{{$field}}">{{$report['footer']['status'][$field][0] ?? 0 }}</th>
             @endforeach
