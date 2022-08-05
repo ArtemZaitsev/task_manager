@@ -10,7 +10,6 @@ class ComponentManufactorStatus
     public const DONE = 4;
     public const NOT_DD = 5;
     public const KTU = 6;
-    public const NOT_SPECIFIED = 7;
 
     public const LABELS = [
         self::NOT_REQUIRED => 'Не требуется',
@@ -19,7 +18,6 @@ class ComponentManufactorStatus
         self::DONE => 'Готово',
         self::NOT_DD => 'КД не передано',
         self::KTU => 'Разработка КТУ',
-        self::NOT_SPECIFIED => 'Не указано',
     ];
 
     public static function values(): array

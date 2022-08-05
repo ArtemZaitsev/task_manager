@@ -10,7 +10,6 @@ class ComponentPurchaserStatus
     public const DONE = 4;
     public const COMPONENT_CHOOSED = 5;
     public const AGREE = 6;
-    public const NOT_SPECIFIED = 7;
 
     public const LABELS = [
 
@@ -21,9 +20,6 @@ class ComponentPurchaserStatus
         self::NOT_REQUIRED => 'Не требуется',
         self::COMPONENT_CHOOSED => 'Компонент выбран',
         self::AGREE => 'Согласование',
-        self::NOT_SPECIFIED => 'Не указано',
-
-
     ];
 
     public static function values(): array

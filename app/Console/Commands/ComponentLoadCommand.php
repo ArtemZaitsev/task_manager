@@ -107,8 +107,9 @@ class ComponentLoadCommand extends Command
 
     private function processRecord(array $record, int $lineNumber): void
     {
-        $relativeComponentId = $this->findOrCreateRelativeComponent($record['Относится к'], $lineNumber);
         $physicalObjectId = $this->findOrCreatePhysicalObject($record['Объект'], $lineNumber);
+        $relativeComponentId = $this->findOrCreateRelativeComponent($record['Относится к'], $physicalObjectId,
+            $lineNumber);
 
         $entity = (new Component())
             ->fill([
@@ -156,7 +157,7 @@ class ComponentLoadCommand extends Command
         echo sprintf("Created component %s\n", $entity->title);
     }
 
-    private function findOrCreateRelativeComponent(string $title, int $lineNumber): int
+    private function findOrCreateRelativeComponent(string $title, int $physObjectId, int $lineNumber): int
     {
         if (empty($title)) {
             throw new \Exception(sprintf('Line %d - Empty relative component', $lineNumber));
@@ -172,7 +173,11 @@ class ComponentLoadCommand extends Command
         }
         if (count($components) === 0) {
             $entity = (new Component())
-                ->fill(['title' => $title, 'is_highlevel' => 1]);
+                ->fill([
+                    'title' => $title,
+                    'is_highlevel' => 1,
+                    'physical_object_id' => $physObjectId
+                ]);
             $entity->save();
             return $entity->id;
         }
