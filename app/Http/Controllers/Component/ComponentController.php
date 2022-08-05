@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Component;
 
+use App\BuisinessLogick\ComponentVoter;
 use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\ProjectVoter;
 use App\BuisinessLogick\TaskService;
@@ -18,6 +19,8 @@ class ComponentController
         private TaskService   $taskService,
         private PlanerService $planerService,
         private ProjectVoter  $projectVoter,
+        private ComponentVoter  $componentVoter,
+
     )
     {
 
@@ -31,6 +34,7 @@ class ComponentController
         $components = $query->paginate(self::RECORDS_PER_PAGE)->withQueryString();
 
         return view('component.list', [
+            'componentVoter'=>$this->componentVoter,
             'data' => $components,
             'columns' => $grid->getColumns(),
             'taskVoter' => $this->taskVoter,
