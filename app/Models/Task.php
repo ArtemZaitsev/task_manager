@@ -103,7 +103,8 @@ class Task extends Model
         'comment',
         'execute_time_plan',
         'execute_time_fact',
-        'component_id'
+        'component_id',
+        'show_in_gantt'
     ];
 
     public function user()

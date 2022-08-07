@@ -14,9 +14,28 @@ class ComponentVoter
 
     public function __construct(
         private PlanerService $planerService,
-        private ?bool $isPlaner = null
+        private ?bool         $isPlaner = null
     )
     {
+    }
+
+
+    public function canEditOrDelete(Component $entity): bool
+    {
+        if (Auth::id() === $entity->constructor_id) {
+            return true;
+        }
+        $direction = $entity->constructor?->direction;
+        if ($direction === null) {
+            return true;
+        }
+        $directionPlanerId = $direction->planer_id;
+        if ($directionPlanerId === null) {
+            return true;
+        }
+
+        return Auth::id() === $directionPlanerId;
+
     }
 
     public function editRole(Component $entity): ?string

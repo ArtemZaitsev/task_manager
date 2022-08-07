@@ -138,8 +138,8 @@
                 </th>
 
                 @foreach($columns as $column)
-                    <th scope="col" class="text-center">
-                        @if($column->needDisplay())
+                    @if($column->needDisplay())
+                        <th scope="col" class="text-center">
                             @if($column->getFilter() != null)
                                 <div @if($column->getFilter()->isEnable()) class="filter-applied" @endif>
                                     @include($column->getFilter()->template(), [
@@ -157,8 +157,8 @@
                                     {{$column->getLabel()}}
                                 @endif
                             </div>
-                        @endif
-                    </th>
+                        </th>
+                    @endif
                 @endforeach
 
 
@@ -171,7 +171,7 @@
             <tr>
 
                 <td style="position: sticky; left: 0; background-color: #f6eecd;">
-                    @if($componentVoter->editRole($row))
+                    @if($componentVoter->canEditOrDelete($row))
                         <a style="text-decoration: none" href="{{route(\App\Http\Controllers\Component\ComponentEditController::EDIT_ACTION, ['id' =>
                         $row->id, 'back' => url()->full()])}}">
                             <button type="button" class="btn btn-outline-warning" title="Редактировать">
@@ -183,7 +183,7 @@
                             </button>
                         </a>
                     @endif
-                    @if($componentVoter->userIsPlaner($row))
+                        @if($componentVoter->canEditOrDelete($row))
                         <a style="text-decoration: none" onclick="return confirm('Точно удалить?')"
                            href="{{ route(\App\Http\Controllers\Component\ComponentDeleteController::ROUTE_NAME,
                                                 ['id' => $row->id, 'back' => url()->full()])}}">
@@ -201,7 +201,7 @@
                 </td>
                 @foreach($columns as $column)
                     @if($column->needDisplay())
-                        <td>
+                        <td data-column-name="{{$column->getName()}}">
                             {!! $column->render($row) !!}
                         </td>
                     @endif

@@ -32,6 +32,13 @@ class TreeItem
         return $this->parent;
     }
 
+    public function removeChild(int $idx) {
+        unset($this->childs[$idx]);
+    }
+
+    /**
+     * @return TreeItem[]
+     */
     public function getChilds(): array
     {
         return $this->childs;

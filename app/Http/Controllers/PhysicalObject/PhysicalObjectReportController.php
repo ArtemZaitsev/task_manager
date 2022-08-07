@@ -27,6 +27,9 @@ class PhysicalObjectReportController extends Controller
             ->where('is_highlevel', 1)
             ->get()
             ->all();
+        usort($highLevelComponents, fn(Component $a, Component $b) =>
+            $a->constructor?->direction?->title <=>$b->constructor?->direction?->title );
+
         $report = [
             'object' => $object,
             'status' => [
@@ -104,7 +107,13 @@ class PhysicalObjectReportController extends Controller
                     'physical_object_id' => [$report['object']->id],
                     'relative_component_id' => [$componentId]
                 ], $additionalParams)
-            ])
+            ]),
+            'totalFilterUrl' => fn(string $statusField, int $statusValue) => route(ComponentController::ROUTE_NAME, [
+                'filters' => [
+                    'physical_object_id' => [$object->id],
+                    $statusField => [$statusValue]
+                ]
+            ]),
         ]);
     }
 

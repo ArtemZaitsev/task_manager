@@ -54,7 +54,8 @@ class ProjectSaver
                     'end_date' => null,
                     'end_date_fact' => null,
                     'execute_time_plan' => null,
-                    'execute_time_fact' => null
+                    'execute_time_fact' => null,
+                    'show_in_gantt' => 1
                 ]);
                 $taskEntity->save();
                 $taskEntity->projects()->sync([$project->id]);

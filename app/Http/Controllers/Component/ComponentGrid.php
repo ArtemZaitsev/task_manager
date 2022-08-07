@@ -69,7 +69,7 @@ class ComponentGrid
             new GridColumn(
                 'quantity_in_object',
                 'Количество в объекте',
-                fn(Component $entity) => $entity->quantity_in_object === 0 ? '': $entity->quantity_in_object,
+                fn(Component $entity) => $entity->quantity_in_object === 0 ? '' : $entity->quantity_in_object,
                 'quantity_in_object',
                 new IntegerFilter('quantity_in_object')
             ),
@@ -90,7 +90,7 @@ class ComponentGrid
                 'Направление',
                 fn(Component $entity) => $entity->constructor?->direction?->label(),
                 null,
-                new MultiSelectFilter('id',
+                new MultiSelectFilter('users.direction_id',
                     SelectUtils::entityListToLabelMap(
                         Direction::all()->all(),
                         fn(Direction $o) => $o->label())
@@ -275,14 +275,14 @@ class ComponentGrid
             new GridColumn(
                 'manufactor_sz_quantity',
                 'Количество в СЗ',
-                fn(Component $entity) => $entity->manufactor_sz_quantity ===0 ? '': $entity->manufactor_sz_quantity,
+                fn(Component $entity) => $entity->manufactor_sz_quantity === 0 ? '' : $entity->manufactor_sz_quantity,
                 null,
                 new IntegerFilter('manufactor_sz_quantity')
             ),
             new GridColumn(
                 'manufactor_priority',
                 'Приоритет производства',
-                fn(Component $entity) => $entity->manufactor_priority === 0 ? '': $entity->manufactor_priority,
+                fn(Component $entity) => $entity->manufactor_priority === 0 ? '' : $entity->manufactor_priority,
                 null,
                 new IntegerFilter('manufactor_priority')
             ),
@@ -331,7 +331,7 @@ class ComponentGrid
             new GridColumn(
                 'purchase_request_quantity',
                 'Количество в заявке',
-                fn(Component $entity) => $entity->purchase_request_quantity === 0 ? '': $entity->purchase_request_quantity,
+                fn(Component $entity) => $entity->purchase_request_quantity === 0 ? '' : $entity->purchase_request_quantity,
                 null,
                 new IntegerFilter('purchase_request_quantity')
             ),
@@ -363,7 +363,10 @@ class ComponentGrid
 
     public function buildQuery(Request $request): Builder
     {
-        $query = Component::query();
+        $query = Component::query()
+            ->leftJoin('users', 'users.id', '=', 'components.constructor_id')
+            //->leftJoin('directions', '', '=', 'directions.id');
+            ->select('components.*');
         $this->applyFilters($query, $request);
         $this->applySort($query, $request);
 

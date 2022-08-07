@@ -68,6 +68,14 @@ class TaskTreeBuilder
             $treeItemIdMap[$taskCopy->id] = $child;
         }
 
+        foreach ($rootTrees as $idx => $treeItem) {
+            if (!$treeItem->getData()->show_in_gantt) {
+                unset($rootTrees[$idx]);
+            }
+        }
+        foreach ($rootTrees as $treeItem) {
+            $this->clearShowInGanttTassk($treeItem);
+        }
 
         $tasksJson = [];
         foreach ($rootTrees as $treeRoot) {
@@ -75,7 +83,7 @@ class TaskTreeBuilder
             $tasksJson = array_merge($tasksJson, $rootTasks);
         }
 
-        $this->buildDepends($tasksJson, $prevTasks);
+     //   $this->buildDepends($tasksJson, $prevTasks);
 
         return $tasksJson;
     }
@@ -195,5 +203,17 @@ class TaskTreeBuilder
         }
 
         return $prevMap;
+    }
+
+    private function clearShowInGanttTassk(TreeItem $treeItem)
+    {
+        foreach ($treeItem->getChilds() as $idx => $child) {
+            if (!$child->getData()->show_in_gantt) {
+                $treeItem->removeChild($idx);
+            }
+        }
+        foreach ($treeItem->getChilds() as $child) {
+            $this->clearShowInGanttTassk($child);
+        }
     }
 }

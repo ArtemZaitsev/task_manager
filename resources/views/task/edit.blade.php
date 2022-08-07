@@ -140,28 +140,28 @@
             @endif
 
 
-            @if($fieldsToEdit === null || in_array('component_id', $fieldsToEdit))
-                <div class="form-group mt-2">
-                    <label for="component_id">Компонент</label>
-                    <select name="component_id"
-                            class="select2 form-control {{ $errors->has('component_id') ? 'is-invalid' : '' }}"
-                            id="component_id">
-                        <option value=""></option>
-                        @foreach($components as $entity )
-                            <option value="{{ $entity->id }}"
-                                    @if($entity->id === old('component_id',$task->component_id))
-                                    selected @endif>
-                                {{ $entity->label() }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('component_id'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('component_id') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
+{{--            @if($fieldsToEdit === null || in_array('component_id', $fieldsToEdit))--}}
+{{--                <div class="form-group mt-2">--}}
+{{--                    <label for="component_id">Компонент</label>--}}
+{{--                    <select name="component_id"--}}
+{{--                            class="select2 form-control {{ $errors->has('component_id') ? 'is-invalid' : '' }}"--}}
+{{--                            id="component_id">--}}
+{{--                        <option value=""></option>--}}
+{{--                        @foreach($components as $entity )--}}
+{{--                            <option value="{{ $entity->id }}"--}}
+{{--                                    @if($entity->id === old('component_id',$task->component_id))--}}
+{{--                                    selected @endif>--}}
+{{--                                {{ $entity->label() }}--}}
+{{--                            </option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                    @if ($errors->has('component_id'))--}}
+{{--                        <div class="invalid-feedback">--}}
+{{--                            {{ $errors->first('component_id') }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--            @endif--}}
 
             @if($fieldsToEdit === null || in_array('base', $fieldsToEdit))
                 <div class="form-group mt-2">
@@ -270,50 +270,50 @@
                 </div>
             @endif
 
-            @if($fieldsToEdit === null || in_array('parent_id', $fieldsToEdit))
-                <div class="form-group w-50 mt-2">
-                    <label for="parent_id">Родительская задача</label>
-                    <select name="parent_id" class="select2 form-control {{ $errors->has('parent_id') ? 'is-invalid'
-                    : '' }}" id="parent_id">
-                        <option value></option>
-                        @foreach($tasks as $item)
-                            <option value="{{ $item->id }}"
-                                    @if( $item->id == old('parent_id',$task->parent_id) ) selected @endif>
-                                {{ $item->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('parent_id'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('parent_id') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
+{{--            @if($fieldsToEdit === null || in_array('parent_id', $fieldsToEdit))--}}
+{{--                <div class="form-group w-50 mt-2">--}}
+{{--                    <label for="parent_id">Родительская задача</label>--}}
+{{--                    <select name="parent_id" class="select2 form-control {{ $errors->has('parent_id') ? 'is-invalid'--}}
+{{--                    : '' }}" id="parent_id">--}}
+{{--                        <option value></option>--}}
+{{--                        @foreach($tasks as $item)--}}
+{{--                            <option value="{{ $item->id }}"--}}
+{{--                                    @if( $item->id == old('parent_id',$task->parent_id) ) selected @endif>--}}
+{{--                                {{ $item->name }}--}}
+{{--                            </option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                    @if ($errors->has('parent_id'))--}}
+{{--                        <div class="invalid-feedback">--}}
+{{--                            {{ $errors->first('parent_id') }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--            @endif--}}
 
 
-            @if($fieldsToEdit === null || in_array('prev_tasks', $fieldsToEdit))
-                <div class="form-group w-50 mt-2">
-                    <label for="prev_tasks">Предыдущие задачи</label>
-                    <select name="prev_tasks[]" class="select2 form-control {{ $errors->has('prev_tasks') ? 'is-invalid'
-                    : ''
-                     }}" id="prev_tasks" multiple>
-                        @foreach($tasks as $item )
-                            <option value="{{ $item->id }}"
-                                    @if(in_array($item->id,
-                                   old('prev_tasks',$task->prev()->allRelatedIds()->toArray()))) selected @endif>
+{{--            @if($fieldsToEdit === null || in_array('prev_tasks', $fieldsToEdit))--}}
+{{--                <div class="form-group w-50 mt-2">--}}
+{{--                    <label for="prev_tasks">Предыдущие задачи</label>--}}
+{{--                    <select name="prev_tasks[]" class="select2 form-control {{ $errors->has('prev_tasks') ? 'is-invalid'--}}
+{{--                    : ''--}}
+{{--                     }}" id="prev_tasks" multiple>--}}
+{{--                        @foreach($tasks as $item )--}}
+{{--                            <option value="{{ $item->id }}"--}}
+{{--                                    @if(in_array($item->id,--}}
+{{--                                   old('prev_tasks',$task->prev()->allRelatedIds()->toArray()))) selected @endif>--}}
 
-                                {{ $item->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('prev_tasks'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('prev_tasks') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
+{{--                                {{ $item->name }}--}}
+{{--                            </option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                    @if ($errors->has('prev_tasks'))--}}
+{{--                        <div class="invalid-feedback">--}}
+{{--                            {{ $errors->first('prev_tasks') }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--            @endif--}}
 
 
             @if($fieldsToEdit === null || in_array('name', $fieldsToEdit))
@@ -526,6 +526,26 @@
                     @if ($errors->has('comment'))
                         <div class="invalid-feedback">
                             {{ $errors->first('comment') }}
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            @if($fieldsToEdit === null || in_array('show_in_gantt', $fieldsToEdit))
+                <div class="form-group mt-2">
+                    <label for="show_in_gantt">Отображать на диаграмме гантта</label>
+                    <select type="checkbox" name="show_in_gantt" class="form-control {{ $errors->has('show_in_gantt') ?
+                    'is-invalid'
+                    : '' }}"
+                              id="show_in_gantt">
+                        <option value="1" @if(old('show_in_gantt', $task->show_in_gantt) == true)selected @endif
+                        >Да</option>
+                        <option value="0" @if(old('show_in_gantt', $task->show_in_gantt) == false)selected
+                            @endif>Нет</option>
+                    </select>
+                    @if ($errors->has('show_in_gantt'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('show_in_gantt') }}
                         </div>
                     @endif
                 </div>
