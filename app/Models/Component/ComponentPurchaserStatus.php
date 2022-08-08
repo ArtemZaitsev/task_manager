@@ -14,8 +14,8 @@ class ComponentPurchaserStatus
     public const LABELS = [
         self::NOT_REQUIRED => 'Не требуется',
         self::DOES_NOT_DONE => 'Не проработана',
-        self::AGREE => 'Согласование',
         self::COMPONENT_CHOOSED => 'Компонент выбран',
+        self::AGREE => 'Согласование компонента',
         self::IN_PROGRESS => 'В процессе',
         self::DONE => 'Готово',
     ];
