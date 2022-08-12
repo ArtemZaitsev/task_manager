@@ -108,7 +108,8 @@ Route::get('/components/export', [ComponentExportController::class, 'export'])->
 (ComponentExportController::EXPORT_ACTION);
 
 Route::get('/physical_object/{id}/report', [PhysicalObjectReportController::class, 'index'])
-    ->name(PhysicalObjectReportController::ROUTE_NAME);
+    ->name(PhysicalObjectReportController::ROUTE_NAME)
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 //Route::get('/persons', [\App\Http\Controllers\PersonController::class, 'list'])->name('tasks.list');
 ////Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);

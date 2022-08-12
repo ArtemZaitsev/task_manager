@@ -11,7 +11,8 @@ class GridColumn
         private string  $label,
         private         $renderer,
         private ?string $orderField = null,
-        private ?Filter $filter = null
+        private ?Filter $filter = null,
+        private bool $displayDefault = true
     )
     {
     }
@@ -50,7 +51,7 @@ class GridColumn
     public function needDisplay(): bool {
         $fields = session()->get(ComponentDisplayFieldsController::COMPONENTS_FIELDS_SESSION_NAME, null);
         if($fields === null) {
-            return true;
+            return $this->displayDefault;
         }
         return in_array($this->name, $fields);
     }

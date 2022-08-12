@@ -3,6 +3,7 @@
 namespace App\BuisinessLogick;
 
 use App\Models\Component\Component;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ComponentVoter
@@ -22,6 +23,10 @@ class ComponentVoter
 
     public function canEditOrDelete(Component $entity): bool
     {
+        if ($this->userIsAdmin()) {
+            return true;
+        }
+
         if (Auth::id() === $entity->constructor_id) {
             return true;
         }
@@ -64,4 +69,17 @@ class ComponentVoter
         $this->isPlaner = $this->planerService->userIsPlaner(Auth::id());
         return $this->isPlaner;
     }
+
+    private function userIsAdmin(): bool
+    {
+        $user = Auth::user();
+        $permissions = $user->permissions;
+        if (!isset($permissions['platform.index'])) {
+            return false;
+        }
+        $permission = (int)$permissions['platform.index'];
+        return $permission === 1;
+    }
+
+
 }

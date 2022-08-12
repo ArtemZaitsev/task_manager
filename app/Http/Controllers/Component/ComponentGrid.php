@@ -41,14 +41,16 @@ class ComponentGrid
                 'Дата создания',
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->created_at),
                 'created_at',
-                new DateFilter('created_at')
+                new DateFilter('created_at'),
+                false
             ),
             new GridColumn(
                 'updated_at',
                 'Дата редактирования',
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->updated_at),
                 'updated_at',
-                new DateFilter('updated_at')
+                new DateFilter('updated_at'),
+                false
             ),
             new GridColumn(
                 'physical_object_id',

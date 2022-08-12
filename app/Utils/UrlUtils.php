@@ -59,6 +59,7 @@ class UrlUtils
     {
         $request = request();
         $routeName = $request->route()->getName();
+        $routeParameters = $request->route()->parameters();
 
         $filterData = $request->query->get('filters') ?? [];
         if (isset($filterData[$filterName])) {
@@ -66,6 +67,6 @@ class UrlUtils
         }
         $newQuery = array_merge($request->query->all(), ['filters' => $filterData]);
         $res = http_build_query($newQuery);
-        return route($routeName) . "?" . $res;
+        return route($routeName, $routeParameters) . "?" . $res;
     }
 }

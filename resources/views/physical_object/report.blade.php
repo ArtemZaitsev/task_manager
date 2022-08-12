@@ -55,14 +55,33 @@
         }
 
 
-        #report-table tbody th {
-            position: static;
+        /*#report-table tbody th {*/
+        /*    position: static;*/
+        /*}*/
+
+        .first-column {
+            display: flex;
+            justify-content: space-between;
+            left: 0;
+            position: sticky;
+            background: #e5ffd6 !important;
+            z-index: 2;
         }
+
+        .first-column > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
     </style>
 
     <table class="table table-bordered table-hover" id="report-table">
         <tr>
-            <th colspan="3" class="fixed-left">{{$report['object']->label()}}</th>
+            {{--            <th colspan="3" style="text-align: center; vertical-align: middle; background-color: #a6ff75;--}}
+            {{--">{{$report['object']->label()}}</th>--}}
+            <th class="first-column" style="text-align: center; vertical-align: middle; background-color: #e5ffd6;
+">{{$report['object']->label()}}</th>
             @foreach($report['status'] as $status => $statusData)
                 <td class="group-header status-{{$status}}" colspan="{{ count($statusData) + 1 }}">
                     Всего {{ $report['status_titles'][$status] }}:
@@ -71,29 +90,51 @@
                 </td>
             @endforeach
         </tr>
-        <tr>
-
-            <th class="fixed-left">Направление</th>
-            <th class="fixed-left component">Компонент</th>
-            <th class="fixed-left">Всего позиций</th>
-            @foreach($report['status'] as $status => $statusData)
-                <th class="not-specified status-{{$status}}">Не указано</th>
-                @foreach($statusData as $value => $label)
-                    <th class="status-header status-{{$status}}">
-                        {{ $label }}
+        <form method="get">
+            <tr>
+                <td class="first-column" style="font-weight: bold;height: 110px;">
+                    <div
+                        style="text-align: center; vertical-align: middle; min-width: 150px; border-right: 1px solid black;">
+                        Направление
+                    </div>
+                    <div class="component" style="text-align: center; vertical-align: middle;
+                min-width:400px;border-right: 1px solid black;">
+                        Компонент <br/>
+                        @include($filters['component']->template(), [
+                                        'filter' => $filters['component'],
+                                        'filterData' => $filters['component']->templateData(request())
+                                        ])
+                        @include('component.filters.filter_buttons', ['filterName' => $filters['component']->name()])
+                    </div>
+                    <div style="text-align: center; vertical-align: middle; min-width: 80px;">Всего позиций</div>
+                </td>
+                @foreach($report['status'] as $status => $statusData)
+                    <th class="not-specified status-{{$status}}"
+                        style="text-align: center; vertical-align: middle; min-width: 80px;">Не
+                        указано
                     </th>
+                    @foreach($statusData as $value => $label)
+                        <th class="status-header status-{{$status}}" style="min-width: 80px;">
+                            {{ $label }}
+                        </th>
+                    @endforeach
                 @endforeach
-            @endforeach
-        </tr>
+            </tr>
+        </form>
         @foreach($report['rows'] as $row)
             <tr>
-                <td class="fixed-left">{{ $row['component']->constructor?->direction?->label() }}</td>
-                <td class="fixed-left component">{{ $row['component']->label() }}</td>
-                <td style="font-size: 22px;  font-weight: bold; text-decoration: none;" class="value
-                fixed-left">
-                    <a class="data-link" target="_blank" href="{{ $filterUrl($row['component']->id) }}">{{
+                <td class="first-column">
+                    <div style="width: 150px;  border-right: 1px solid black;">{{
+                    $row['component']->constructor?->direction?->label() }}</div>
+                    <div style="width: 400px; border-right: 1px solid black;" class="component">{{ $row['component']->label
+                    () }}</div>
+                    <div style="width: 80px;  font-size: 22px;  font-weight: bold;
+                    text-decoration: none;" class="value">
+                        <a class="data-link" target="_blank" href="{{ $filterUrl($row['component']->id) }}">{{
                     $row['total'] }}</a>
+                    </div>
                 </td>
+
                 @foreach($report['status'] as $field => $statusData)
                     <td class="value status-{{$field}}">
                         <a class="data-link" target="_blank"
@@ -114,14 +155,18 @@
             </tr>
         @endforeach
         <tr>
-            <th class="fixed-left" colspan="2">Всего в составе</th>
-            <th class="value fixed-left">
-                <a href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME,
+            <td class="first-column">
+                <div style="width: 550px; font-weight: bold; border-right: 1px solid black;">Всего в составе</div>
+                <div class="value" style="width: 80px; ">
+                    <a href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME,
    ['filters' => ['physical_object_id' => [$report['object']->id]]]) }}"
-                   class="data-link" target="_blank">
-                    {{$report['footer']['total']}}
-                </a>
-            </th>
+                       class="data-link" target="_blank">
+                        {{$report['footer']['total']}}
+                    </a>
+                </div>
+            </td>
+
+
             @foreach($report['status'] as $field => $statusData)
                 <th class="value status-{{$field}}">
                     <a href="{{ $totalFilterUrl($field, 0) }}" class="data-link" target="_blank">
