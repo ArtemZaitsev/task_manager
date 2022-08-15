@@ -285,6 +285,24 @@
                 ])
             @endif
 
+            @if($fieldsToEdit === null || in_array('sz_id', $fieldsToEdit))
+                @include('component.fields.select', [
+                        'required' => false,
+                        'label' => 'Служебная записка',
+                        'fieldName' => 'sz_id',
+                        'currentValue' => $entity->sz_id,
+                        'multiple' => false,
+                        'data' => $szSelectData
+                        ])
+                <a href="{{route(\App\Http\Controllers\Sz\SzCreateController::INDEX_ACTION)}}" class="btn
+                btn-outline-info mb-3"
+                   target="_blank">
+                    Добавить СЗ
+                </a>
+            @endif
+
+
+
             @if($fieldsToEdit === null || in_array('manufactor_sz_files', $fieldsToEdit))
                 @include('component.fields.input', [
                         'required' => false,

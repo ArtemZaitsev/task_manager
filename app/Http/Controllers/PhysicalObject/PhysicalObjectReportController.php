@@ -76,6 +76,7 @@ class PhysicalObjectReportController extends Controller
             foreach ($componentReport['byStatus'] as $status => $statusReport) {
                 $copyReport = $statusReport;
                 // remove NOT_REQUIRED status for all reports
+                unset($copyReport[0]);
                 unset($copyReport[ComponentManufactorStatus::NOT_REQUIRED]);
                 if($status === 'manufactor_status') {
                     unset($copyReport[ComponentManufactorStatus::DD_NOT_TRANSMITTED]);

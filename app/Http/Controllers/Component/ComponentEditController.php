@@ -43,7 +43,8 @@ class ComponentEditController extends Controller
                 'calc_date_plan',
                 'constructor_priority',
                 'constructor_comment',
-                'manufactor_start_way'
+                'manufactor_start_way',
+                'sz_id'
             ],
             ComponentVoter::ROLE_MANUFACTOR =>[
                 'manufactor_status',

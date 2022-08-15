@@ -10,6 +10,7 @@ use App\Http\Controllers\Component\ComponentExportController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Sz\SzCreateController;
 use App\Http\Controllers\Task\PerformerTaskEditController;
 use App\Http\Controllers\Task\TaskAddController;
 use App\Http\Controllers\Task\TaskColumnController;
@@ -111,6 +112,14 @@ Route::get('/physical_object/{id}/report', [PhysicalObjectReportController::clas
     ->name(PhysicalObjectReportController::ROUTE_NAME)
     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
+Route::get('/sz/create', [SzCreateController::class, 'index'])
+    ->name(SzCreateController::INDEX_ACTION);
+Route::post('/sz/create', [SzCreateController::class, 'processForm'])
+    ->name(SzCreateController::PROCESS_FORM_ACTION);
+
+Route::get('/test/file_upload', [\App\Http\Controllers\FileUploadTestController::class, 'index']);
+Route::post('/test/file_upload', [\App\Http\Controllers\FileUploadTestController::class, 'processForm'])
+    ->name('test.file_upload');
 //Route::get('/persons', [\App\Http\Controllers\PersonController::class, 'list'])->name('tasks.list');
 ////Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);
 //Route::get('/person/add', [\App\Http\Controllers\Task\TaskAddController::class, 'index']);

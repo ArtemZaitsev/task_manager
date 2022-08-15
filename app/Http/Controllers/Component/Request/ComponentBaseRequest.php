@@ -14,6 +14,7 @@ use App\Models\Component\ComponentSourceType;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
 use App\Models\Component\PhysicalObject;
+use App\Models\Component\Sz;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +43,7 @@ class ComponentBaseRequest extends FormRequest
             'constructor_priority' => ['nullable', 'numeric'],
             'constructor_comment' => ['nullable', 'string'],
             'manufactor_start_way' => ['nullable', Rule::in(ComponentManufactorStartWay::values())],
+            'sz_id' => ['nullable', Rule::exists(Sz::class, 'id')],
         ];
         $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
             'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],

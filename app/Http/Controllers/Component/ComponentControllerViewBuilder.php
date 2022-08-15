@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Component;
 
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
+use App\Models\Component\Sz;
 use App\Models\User;
 
 class ComponentControllerViewBuilder
@@ -17,11 +18,15 @@ class ComponentControllerViewBuilder
                 User::all()->all(),
                 fn(User $user) => $user->label()
             ),
-            'physicalObjectsSelectData' =>SelectUtils::entityListToLabelMap(
+            'szSelectData' => SelectUtils::entityListToLabelMap(
+                Sz::all()->all(),
+                fn(Sz $user) => $user->label()
+            ),
+            'physicalObjectsSelectData' => SelectUtils::entityListToLabelMap(
                 PhysicalObject::all()->all(),
                 fn(PhysicalObject $user) => $user->label()
             ),
-            'componentsSelectData' =>SelectUtils::entityListToLabelMap(
+            'componentsSelectData' => SelectUtils::entityListToLabelMap(
                 $entity->id === null ?
                     Component::query()
                         ->where('is_highlevel', 1)

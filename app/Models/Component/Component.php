@@ -60,6 +60,8 @@ use Orchid\Screen\AsSource;
  * @property ?Component $relativeComponent
  * @property int $quantity_in_object
  * @property int $manufactor_start_way
+ *
+ * @property ?Sz $sz
  */
 class Component extends Model
 {
@@ -108,6 +110,7 @@ class Component extends Model
         'physical_object_id',
         'quantity_in_object',
         'is_highlevel',
+        'sz_id'
     ];
 
 
@@ -134,6 +137,11 @@ class Component extends Model
     public function physicalObject()
     {
         return $this->belongsTo(PhysicalObject::class);
+    }
+
+    public function sz()
+    {
+        return $this->belongsTo(Sz::class);
     }
 
     public function label(): string

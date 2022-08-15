@@ -56,7 +56,7 @@ class ComponentGrid
                 'physical_object_id',
                 'Объект',
                 fn(Component $entity) => $entity->physicalObject === null ? '' :
-                    sprintf('<a href="%s">%s</a>',
+                    sprintf('<a href="%s" target="_blank">%s</a>',
                         route(PhysicalObjectReportController::ROUTE_NAME,
                             ['id' => $entity->physical_object_id]),
                         $entity->physicalObject?->label()),
@@ -259,6 +259,16 @@ class ComponentGrid
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->getAttribute('manufactor_date_plan')),
                 'manufactor_date_plan',
                 new DateFilter('manufactor_date_plan'),
+            ),
+            new GridColumn(
+                'sz',
+                'СЗ (ссылка)',
+                fn(Component $entity) => $entity->sz === null ? '' :
+                    sprintf('<a href="%s" target="_blank">%s</a>',
+                        '/files/' . $entity->sz->file_path,
+                        $entity->sz->label()
+                    )
+
             ),
             new GridColumn(
                 'manufactor_sz_files',
