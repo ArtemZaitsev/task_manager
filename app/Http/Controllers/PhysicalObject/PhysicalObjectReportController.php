@@ -80,7 +80,7 @@ class PhysicalObjectReportController extends Controller
                 unset($copyReport[ComponentManufactorStatus::NOT_REQUIRED]);
                 if($status === 'manufactor_status') {
                     unset($copyReport[ComponentManufactorStatus::DD_NOT_TRANSMITTED]);
-                    unset($copyReport[ComponentManufactorStatus::DD_TECHNICAL_APPROVAL]);
+
                 }
                 if (!isset($report['totalStatusWithoutNotRequired'][$status])) {
                     $report['totalStatusWithoutNotRequired'][$status] = 0;
