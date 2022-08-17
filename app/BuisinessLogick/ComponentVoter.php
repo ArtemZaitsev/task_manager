@@ -20,6 +20,9 @@ class ComponentVoter
     {
     }
 
+    public function canExport(): bool {
+        return true;
+    }
 
     public function canEditOrDelete(Component $entity): bool
     {

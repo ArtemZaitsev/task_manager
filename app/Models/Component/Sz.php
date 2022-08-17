@@ -6,6 +6,7 @@ use App\Utils\DateUtils;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property int $id
  * @property string $number
  * @property ?string $title
  * @property \DateTime $date

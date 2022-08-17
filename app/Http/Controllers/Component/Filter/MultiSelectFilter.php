@@ -37,7 +37,7 @@ class MultiSelectFilter implements Filter
 
     public function template(): string
     {
-        return 'component.filters.multi_select_filter';
+        return 'lib.filters.multi_select_filter';
     }
 
     public function apply(Builder $query, mixed $data): void

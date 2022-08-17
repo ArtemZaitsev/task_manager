@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Component;
+namespace App\Lib\Grid;
 
+use App\Http\Controllers\Component\ComponentDisplayFieldsController;
 use App\Http\Controllers\Component\Filter\Filter;
+use function session;
 
 class GridColumn
 {
@@ -12,7 +14,9 @@ class GridColumn
         private         $renderer,
         private ?string $orderField = null,
         private ?Filter $filter = null,
-        private bool $displayDefault = true
+        private bool $displayDefault = true,
+        private bool $needExport = true
+
     )
     {
     }
@@ -47,13 +51,16 @@ class GridColumn
         return $this->filter;
     }
 
-
-    public function needDisplay(): bool {
-        $fields = session()->get(ComponentDisplayFieldsController::COMPONENTS_FIELDS_SESSION_NAME, null);
-        if($fields === null) {
-            return $this->displayDefault;
-        }
-        return in_array($this->name, $fields);
+    public function isDisplayDefault(): bool
+    {
+        return $this->displayDefault;
     }
+
+    public function isNeedExport(): bool
+    {
+        return $this->needExport;
+    }
+
+
 
 }

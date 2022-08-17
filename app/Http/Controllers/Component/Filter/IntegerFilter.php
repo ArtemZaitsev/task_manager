@@ -31,7 +31,7 @@ class IntegerFilter implements Filter
 
     public function template(): string
     {
-        return 'component.filters.integer_filter';
+        return 'lib.filters.integer_filter';
     }
 
     public function apply(Builder $query, mixed $data): void

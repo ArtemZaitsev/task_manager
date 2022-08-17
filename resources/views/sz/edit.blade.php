@@ -12,21 +12,21 @@
         @csrf
 
         <div class="container">
-            @include('component.fields.input', [
+            @include('lib.fields.input', [
                        'required' => true,
                        'label' => 'Номер',
                        'fieldName' => 'number',
                        'currentValue' => $entity->number
                ])
 
-            @include('component.fields.date', [
+            @include('lib.fields.date', [
                        'required' => true,
                        'label' => 'Дата',
                        'fieldName' => 'date',
                        'currentValue' => $entity->date,
                ])
 
-            @include('component.fields.file', [
+            @include('lib.fields.file', [
                        'required' => true,
                        'label' => 'Файл',
                        'fieldName' => 'szFile',

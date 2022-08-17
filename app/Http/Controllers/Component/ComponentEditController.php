@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Component;
 use App\BuisinessLogick\ComponentVoter;
 use App\Http\Controllers\Component\Request\ComponentEditRequest;
 use App\Http\Controllers\Controller;
+use App\Lib\RedirectUtils;
 use App\Models\Component\Component;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;

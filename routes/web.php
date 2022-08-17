@@ -7,10 +7,13 @@ use App\Http\Controllers\Component\ComponentDeleteController;
 use App\Http\Controllers\Component\ComponentDisplayFieldsController;
 use App\Http\Controllers\Component\ComponentEditController;
 use App\Http\Controllers\Component\ComponentExportController;
+use App\Http\Controllers\FileUploadTestController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Sz\SzCreateController;
+use App\Http\Controllers\Sz\SzDeleteController;
+use App\Http\Controllers\Sz\SzListController;
 use App\Http\Controllers\Task\PerformerTaskEditController;
 use App\Http\Controllers\Task\TaskAddController;
 use App\Http\Controllers\Task\TaskColumnController;
@@ -22,6 +25,7 @@ use App\Http\Controllers\Task\TasksExportController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectSaveController;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,7 +70,7 @@ Route::post('/task/{id}/edit', [TaskEditController::class, 'processForm'])
     ->name(TaskEditController::EDIT_ACTION);
 
 Route::get('/task/{id}/edit_by_performer', [PerformerTaskEditController::class, 'index'])
-    ->where('id', '[0-9]+');;
+    ->where('id', '[0-9]+');
 
 Route::post('/task/{id}/edit_by_performer', [PerformerTaskEditController::class, 'processForm'])
     ->where('id', '[0-9]+')
@@ -110,15 +114,20 @@ Route::get('/components/export', [ComponentExportController::class, 'export'])->
 
 Route::get('/physical_object/{id}/report', [PhysicalObjectReportController::class, 'index'])
     ->name(PhysicalObjectReportController::ROUTE_NAME)
-    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+    ->withoutMiddleware([VerifyCsrfToken::class]);
+
+Route::get('/sz/list', [SzListController::class, 'index'])
+    ->name(SzListController::ROUTE_NAME);
+Route::get('/sz/{id}/delete', [SzDeleteController::class, 'index'])
+    ->name(SzDeleteController::ROUTE_NAME);
 
 Route::get('/sz/create', [SzCreateController::class, 'index'])
     ->name(SzCreateController::INDEX_ACTION);
 Route::post('/sz/create', [SzCreateController::class, 'processForm'])
     ->name(SzCreateController::PROCESS_FORM_ACTION);
 
-Route::get('/test/file_upload', [\App\Http\Controllers\FileUploadTestController::class, 'index']);
-Route::post('/test/file_upload', [\App\Http\Controllers\FileUploadTestController::class, 'processForm'])
+Route::get('/test/file_upload', [FileUploadTestController::class, 'index']);
+Route::post('/test/file_upload', [FileUploadTestController::class, 'processForm'])
     ->name('test.file_upload');
 //Route::get('/persons', [\App\Http\Controllers\PersonController::class, 'list'])->name('tasks.list');
 ////Route::get('/test', [\App\Http\Controllers\TestController::class, 'index']);

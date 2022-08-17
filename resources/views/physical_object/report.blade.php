@@ -104,7 +104,7 @@
                                         'filter' => $filters['component'],
                                         'filterData' => $filters['component']->templateData(request())
                                         ])
-                        @include('component.filters.filter_buttons', ['filterName' => $filters['component']->name()])
+                        @include('lib.filters.filter_buttons', ['filterName' => $filters['component']->name()])
                     </div>
                     <div style="text-align: center; vertical-align: middle; min-width: 80px;">Всего позиций</div>
                 </td>

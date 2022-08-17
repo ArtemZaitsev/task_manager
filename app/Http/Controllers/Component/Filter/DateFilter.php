@@ -30,7 +30,7 @@ class DateFilter implements Filter
 
     public function template(): string
     {
-        return 'component.filters.date_filter';
+        return 'lib.filters.date_filter';
     }
 
     public function isEnable(): bool

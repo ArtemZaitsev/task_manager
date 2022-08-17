@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Component;
 
 use App\Http\Controllers\Component\Request\ComponentAddRequest;
 use App\Http\Controllers\Controller;
+use App\Lib\RedirectUtils;
 use App\Models\Component\Component;
 use Illuminate\Http\Request;
 

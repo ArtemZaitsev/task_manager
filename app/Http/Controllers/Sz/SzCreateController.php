@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sz;
 use App\BuisinessLogick\FileService;
 use App\Http\Controllers\Component\ComponentController;
 use App\Http\Controllers\Controller;
+use App\Lib\RedirectUtils;
 use App\Models\Component\Sz;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\File;
@@ -42,7 +43,8 @@ class SzCreateController extends Controller
         }
 
         $entity->save();
-        return redirect(route(ComponentController::ROUTE_NAME));
+
+        return RedirectUtils::redirectBack($request, self::INDEX_ACTION);
 
     }
 }

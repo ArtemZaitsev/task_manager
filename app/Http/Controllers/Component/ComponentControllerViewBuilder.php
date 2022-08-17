@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Component;
 
+use App\Lib\SelectUtils;
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\Sz;

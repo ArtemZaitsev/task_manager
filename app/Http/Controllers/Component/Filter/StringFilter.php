@@ -31,7 +31,7 @@ class StringFilter implements Filter
 
     public function template(): string
     {
-        return 'component.filters.string_filter';
+        return 'lib.filters.string_filter';
     }
 
     public function apply(Builder $query, mixed $data): void

@@ -13,7 +13,7 @@
             @csrf
 
             @if($fieldsToEdit === null || in_array('physical_object_id', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Объект',
                         'fieldName' => 'physical_object_id',
@@ -24,7 +24,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('quantity_in_object', $fieldsToEdit))
-                @include('component.fields.number', [
+                @include('lib.fields.number', [
                         'required' => false,
                         'label' => 'Количество в объекте',
                         'fieldName' => 'quantity_in_object',
@@ -33,7 +33,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('is_highlevel', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => true,
                         'label' => 'Верхнеуровневый компонент',
                         'fieldName' => 'is_highlevel',
@@ -44,7 +44,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('relative_component_id', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Родительский компонент',
                         'fieldName' => 'relative_component_id',
@@ -56,7 +56,7 @@
 
 
             @if($fieldsToEdit === null || in_array('title', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => true,
                         'label' => 'Название',
                         'fieldName' => 'title',
@@ -65,7 +65,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('identifier', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'Идентификатор',
                         'fieldName' => 'identifier',
@@ -74,7 +74,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('entry_level', $fieldsToEdit))
-                @include('component.fields.number', [
+                @include('lib.fields.number', [
                         'required' => false,
                         'label' => 'Уровень входимости',
                         'fieldName' => 'entry_level',
@@ -83,7 +83,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('source_type', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Как получаем',
                         'fieldName' => 'source_type',
@@ -94,7 +94,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('version', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Версия',
                         'fieldName' => 'version',
@@ -105,7 +105,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('type', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Тип',
                         'fieldName' => 'type',
@@ -116,7 +116,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('manufactor_start_way', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Способ запуска в производство',
                         'fieldName' => 'manufactor_start_way',
@@ -127,7 +127,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('constructor_id', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Конструктор',
                         'fieldName' => 'constructor_id',
@@ -138,7 +138,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('3d_status', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Статус 3D',
                         'fieldName' => '3d_status',
@@ -149,7 +149,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('3d_date_plan', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Планируемая дата подготовки 3D',
                         'fieldName' => '3d_date_plan',
@@ -158,7 +158,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('dd_status', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Статус КД',
                         'fieldName' => 'dd_status',
@@ -169,7 +169,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('dd_date_plan', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Планируемая дата подготовки КД',
                         'fieldName' => 'dd_date_plan',
@@ -178,7 +178,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('drawing_files', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'Чертежи',
                         'fieldName' => 'drawing_files',
@@ -187,7 +187,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('drawing_date', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Дата чертежей',
                         'fieldName' => 'drawing_date',
@@ -199,7 +199,7 @@
 
 
             @if($fieldsToEdit === null || in_array('calc_status', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Статус расчетов',
                         'fieldName' => 'calc_status',
@@ -210,7 +210,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('calc_date_plan', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Планируемая дата завершения расчетов',
                         'fieldName' => 'calc_date_plan',
@@ -219,7 +219,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('tz_files', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'ТЗ',
                         'fieldName' => 'tz_files',
@@ -228,7 +228,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('tz_date', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Дата ТЗ',
                         'fieldName' => 'tz_date',
@@ -237,7 +237,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('constructor_priority', $fieldsToEdit))
-                @include('component.fields.number', [
+                @include('lib.fields.number', [
                         'required' => false,
                         'label' => 'Приоритет конструктора',
                         'fieldName' => 'constructor_priority',
@@ -247,7 +247,7 @@
 
 
             @if($fieldsToEdit === null || in_array('constructor_comment', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'Комментарии конструктора',
                         'fieldName' => 'constructor_comment',
@@ -256,7 +256,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('manufactor_id', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Ответственный ЗОК',
                         'fieldName' => 'manufactor_id',
@@ -267,7 +267,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('manufactor_status', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Статус производства',
                         'fieldName' => 'manufactor_status',
@@ -277,7 +277,7 @@
                         ])
             @endif
             @if($fieldsToEdit === null || in_array('manufactor_date_plan', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Планируемая дата производства',
                         'fieldName' => 'manufactor_date_plan',
@@ -286,7 +286,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('sz_id', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Служебная записка',
                         'fieldName' => 'sz_id',
@@ -304,7 +304,7 @@
 
 
             @if($fieldsToEdit === null || in_array('manufactor_sz_files', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'СЗ',
                         'fieldName' => 'manufactor_sz_files',
@@ -313,7 +313,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('manufactor_sz_date', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Дата СЗ',
                         'fieldName' => 'manufactor_sz_date',
@@ -322,7 +322,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('manufactor_sz_quantity', $fieldsToEdit))
-                @include('component.fields.number', [
+                @include('lib.fields.number', [
                         'required' => false,
                         'label' => 'Количество в СЗ',
                         'fieldName' => 'manufactor_sz_quantity',
@@ -331,7 +331,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('manufactor_priority', $fieldsToEdit))
-                @include('component.fields.number', [
+                @include('lib.fields.number', [
                         'required' => false,
                         'label' => 'Приоритет производства',
                         'fieldName' => 'manufactor_priority',
@@ -340,7 +340,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('manufactor_comment', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'Комментарий производства',
                         'fieldName' => 'manufactor_comment',
@@ -348,7 +348,7 @@
                 ])
             @endif
             @if($fieldsToEdit === null || in_array('purchaser_id', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Ответственный закупщик',
                         'fieldName' => 'purchaser_id',
@@ -359,7 +359,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('purchase_status', $fieldsToEdit))
-                @include('component.fields.select', [
+                @include('lib.fields.select', [
                         'required' => false,
                         'label' => 'Статус закупки',
                         'fieldName' => 'purchase_status',
@@ -371,7 +371,7 @@
 
 
             @if($fieldsToEdit === null || in_array('purchase_date_plan', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Планируемая дата закупки',
                         'fieldName' => 'purchase_date_plan',
@@ -380,7 +380,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('purchase_request_files', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'Заявка',
                         'fieldName' => 'purchase_request_files',
@@ -389,7 +389,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('purchase_request_date', $fieldsToEdit))
-                @include('component.fields.date', [
+                @include('lib.fields.date', [
                         'required' => false,
                         'label' => 'Дата заявки',
                         'fieldName' => 'purchase_request_date',
@@ -398,7 +398,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('purchase_request_quantity', $fieldsToEdit))
-                @include('component.fields.number', [
+                @include('lib.fields.number', [
                         'required' => false,
                         'label' => 'Количество в заявке',
                         'fieldName' => 'purchase_request_quantity',
@@ -407,7 +407,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('purchase_request_priority', $fieldsToEdit))
-                @include('component.fields.number', [
+                @include('lib.fields.number', [
                         'required' => false,
                         'label' => 'Приоритет закупок',
                         'fieldName' => 'purchase_request_priority',
@@ -416,7 +416,7 @@
             @endif
 
             @if($fieldsToEdit === null || in_array('purchase_comment', $fieldsToEdit))
-                @include('component.fields.input', [
+                @include('lib.fields.input', [
                         'required' => false,
                         'label' => 'Комментарий закупок',
                         'fieldName' => 'purchase_comment',

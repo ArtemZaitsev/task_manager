@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Component;
+namespace App\Lib;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use function __;
+use function redirect;
 
 class RedirectUtils
 {

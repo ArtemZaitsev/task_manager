@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Component;
 
+use App\BuisinessLogick\ComponentVoter;
 use App\Http\Controllers\Component\Filter\DateFilter;
 use App\Http\Controllers\Component\Filter\IntegerFilter;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
 use App\Http\Controllers\Component\Filter\StringFilter;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
+use App\Lib\Grid\AbstractGrid;
+use App\Lib\Grid\GridColumn;
+use App\Lib\SelectUtils;
 use App\Models\Component\Component;
 use App\Models\Component\Component3dStatus;
 use App\Models\Component\ComponentCalcStatus;
@@ -24,18 +28,53 @@ use App\Utils\DateUtils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class ComponentGrid
+class ComponentGrid extends AbstractGrid
 {
-    private array $columns;
 
-    public function __construct()
+    public function __construct(
+        private ComponentVoter $componentVoter
+    )
     {
+        parent::__construct('components');
+
         $userSelectFilterData = SelectUtils::entityListToLabelMap(
             User::all()->all(),
             fn(User $entity) => $entity->label()
         );
 
         $this->columns = [
+            new GridColumn(
+                'actions',
+                'Действия',
+                fn(Component $entity) => view('lib.buttons.buttons', [
+                    'buttons' => [
+                        $this->componentVoter->canEditOrDelete($entity) ? [
+                            'template' => 'lib.buttons.edit_button',
+                            'templateData' => [
+                                'url' => route(ComponentEditController::EDIT_ACTION, [
+                                    'id' => $entity->id,
+                                    'back' => url()->full()
+                                ])
+                            ]
+                        ] : null,
+                        $this->componentVoter->canEditOrDelete($entity) ? [
+                            'template' => 'lib.buttons.delete_button',
+                            'templateData' => [
+                                'url' => route(ComponentDeleteController::ROUTE_NAME, [
+                                    'id' => $entity->id,
+                                    'back' => url()->full()
+                                ])
+                            ]
+                        ] : null
+                    ]
+                ])->toHtml(),
+
+                null,
+                null,
+                true,
+                false
+            ),
+
             new GridColumn(
                 'created_at',
                 'Дата создания',
@@ -364,15 +403,6 @@ class ComponentGrid
         ];
     }
 
-    /**
-     * @return GridColumn[]
-     */
-    public function getColumns(): array
-    {
-        return $this->columns;
-    }
-
-
     public function buildQuery(Request $request): Builder
     {
         $query = Component::query()
@@ -383,48 +413,6 @@ class ComponentGrid
         $this->applySort($query, $request);
 
         return $query;
-    }
-
-    private function applyFilters(Builder $query, Request $request): void
-    {
-        if (!$request->has('filters')) {
-            return;
-        }
-
-        $filters = [];
-        foreach ($this->columns as $column) {
-            /** @var GridColumn $column */
-            $filter = $column->getFilter();
-            if ($filter !== null) {
-                if (isset($filters[$filter->name()])) {
-                    throw new \LogicException(sprintf('Filter with name %s exist', $filter->name()));
-                }
-                $filters[$filter->name()] = $filter;
-            }
-        }
-
-        $filtersData = $request->get('filters');
-        foreach ($filtersData as $filterName => $filterData) {
-            if (!isset($filters[$filterName])) {
-                throw new \LogicException(sprintf('Filter %s not exist', $filterName));
-            }
-            $filter = $filters[$filterName];
-            $filter->apply($query, $filterData);
-        }
-    }
-
-    private function applySort(Builder $query, Request $request): void
-    {
-        if (!$request->query->has('sort')) {
-            $query->orderBy('id', 'desc');
-            return;
-        }
-        $orderField = $request->query->get('sort');
-        if (empty($orderField)) {
-            return;
-        }
-        $orderDirection = $request->query->get('sort_direction') ?? 'ASC';
-        $query->orderBy($orderField, $orderDirection);
     }
 
     private function nullValue(array $data): array

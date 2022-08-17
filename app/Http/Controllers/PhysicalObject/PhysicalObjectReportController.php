@@ -4,7 +4,7 @@ namespace App\Http\Controllers\PhysicalObject;
 
 use App\Http\Controllers\Component\ComponentController;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
-use App\Http\Controllers\Component\SelectUtils;
+use App\Lib\SelectUtils;
 use App\Http\Controllers\Controller;
 use App\Models\Component\Component;
 use App\Models\Component\Component3dStatus;
@@ -80,7 +80,6 @@ class PhysicalObjectReportController extends Controller
                 unset($copyReport[ComponentManufactorStatus::NOT_REQUIRED]);
                 if($status === 'manufactor_status') {
                     unset($copyReport[ComponentManufactorStatus::DD_NOT_TRANSMITTED]);
-
                 }
                 if (!isset($report['totalStatusWithoutNotRequired'][$status])) {
                     $report['totalStatusWithoutNotRequired'][$status] = 0;
