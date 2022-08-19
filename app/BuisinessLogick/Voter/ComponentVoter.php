@@ -21,29 +21,42 @@ class ComponentVoter
     {
     }
 
-    public function canExport(): bool {
+    public function canExport(): bool
+    {
         return true;
     }
 
-    public function canEditOrDelete(Component $entity): bool
+    public function canEdit(Component $entity): bool
     {
         if ($this->userIsAdmin()) {
             return true;
         }
-
+        if ($this->userIsPlaner()) {
+            return true;
+        }
         if (Auth::id() === $entity->constructor_id) {
             return true;
         }
-        $direction = $entity->constructor?->direction;
-        if ($direction === null) {
+        if (Auth::id() === $entity->purchaser_id) {
             return true;
         }
-        $directionPlanerId = $direction->planer_id;
-        if ($directionPlanerId === null) {
+        if (Auth::id() === $entity->manufactor_id) {
             return true;
         }
+//
+//        $direction = $entity->constructor?->direction;
+//        if ($direction === null) {
+//            return true;
+//        }
+//        $directionPlanerId = $direction->planer_id;
+//        if ($directionPlanerId === null) {
+//            return true;
+//        }
 
-        return Auth::id() === $directionPlanerId;
+
+        return false;
+
+//        return Auth::id() === $directionPlanerId;
 
     }
 

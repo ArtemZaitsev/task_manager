@@ -48,7 +48,7 @@ class ComponentGrid extends AbstractGrid
                 'Действия',
                 fn(Component $entity) => view('lib.buttons.buttons', [
                     'buttons' => [
-                        $this->componentVoter->canEditOrDelete($entity) ? [
+                        $this->componentVoter->canEdit($entity) ? [
                             'template' => 'lib.buttons.edit_button',
                             'templateData' => [
                                 'url' => route(ComponentEditController::EDIT_ACTION, [
