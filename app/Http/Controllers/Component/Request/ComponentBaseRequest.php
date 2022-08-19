@@ -46,7 +46,6 @@ class ComponentBaseRequest extends FormRequest
             'constructor_comment' => ['nullable', 'string'],
             'manufactor_start_way' => ['nullable', Rule::in(ComponentManufactorStartWay::values())],
             'sz_id' => ['nullable', Rule::exists(Sz::class, 'id')],
-            'purchase_order_id' => ['nullable', Rule::exists(PurchaseOrder::class, 'id')],
             'technical_task_calculation_id' => ['nullable', Rule::exists(TechnicalTaskCalculation::class, 'id')],
         ];
         $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
@@ -67,6 +66,7 @@ class ComponentBaseRequest extends FormRequest
             'purchase_request_quantity' => ['nullable', 'numeric'],
             'purchase_request_priority' => ['nullable', 'numeric'],
             'purchase_comment' => ['nullable', 'string'],
+            'purchase_order_id' => ['nullable', Rule::exists(PurchaseOrder::class, 'id')],
         ];
 
         $this->rules[ComponentVoter::ROLE_PLANER] = array_merge(
