@@ -10,9 +10,14 @@ use App\Http\Controllers\Component\ComponentExportController;
 use App\Http\Controllers\FileUploadTestController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
+use App\Http\Controllers\PurchaseOrder\PurchaseOrderCreateController;
+use App\Http\Controllers\PurchaseOrder\PurchaseOrderDeleteController;
+use App\Http\Controllers\PurchaseOrder\PurchaseOrderEditController;
+use App\Http\Controllers\PurchaseOrder\PurchaseOrderListController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Sz\SzCreateController;
 use App\Http\Controllers\Sz\SzDeleteController;
+use App\Http\Controllers\Sz\SzEditController;
 use App\Http\Controllers\Sz\SzListController;
 use App\Http\Controllers\Task\PerformerTaskEditController;
 use App\Http\Controllers\Task\TaskAddController;
@@ -24,6 +29,10 @@ use App\Http\Controllers\Task\TaskLogController;
 use App\Http\Controllers\Task\TasksExportController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectSaveController;
+use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationCreateController;
+use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationDeleteController;
+use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationEditController;
+use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationListController;
 use App\Http\Controllers\UserAuthController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
@@ -120,11 +129,48 @@ Route::get('/sz/list', [SzListController::class, 'index'])
     ->name(SzListController::ROUTE_NAME);
 Route::get('/sz/{id}/delete', [SzDeleteController::class, 'index'])
     ->name(SzDeleteController::ROUTE_NAME);
-
 Route::get('/sz/create', [SzCreateController::class, 'index'])
     ->name(SzCreateController::INDEX_ACTION);
 Route::post('/sz/create', [SzCreateController::class, 'processForm'])
     ->name(SzCreateController::PROCESS_FORM_ACTION);
+Route::get('/sz/{id}/edit', [SzEditController::class, 'index'])
+    ->where('id', '[0-9]+')
+    ->name(SzEditController::INDEX_ACTION);
+Route::post('/sz/{id}/edit', [SzEditController::class, 'processForm'])
+    ->where('id', '[0-9]+')
+    ->name(SzEditController::PROCESS_FORM_ACTION);
+
+Route::get('/purchase_order/list', [PurchaseOrderListController::class, 'index'])
+    ->name(PurchaseOrderListController::ROUTE_NAME);
+Route::get('/purchase_order/{id}/delete', [PurchaseOrderDeleteController::class, 'index'])
+    ->name(PurchaseOrderDeleteController::ROUTE_NAME);
+Route::get('/purchase_order/create', [PurchaseOrderCreateController::class, 'index'])
+    ->name(PurchaseOrderCreateController::INDEX_ACTION);
+Route::post('/purchase_order/create', [PurchaseOrderCreateController::class, 'processForm'])
+    ->name(PurchaseOrderCreateController::PROCESS_FORM_ACTION);
+Route::get('/purchase_order/{id}/edit', [PurchaseOrderEditController::class, 'index'])
+    ->where('id', '[0-9]+')
+    ->name(PurchaseOrderEditController::INDEX_ACTION);
+Route::post('/purchase_order/{id}/edit', [PurchaseOrderEditController::class, 'processForm'])
+    ->where('id', '[0-9]+')
+    ->name(PurchaseOrderEditController::PROCESS_FORM_ACTION);
+
+Route::get('/ttc/list', [TechnicalTaskCalculationListController::class, 'index'])
+    ->name(TechnicalTaskCalculationListController::ROUTE_NAME);
+Route::get('/ttc/{id}/delete', [TechnicalTaskCalculationDeleteController::class, 'index'])
+    ->name(TechnicalTaskCalculationDeleteController::ROUTE_NAME);
+Route::get('/ttc/create', [TechnicalTaskCalculationCreateController::class, 'index'])
+    ->name(TechnicalTaskCalculationCreateController::INDEX_ACTION);
+Route::post('/ttc/create', [TechnicalTaskCalculationCreateController::class, 'processForm'])
+    ->name(TechnicalTaskCalculationCreateController::PROCESS_FORM_ACTION);
+Route::get('/ttc/{id}/edit', [TechnicalTaskCalculationEditController::class, 'index'])
+    ->where('id', '[0-9]+')
+    ->name(TechnicalTaskCalculationEditController::INDEX_ACTION);
+Route::post('/ttc/{id}/edit', [TechnicalTaskCalculationEditController::class, 'processForm'])
+    ->where('id', '[0-9]+')
+    ->name(TechnicalTaskCalculationEditController::PROCESS_FORM_ACTION);
+
+
 
 Route::get('/test/file_upload', [FileUploadTestController::class, 'index']);
 Route::post('/test/file_upload', [FileUploadTestController::class, 'processForm'])

@@ -6,16 +6,16 @@ class ComponentPurchaserStatus
 {
     public const NOT_REQUIRED = 1;
     public const DOES_NOT_DONE = 2;
-    public const AGREE = 3;
-    public const COMPONENT_CHOOSED = 4;
+    public const DECOR_PURCHASE_REQUEST = 3;
+    public const AGREEMENT = 4;
     public const IN_PROGRESS = 5;
     public const DONE = 6;
 
     public const LABELS = [
         self::NOT_REQUIRED => 'Не требуется',
-        self::DOES_NOT_DONE => 'Не проработана',
-        self::COMPONENT_CHOOSED => 'Компонент выбран',
-        self::AGREE => 'Согласование компонента',
+        self::DOES_NOT_DONE => 'Не отработано',
+        self::DECOR_PURCHASE_REQUEST => 'Оформление заявки',
+        self::AGREEMENT => 'Согласование заявки',
         self::IN_PROGRESS => 'В процессе',
         self::DONE => 'Готово',
     ];

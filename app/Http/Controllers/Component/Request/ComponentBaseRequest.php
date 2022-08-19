@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Component\Request;
 
-use App\BuisinessLogick\ComponentVoter;
+use App\BuisinessLogick\Voter\ComponentVoter;
 use App\Models\Component\Component;
 use App\Models\Component\Component3dStatus;
 use App\Models\Component\ComponentCalcStatus;
@@ -14,7 +14,9 @@ use App\Models\Component\ComponentSourceType;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
 use App\Models\Component\PhysicalObject;
+use App\Models\Component\PurchaseOrder;
 use App\Models\Component\Sz;
+use App\Models\Component\TechnicalTaskCalculation;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +46,8 @@ class ComponentBaseRequest extends FormRequest
             'constructor_comment' => ['nullable', 'string'],
             'manufactor_start_way' => ['nullable', Rule::in(ComponentManufactorStartWay::values())],
             'sz_id' => ['nullable', Rule::exists(Sz::class, 'id')],
+            'purchase_order_id' => ['nullable', Rule::exists(PurchaseOrder::class, 'id')],
+            'technical_task_calculation_id' => ['nullable', Rule::exists(TechnicalTaskCalculation::class, 'id')],
         ];
         $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
             'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],

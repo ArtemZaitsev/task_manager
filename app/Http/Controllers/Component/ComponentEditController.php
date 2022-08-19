@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Component;
 
-use App\BuisinessLogick\ComponentVoter;
+use App\BuisinessLogick\Voter\ComponentVoter;
 use App\Http\Controllers\Component\Request\ComponentEditRequest;
 use App\Http\Controllers\Controller;
 use App\Lib\RedirectUtils;
@@ -45,7 +45,8 @@ class ComponentEditController extends Controller
                 'constructor_priority',
                 'constructor_comment',
                 'manufactor_start_way',
-                'sz_id'
+                'sz_id',
+                'purchase_order_id',
             ],
             ComponentVoter::ROLE_MANUFACTOR =>[
                 'manufactor_status',

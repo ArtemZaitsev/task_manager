@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileService
 {
+    private const FILES_SAVE_DIR = __DIR__ . '/../../public/files/';
 
     public function saveUploadedFile(UploadedFile $uploadedFile, string $baseDir): string
     {
@@ -15,9 +16,12 @@ class FileService
         $dir = substr($hash, 0, 2) . "/" . substr($hash, 2, 2);
         $fileName = substr($hash, 4) . '.' . $extension;
 
-        $dirToSave = __DIR__ . '/../../public/files/' . $baseDir;
-        if (!is_dir($dirToSave)) {
-            throw new \Exception(sprintf('Save dir %s not exist', $dirToSave));
+        if (!is_dir(self::FILES_SAVE_DIR)) {
+            throw new \Exception(sprintf('Save dir %s not exist', self::FILES_SAVE_DIR));
+        }
+        $dirToSave = self::FILES_SAVE_DIR . $baseDir;
+        if(!is_dir($dirToSave)) {
+            mkdir($dirToSave, 0777, true);
         }
 
         $fileDir = $dirToSave . "/" . $dir;

@@ -1,5 +1,5 @@
 @extends('layouts.grid')
-@section('title') Список СЗ @endsection
+@section('title'){{ $title }} @endsection
 @section('grid')
 
     <style>
@@ -13,10 +13,10 @@
     </style>
 
 
-
+<h2>{{ $title }}</h2>
     <div>
         <a class="btn btn-outline-success m-3"
-           href="{{ $links['create'] }}">Добавить СЗ </a>
+           href="{{ $links['create'] }}">Добавить</a>
 
         <a href="{{ $links['reset'] }}" class="btn btn-outline-dark m-1">
             Очистить фильтры

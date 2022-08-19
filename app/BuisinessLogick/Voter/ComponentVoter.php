@@ -1,7 +1,8 @@
 <?php
 
-namespace App\BuisinessLogick;
+namespace App\BuisinessLogick\Voter;
 
+use App\BuisinessLogick\PlanerService;
 use App\Models\Component\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;

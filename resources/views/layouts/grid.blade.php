@@ -26,6 +26,14 @@
                         btn-outline-success m-1">
         СЗ
     </a>
+    <a href="{{ route(\App\Http\Controllers\PurchaseOrder\PurchaseOrderListController::ROUTE_NAME) }}" class="btn
+                        btn-outline-success m-1">
+        Заявки на закупки
+    </a>
+    <a href="{{ route(\App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationListController::ROUTE_NAME) }}" class="btn
+                        btn-outline-success m-1">
+        ТЗ на расчет
+    </a>
 </div>
 
     @if(Session::has('success'))

@@ -110,7 +110,9 @@ class Component extends Model
         'physical_object_id',
         'quantity_in_object',
         'is_highlevel',
-        'sz_id'
+        'sz_id',
+        'purchase_order_id',
+        'technical_task_calculation_id',
     ];
 
 
@@ -144,6 +146,15 @@ class Component extends Model
         return $this->belongsTo(Sz::class);
     }
 
+    public function purchaseOrder()
+    {
+        return $this->belongsTo(PurchaseOrder::class);
+    }
+
+    public function technicalTaskCalculation()
+    {
+        return $this->belongsTo(TechnicalTaskCalculation::class);
+    }
     public function label(): string
     {
         return empty($this->identifier) ? $this->title :

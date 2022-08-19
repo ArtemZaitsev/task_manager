@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Sz;
+namespace App\Http\Controllers\PurchaseOrder;
 
-use App\BuisinessLogick\Voter\SzVoter;
+use App\BuisinessLogick\Voter\PurchaseOrderVoter;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SzListController extends Controller
+class PurchaseOrderListController extends Controller
 {
-    public const ROUTE_NAME = 'sz.list';
+    public const ROUTE_NAME = 'purchase_order.list';
 
     const RECORDS_PER_PAGE = 20;
 
     public function __construct(
-        private SzGrid $grid,
-        private SzVoter $voter
+        private PurchaseOrderGrid $grid,
+        private PurchaseOrderVoter $voter
     )
     {
     }
@@ -26,15 +26,14 @@ class SzListController extends Controller
         $components = $query->paginate(self::RECORDS_PER_PAGE)->withQueryString();
 
         return view('abstract_document.list', [
-            'title' => 'Список СЗ',
+            'title' => 'Список заявок',
             'data' => $components,
             'grid' => $this->grid,
             'voter' => $this->voter,
             'links' => [
-                'create' => route(SzCreateController::INDEX_ACTION, ['back' => url()->full()]),
+                'create' => route(PurchaseOrderCreateController::INDEX_ACTION, ['back' => url()->full()]),
                 'reset' => route(self::ROUTE_NAME)
             ]
         ]);
     }
-
 }

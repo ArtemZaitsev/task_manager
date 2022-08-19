@@ -3,17 +3,14 @@
 namespace App\Http\Controllers\Sz;
 
 use App\BuisinessLogick\FileService;
-use App\Http\Controllers\Component\ComponentController;
 use App\Http\Controllers\Controller;
 use App\Lib\RedirectUtils;
 use App\Models\Component\Sz;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\File;
 
 class SzCreateController extends Controller
 {
-    public const INDEX_ACTION = 'sz.index';
-    public const PROCESS_FORM_ACTION = 'sz.processForm';
+    public const INDEX_ACTION = 'sz.create.index';
+    public const PROCESS_FORM_ACTION = 'sz.create.processForm';
 
     public function __construct(private FileService $fileService)
     {
@@ -21,30 +18,17 @@ class SzCreateController extends Controller
 
     public function index()
     {
-        return view('sz.edit', [
-            'entity' => new Sz()
+        return view('abstract_document.edit', [
+            'entity' => new Sz(),
+            'title' => 'Добавление СЗ'
         ]);
     }
 
-    public function processForm(Request $request)
+    public function processForm(SzRequest $request)
     {
-        $data = $request->validate([
-            'number' => ['required', 'max:255'],
-            'date' => ['required', 'date'],
-        ]);
-
         $entity = new Sz();
-        $entity->fill($data);
-
-        if ($request->files->has('szFile')) {
-            $file = $request->files->get('szFile');
-            $fileName = $this->fileService->saveUploadedFile($file, 'sz');
-            $entity->file_path = $fileName;
-        }
-
-        $entity->save();
+        $request->store($entity, $this->fileService);
 
         return RedirectUtils::redirectBack($request, self::INDEX_ACTION);
-
     }
 }

@@ -177,23 +177,23 @@
                 ])
             @endif
 
-            @if($fieldsToEdit === null || in_array('drawing_files', $fieldsToEdit))
-                @include('lib.fields.input', [
-                        'required' => false,
-                        'label' => 'Чертежи',
-                        'fieldName' => 'drawing_files',
-                        'currentValue' => $entity->getAttribute('drawing_files'),
-                ])
-            @endif
+{{--            @if($fieldsToEdit === null || in_array('drawing_files', $fieldsToEdit))--}}
+{{--                @include('lib.fields.input', [--}}
+{{--                        'required' => false,--}}
+{{--                        'label' => 'Чертежи',--}}
+{{--                        'fieldName' => 'drawing_files',--}}
+{{--                        'currentValue' => $entity->getAttribute('drawing_files'),--}}
+{{--                ])--}}
+{{--            @endif--}}
 
-            @if($fieldsToEdit === null || in_array('drawing_date', $fieldsToEdit))
-                @include('lib.fields.date', [
-                        'required' => false,
-                        'label' => 'Дата чертежей',
-                        'fieldName' => 'drawing_date',
-                        'currentValue' => $entity->getAttribute('drawing_date'),
-                ])
-            @endif
+{{--            @if($fieldsToEdit === null || in_array('drawing_date', $fieldsToEdit))--}}
+{{--                @include('lib.fields.date', [--}}
+{{--                        'required' => false,--}}
+{{--                        'label' => 'Дата чертежей',--}}
+{{--                        'fieldName' => 'drawing_date',--}}
+{{--                        'currentValue' => $entity->getAttribute('drawing_date'),--}}
+{{--                ])--}}
+{{--            @endif--}}
 
 
 
@@ -217,6 +217,18 @@
                         'currentValue' => $entity->calc_date_plan,
                 ])
             @endif
+
+            @if($fieldsToEdit === null || in_array('technical_task_calculation_id', $fieldsToEdit))
+                @include('lib.fields.select', [
+                        'required' => false,
+                        'label' => 'ТЗ',
+                        'fieldName' => 'technical_task_calculation_id',
+                        'currentValue' => $entity->technical_task_calculation_id,
+                        'multiple' => false,
+                        'data' => $technicalTaskCalculationSelectData
+                        ])
+            @endif
+
 
             @if($fieldsToEdit === null || in_array('tz_files', $fieldsToEdit))
                 @include('lib.fields.input', [
@@ -294,14 +306,7 @@
                         'multiple' => false,
                         'data' => $szSelectData
                         ])
-                <a href="{{route(\App\Http\Controllers\Sz\SzCreateController::INDEX_ACTION)}}" class="btn
-                btn-outline-info mb-3"
-                   target="_blank">
-                    Добавить СЗ
-                </a>
             @endif
-
-
 
             @if($fieldsToEdit === null || in_array('manufactor_sz_files', $fieldsToEdit))
                 @include('lib.fields.input', [
@@ -377,6 +382,17 @@
                         'fieldName' => 'purchase_date_plan',
                         'currentValue' => $entity->purchase_date_plan,
                 ])
+            @endif
+
+            @if($fieldsToEdit === null || in_array('purchase_order_id', $fieldsToEdit))
+                @include('lib.fields.select', [
+                        'required' => false,
+                        'label' => 'Заявка',
+                        'fieldName' => 'purchase_order_id',
+                        'currentValue' => $entity->purchase_order_id,
+                        'multiple' => false,
+                        'data' => $purchaseOrderSelectData
+                        ])
             @endif
 
             @if($fieldsToEdit === null || in_array('purchase_request_files', $fieldsToEdit))

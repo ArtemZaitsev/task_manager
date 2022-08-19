@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Component;
 use App\Lib\SelectUtils;
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
+use App\Models\Component\PurchaseOrder;
 use App\Models\Component\Sz;
+use App\Models\Component\TechnicalTaskCalculation;
 use App\Models\User;
 
 class ComponentControllerViewBuilder
@@ -17,15 +19,23 @@ class ComponentControllerViewBuilder
             'entity' => $entity,
             'userSelectData' => SelectUtils::entityListToLabelMap(
                 User::all()->all(),
-                fn(User $user) => $user->label()
+                fn(User $entity) => $entity->label()
             ),
             'szSelectData' => SelectUtils::entityListToLabelMap(
-                Sz::all()->all(),
-                fn(Sz $user) => $user->label()
+                Sz::query()->orderBy('id', 'desc')->get()->all(),
+                fn(Sz $entity) => $entity->label()
+            ),
+            'purchaseOrderSelectData' => SelectUtils::entityListToLabelMap(
+                PurchaseOrder::query()->orderBy('id', 'desc')->get()->all(),
+                fn(PurchaseOrder $entity) => $entity->label()
+            ),
+            'technicalTaskCalculationSelectData' => SelectUtils::entityListToLabelMap(
+                TechnicalTaskCalculation::query()->orderBy('id', 'desc')->get()->all(),
+                fn(TechnicalTaskCalculation $entity) => $entity->label()
             ),
             'physicalObjectsSelectData' => SelectUtils::entityListToLabelMap(
                 PhysicalObject::all()->all(),
-                fn(PhysicalObject $user) => $user->label()
+                fn(PhysicalObject $entity) => $entity->label()
             ),
             'componentsSelectData' => SelectUtils::entityListToLabelMap(
                 $entity->id === null ?

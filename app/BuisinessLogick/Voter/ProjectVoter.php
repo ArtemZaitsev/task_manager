@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BuisinessLogick;
+namespace App\BuisinessLogick\Voter;
 
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;

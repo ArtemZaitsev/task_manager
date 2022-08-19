@@ -2,13 +2,12 @@
 
 namespace App\Models\Component;
 
+use App\Utils\DateUtils;
 
-class Sz extends AbstractDocument
+class PurchaseOrder extends AbstractDocument
 {
-    protected $table = 'sz';
-
     protected function documentName(): string
     {
-       return 'СЗ';
+        return 'Заявка';
     }
 }

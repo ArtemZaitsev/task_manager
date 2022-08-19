@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Component\Request;
 
-use App\BuisinessLogick\ComponentVoter;
+use App\BuisinessLogick\Voter\ComponentVoter;
 use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\TaskVoter;
 use App\Http\Controllers\Component\Request\ComponentBaseRequest;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Component;
 
-use App\BuisinessLogick\ComponentVoter;
+use App\BuisinessLogick\Voter\ComponentVoter;
 use App\Http\Controllers\Component\Filter\DateFilter;
 use App\Http\Controllers\Component\Filter\IntegerFilter;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
@@ -106,26 +106,6 @@ class ComponentGrid extends AbstractGrid
                         fn(PhysicalObject $o) => $o->label())
                 )
             ),
-
-            new GridColumn(
-                'quantity_in_object',
-                'Количество в объекте',
-                fn(Component $entity) => $entity->quantity_in_object === 0 ? '' : $entity->quantity_in_object,
-                'quantity_in_object',
-                new IntegerFilter('quantity_in_object')
-            ),
-
-            new GridColumn(
-                'relative_component_id',
-                'Верхнеуровневый компонент',
-                fn(Component $entity) => $entity->relativeComponent?->label(),
-                null,
-                new MultiSelectFilter('relative_component_id',
-                    SelectUtils::entityListToLabelMap(
-                        Component::query()->where('is_highlevel', 1)->get()->all(),
-                        fn(Component $c) => $c->label())
-                )
-            ),
             new GridColumn(
                 'direction',
                 'Направление',
@@ -138,11 +118,15 @@ class ComponentGrid extends AbstractGrid
                 )
             ),
             new GridColumn(
-                'title',
-                'Название компонента',
-                fn(Component $entity) => $entity->title,
-                'title',
-                new StringFilter('title')
+                'relative_component_id',
+                'Верхнеуровневый компонент',
+                fn(Component $entity) => $entity->relativeComponent?->label(),
+                null,
+                new MultiSelectFilter('relative_component_id',
+                    SelectUtils::entityListToLabelMap(
+                        Component::query()->where('is_highlevel', 1)->get()->all(),
+                        fn(Component $c) => $c->label())
+                )
             ),
             new GridColumn(
                 'identifier',
@@ -152,46 +136,67 @@ class ComponentGrid extends AbstractGrid
                 new StringFilter('identifier')
             ),
             new GridColumn(
-                'entry_level',
-                'Уровень входимости',
-                fn(Component $entity) => $entity->entry_level === 0 ? '' : $entity->entry_level,
-                null,
-                new IntegerFilter('entry_level')
+                'title',
+                'Название компонента',
+                fn(Component $entity) => $entity->title,
+                'title',
+                new StringFilter('title')
             ),
             new GridColumn(
-                'source_type',
-                'Как получаем',
-                fn(Component $entity) => ComponentSourceType::LABELS[$entity->source_type] ?? '',
-                'source_type',
-                new MultiSelectFilter('source_type', $this->nullValue(ComponentSourceType::LABELS))
-            ),
-            new GridColumn(
-                'version',
-                'Версия',
-                fn(Component $entity) => ComponentVersion::LABELS[$entity->version] ?? '',
-                'version',
-                new MultiSelectFilter('version', $this->nullValue(ComponentVersion::LABELS))
+                'quantity_in_object',
+                'Количество в объекте',
+                fn(Component $entity) => $entity->quantity_in_object === 0 ? '' : $entity->quantity_in_object,
+                'quantity_in_object',
+                new IntegerFilter('quantity_in_object'),
+                false
             ),
             new GridColumn(
                 'type',
                 'Тип компонента',
                 fn(Component $entity) => ComponentType::LABELS[$entity->type] ?? '',
                 'type',
-                new MultiSelectFilter('type', $this->nullValue(ComponentType::LABELS))
+                new MultiSelectFilter('type', $this->nullValue(ComponentType::LABELS)),
+                false
+            ),
+            new GridColumn(
+                'version',
+                'Версия',
+                fn(Component $entity) => ComponentVersion::LABELS[$entity->version] ?? '',
+                'version',
+                new MultiSelectFilter('version', $this->nullValue(ComponentVersion::LABELS)),
+                false
+            ),
+            new GridColumn(
+                'entry_level',
+                'Уровень входимости',
+                fn(Component $entity) => $entity->entry_level === 0 ? '' : $entity->entry_level,
+                null,
+                new IntegerFilter('entry_level'),
+                false
+            ),
+            new GridColumn(
+                'source_type',
+                'Как получаем',
+                fn(Component $entity) => ComponentSourceType::LABELS[$entity->source_type] ?? '',
+                'source_type',
+                new MultiSelectFilter('source_type', $this->nullValue(ComponentSourceType::LABELS)),
+                false
             ),
             new GridColumn(
                 'manufactor_start_way',
                 'Способ запуска в производство',
                 fn(Component $entity) => ComponentManufactorStartWay::LABELS[$entity->manufactor_start_way] ?? '',
                 'manufactor_start_way',
-                new MultiSelectFilter('manufactor_start_way', $this->nullValue(ComponentManufactorStartWay::LABELS))
+                new MultiSelectFilter('manufactor_start_way', $this->nullValue(ComponentManufactorStartWay::LABELS)),
+                false
             ),
             new GridColumn(
                 'constructor_id',
                 'Конструктор',
                 fn(Component $entity) => $entity->constructor?->label(),
                 null,
-                new MultiSelectFilter('constructor_id', $userSelectFilterData)
+                new MultiSelectFilter('constructor_id', $userSelectFilterData),
+                false
             ),
             new GridColumn(
                 '3d_status',
@@ -222,20 +227,20 @@ class ComponentGrid extends AbstractGrid
                 new DateFilter('dd_date_plan'),
             ),
 
-            new GridColumn(
-                'drawing_files',
-                'Чертежи',
-                fn(Component $entity) => $entity->drawing_files,
-                'drawing_files',
-                new StringFilter('drawing_files')
-            ),
-            new GridColumn(
-                'drawing_date',
-                'Дата чертежей',
-                fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->drawing_date),
-                'drawing_date',
-                new DateFilter('drawing_date'),
-            ),
+//            new GridColumn(
+//                'drawing_files',
+//                'Чертежи',
+//                fn(Component $entity) => $entity->drawing_files,
+//                'drawing_files',
+//                new StringFilter('drawing_files')
+//            ),
+//            new GridColumn(
+//                'drawing_date',
+//                'Дата чертежей',
+//                fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->drawing_date),
+//                'drawing_date',
+//                new DateFilter('drawing_date'),
+//            ),
             new GridColumn(
                 'calc_status',
                 'Статус Расчетов',
@@ -250,6 +255,16 @@ class ComponentGrid extends AbstractGrid
                 'calc_date_plan',
                 new DateFilter('calc_date_plan'),
             ),
+            new GridColumn(
+                'technical_task_calculation_id',
+                'ТЗ (ссылка)',
+                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
+                    sprintf('<a href="%s" target="_blank">%s</a>',
+                        '/files/' . $entity->technicalTaskCalculation->file_path,
+                        $entity->technicalTaskCalculation->label()
+                    )
+            ),
+
             new GridColumn(
                 'tz_files',
                 'ТЗ',
@@ -269,21 +284,24 @@ class ComponentGrid extends AbstractGrid
                 'Приоритет конструктора',
                 fn(Component $entity) => $entity->constructor_priority,
                 null,
-                new IntegerFilter('constructor_priority')
+                new IntegerFilter('constructor_priority'),
+                false
             ),
             new GridColumn(
                 'constructor_comment',
                 'Примечание конструктора',
                 fn(Component $entity) => $entity->constructor_comment,
                 'constructor_comment',
-                new StringFilter('constructor_comment')
+                new StringFilter('constructor_comment'),
+                false
             ),
             new GridColumn(
                 'manufactor_id',
                 'Ответственный ЗОК',
                 fn(Component $entity) => $entity->manufactor?->label(),
                 null,
-                new MultiSelectFilter('manufactor_id', $userSelectFilterData)
+                new MultiSelectFilter('manufactor_id', $userSelectFilterData),
+                false
             ),
             new GridColumn(
                 'manufactor_status',
@@ -328,29 +346,34 @@ class ComponentGrid extends AbstractGrid
                 'Количество в СЗ',
                 fn(Component $entity) => $entity->manufactor_sz_quantity === 0 ? '' : $entity->manufactor_sz_quantity,
                 null,
-                new IntegerFilter('manufactor_sz_quantity')
+                new IntegerFilter('manufactor_sz_quantity'),
+                false
             ),
             new GridColumn(
                 'manufactor_priority',
                 'Приоритет производства',
                 fn(Component $entity) => $entity->manufactor_priority === 0 ? '' : $entity->manufactor_priority,
                 null,
-                new IntegerFilter('manufactor_priority')
+                new IntegerFilter('manufactor_priority'),
+                false
             ),
             new GridColumn(
                 'manufactor_comment',
                 'Примечание ответственного ЗОК',
                 fn(Component $entity) => $entity->manufactor_comment,
                 'manufactor_comment',
-                new StringFilter('manufactor_comment')
+                new StringFilter('manufactor_comment'),
+                false
             ),
             new GridColumn(
                 'purchaser_id',
                 'Ответственный закупщик',
                 fn(Component $entity) => $entity->purchaser?->label(),
                 null,
-                new MultiSelectFilter('purchaser_id', $userSelectFilterData)
+                new MultiSelectFilter('purchaser_id', $userSelectFilterData),
+                false
             ),
+
             new GridColumn(
                 'purchase_status',
                 'Статус закупки',
@@ -364,6 +387,15 @@ class ComponentGrid extends AbstractGrid
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->purchase_date_plan),
                 'purchase_date_plan',
                 new DateFilter('purchase_date_plan'),
+            ),
+            new GridColumn(
+                'purchase_order_id',
+                'Заявка (ссылка)',
+                fn(Component $entity) => $entity->purchaseOrder === null ? '' :
+                    sprintf('<a href="%s" target="_blank">%s</a>',
+                        '/files/' . $entity->purchaseOrder->file_path,
+                        $entity->purchaseOrder->label()
+                    )
             ),
             new GridColumn(
                 'purchase_request_files',
@@ -384,21 +416,24 @@ class ComponentGrid extends AbstractGrid
                 'Количество в заявке',
                 fn(Component $entity) => $entity->purchase_request_quantity === 0 ? '' : $entity->purchase_request_quantity,
                 null,
-                new IntegerFilter('purchase_request_quantity')
+                new IntegerFilter('purchase_request_quantity'),
+                false
             ),
             new GridColumn(
                 'purchase_request_priority',
                 'Приоритет закупщика',
                 fn(Component $entity) => $entity->purchase_request_priority === 0 ? '' : $entity->purchase_request_priority,
                 null,
-                new IntegerFilter('purchase_request_priority')
+                new IntegerFilter('purchase_request_priority'),
+                false
             ),
             new GridColumn(
                 'purchase_comment',
                 'Примечание закупщика',
                 fn(Component $entity) => $entity->purchase_comment,
                 'purchase_comment',
-                new StringFilter('purchase_comment')
+                new StringFilter('purchase_comment'),
+                false
             ),
         ];
     }

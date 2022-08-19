@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Task;
 
 use App\BuisinessLogick\PlanerService;
-use App\BuisinessLogick\ProjectVoter;
+use App\BuisinessLogick\Voter\ProjectVoter;
 use App\BuisinessLogick\TaskService;
 use App\BuisinessLogick\TaskVoter;
 use App\Models\Component\Component;
