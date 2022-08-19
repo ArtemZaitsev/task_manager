@@ -57,7 +57,7 @@ class ComponentGrid extends AbstractGrid
                                 ])
                             ]
                         ] : null,
-                        $this->componentVoter->canEditOrDelete($entity) ? [
+                        $this->componentVoter->canDelete($entity) ? [
                             'template' => 'lib.buttons.delete_button',
                             'templateData' => [
                                 'url' => route(ComponentDeleteController::ROUTE_NAME, [

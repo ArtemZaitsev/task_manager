@@ -46,7 +46,7 @@ class ComponentEditController extends Controller
                 'constructor_comment',
                 'manufactor_start_way',
                 'sz_id',
-                'purchase_order_id',
+
             ],
             ComponentVoter::ROLE_MANUFACTOR =>[
                 'manufactor_status',
@@ -65,6 +65,7 @@ class ComponentEditController extends Controller
                 'purchase_request_quantity',
                 'purchase_request_priority',
                 'purchase_comment',
+                'purchase_order_id',
             ],
             default => []
         };

@@ -47,6 +47,14 @@ class ComponentVoter
 
     }
 
+    public function canDelete(Component $entity): bool
+    {
+        if ($this->userIsPlaner()) {
+            return true;
+        }
+        return false;
+    }
+
     public function editRole(Component $entity): ?string
     {
 
