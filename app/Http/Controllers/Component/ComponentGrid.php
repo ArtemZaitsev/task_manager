@@ -297,7 +297,7 @@ class ComponentGrid extends AbstractGrid
             ),
             new GridColumn(
                 'manufactor_id',
-                'Ответственный ЗОК',
+                'Контроль ЗОК',
                 fn(Component $entity) => $entity->manufactor?->label(),
                 null,
                 new MultiSelectFilter('manufactor_id', $userSelectFilterData),
@@ -367,7 +367,7 @@ class ComponentGrid extends AbstractGrid
             ),
             new GridColumn(
                 'purchaser_id',
-                'Ответственный закупщик',
+                'Контроль закупок',
                 fn(Component $entity) => $entity->purchaser?->label(),
                 null,
                 new MultiSelectFilter('purchaser_id', $userSelectFilterData),
@@ -383,7 +383,7 @@ class ComponentGrid extends AbstractGrid
             ),
             new GridColumn(
                 'purchase_date_plan',
-                'Планируемая дата поставки',
+                'Планируемая дата',
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->purchase_date_plan),
                 'purchase_date_plan',
                 new DateFilter('purchase_date_plan'),
@@ -452,6 +452,7 @@ class ComponentGrid extends AbstractGrid
 
     private function nullValue(array $data): array
     {
-        return array_merge([0 => 'Не указано'], $data);
+        $data[0] = 'Не указано';
+        return $data;
     }
 }

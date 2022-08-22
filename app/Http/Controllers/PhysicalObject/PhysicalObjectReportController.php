@@ -78,7 +78,7 @@ class PhysicalObjectReportController extends Controller
                 // remove NOT_REQUIRED status for all reports
                 unset($copyReport[0]);
                 unset($copyReport[ComponentManufactorStatus::NOT_REQUIRED]);
-                if($status === 'manufactor_status') {
+                if ($status === 'manufactor_status') {
                     unset($copyReport[ComponentManufactorStatus::DD_NOT_TRANSMITTED]);
                 }
                 if (!isset($report['totalStatusWithoutNotRequired'][$status])) {
@@ -122,16 +122,45 @@ class PhysicalObjectReportController extends Controller
                     'relative_component_id' => [$componentId]
                 ], $additionalParams)
             ]),
-            'totalFilterUrl' => fn(string $statusField, int $statusValue) => route(ComponentController::ROUTE_NAME, [
-                'filters' => [
-                    'physical_object_id' => [$object->id],
-                    $statusField => [$statusValue]
-                ]
+            'totalFilterUrl' => function (string $statusField, int $statusValue = null) use (
+                $highLevelComponentsAll,
+                $request, $highLevelComponents, $object
+            ) {
+                $filters = $this->baseFilters($object, $highLevelComponents, $highLevelComponentsAll);
+                if ($statusValue !== null) {
+                    $filters[$statusField] = [$statusValue];
+                }
+                return route(ComponentController::ROUTE_NAME, [
+                    'filters' => $filters
+                ]);
+            },
+            'totalUrl' => route(ComponentController::ROUTE_NAME, [
+                'filters' => $this->baseFilters($report['object'], $highLevelComponents, $highLevelComponentsAll)
             ]),
+//            'totalFilterUrl' => fn($componentId, array $additionalParams = []) => route(
+//                ComponentController::ROUTE_NAME, [
+//                'filters' => array_merge([
+//                    'physical_object_id' => [$report['object']->id],
+//                    'relative_component_id' => [$componentId]
+//                ], $additionalParams)
+//            ]),
+
         ]);
     }
 
-    private function fieldReport(Component $component, string $fieldName): array
+    private function baseFilters(PhysicalObject $object, array $highLevelComponents, array $highLevelComponentsAll): array
+    {
+        $filters = ['physical_object_id' => [$object->id]];
+
+        if (count($highLevelComponents) !== count($highLevelComponentsAll)) {
+            $filters['relative_component_id'] = array_map(fn(Component $entity) => $entity->id,
+                $highLevelComponents);
+        }
+        return $filters;
+    }
+
+    private
+    function fieldReport(Component $component, string $fieldName): array
     {
         $groupResult = Component::query()
             ->where('physical_object_id', $component->physical_object_id)
@@ -154,7 +183,8 @@ class PhysicalObjectReportController extends Controller
 
     }
 
-    private function totalComponents(Component $component): int
+    private
+    function totalComponents(Component $component): int
     {
         $result = Component::query()
             ->where('physical_object_id', $component->physical_object_id)
@@ -165,7 +195,8 @@ class PhysicalObjectReportController extends Controller
         return (int)$result[0]['component_count'];
     }
 
-    private function filterComponents(array $highLevelComponentsAll, Request $request): array
+    private
+    function filterComponents(array $highLevelComponentsAll, Request $request): array
     {
         if (!$request->query->has('filters')) {
             return $highLevelComponentsAll;
@@ -180,7 +211,7 @@ class PhysicalObjectReportController extends Controller
             return $highLevelComponentsAll;
         }
 
-        $filterValue = array_map(fn($value) => (int) $value, $filterValue);
+        $filterValue = array_map(fn($value) => (int)$value, $filterValue);
 
 
         $highLevelComponentsAll = array_filter($highLevelComponentsAll,

@@ -158,8 +158,7 @@
             <td class="first-column">
                 <div style="width: 550px; font-weight: bold; border-right: 1px solid black;">Всего в составе</div>
                 <div class="value" style="width: 80px; ">
-                    <a href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME,
-   ['filters' => ['physical_object_id' => [$report['object']->id]]]) }}"
+                    <a href="{{ $totalUrl }}"
                        class="data-link" target="_blank">
                         {{$report['footer']['total']}}
                     </a>
@@ -175,9 +174,15 @@
                 </th>
                 @foreach($statusData as $value => $label)
                     <th class="value status-{{$field}}">
-                        <a href="{{ $totalFilterUrl($field, $value) }}" target="_blank" class="data-link">
+                        <a href="{{ $totalFilterUrl($field, $value) }}" target="_blank"
+                           class="data-link">
                             {{$report['footer']['status'][$field][$value] ?? 0 }}
                         </a>
+
+{{--                        <a href="{{ $totalFilterUrl($row['component']->id, [ $field => [$value]]) }}"--}}
+{{--                           target="_blank" class="data-link">--}}
+{{--                            {{$report['footer']['status'][$field][$value] ?? 0 }}--}}
+{{--                        </a>--}}
 
                     </th>
                 @endforeach
