@@ -45,7 +45,7 @@ class PhysicalObjectReportController extends Controller
             ],
             'status_titles' => [
                 '3d_status' => '3D-моделей',
-                'dd_status' => 'КД',
+                'dd_status' => 'чертежей',
                 'calc_status' => 'в расчетах',
                 'manufactor_status' => 'в изготовлении',
                 'purchase_status' => 'в закупках'

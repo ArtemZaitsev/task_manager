@@ -214,14 +214,14 @@ class ComponentGrid extends AbstractGrid
             ),
             new GridColumn(
                 'dd_status',
-                'Статус КД',
+                'Статус чертежей',
                 fn(Component $entity) => ComponentDdStatus::LABELS[$entity->dd_status] ?? '',
                 'dd_status',
                 new MultiSelectFilter('dd_status', $this->nullValue(ComponentDdStatus::LABELS))
             ),
             new GridColumn(
                 'dd_date_plan',
-                'Планируемая дата выдачи КД',
+                'Планируемая дата выдачи чертежей',
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->dd_date_plan),
                 'dd_date_plan',
                 new DateFilter('dd_date_plan'),

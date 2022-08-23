@@ -160,7 +160,7 @@
             @if($fieldsToEdit === null || in_array('dd_status', $fieldsToEdit))
                 @include('lib.fields.select', [
                         'required' => false,
-                        'label' => 'Статус КД',
+                        'label' => 'Статус чертежей',
                         'fieldName' => 'dd_status',
                         'currentValue' =>$entity->getAttribute('dd_status'),
                         'multiple' => false,
@@ -171,7 +171,7 @@
             @if($fieldsToEdit === null || in_array('dd_date_plan', $fieldsToEdit))
                 @include('lib.fields.date', [
                         'required' => false,
-                        'label' => 'Планируемая дата подготовки КД',
+                        'label' => 'Планируемая дата подготовки чертежей',
                         'fieldName' => 'dd_date_plan',
                         'currentValue' => $entity->getAttribute('dd_date_plan'),
                 ])
