@@ -23,6 +23,7 @@ class PhysicalObjectReportController extends Controller
 
     public function index(Request $request, $id)
     {
+        /** @var PhysicalObject $object */
         $object = PhysicalObject::query()->findOrFail($id);
 
         $highLevelComponentsAll = Component::query()
@@ -74,19 +75,21 @@ class PhysicalObjectReportController extends Controller
 
         foreach ($report['rows'] as $componentReport) {
             foreach ($componentReport['byStatus'] as $status => $statusReport) {
-                $copyReport = $statusReport;
-                // remove NOT_REQUIRED status for all reports
-                unset($copyReport[0]);
-                unset($copyReport[ComponentManufactorStatus::NOT_REQUIRED]);
-                if ($status === 'manufactor_status') {
-                    unset($copyReport[ComponentManufactorStatus::DD_NOT_TRANSMITTED]);
-                }
+                $copyReport = $this->clearTotalStatStatuses($statusReport, $status);
                 if (!isset($report['totalStatusWithoutNotRequired'][$status])) {
-                    $report['totalStatusWithoutNotRequired'][$status] = 0;
+                    $report['totalStatusWithoutNotRequired'][$status]['count'] = 0;
                 }
-                $report['totalStatusWithoutNotRequired'][$status] += array_sum($copyReport);
-
+                $report['totalStatusWithoutNotRequired'][$status]['count'] += array_sum($copyReport);
             }
+        }
+
+        foreach ($report['status'] as $status => $statusValues) {
+            $clearedStatuses = array_keys($this->clearTotalStatStatuses($statusValues, $status));
+            $report['totalStatusWithoutNotRequired'][$status]['url'] = route(ComponentController::ROUTE_NAME, [
+                'filters' => array_merge($this->baseFilters($object, $highLevelComponents, $highLevelComponentsAll), [
+                    $status => $clearedStatuses
+                ])
+            ]);
         }
 
         $report['footer']['total'] = array_sum(
@@ -137,15 +140,27 @@ class PhysicalObjectReportController extends Controller
             'totalUrl' => route(ComponentController::ROUTE_NAME, [
                 'filters' => $this->baseFilters($report['object'], $highLevelComponents, $highLevelComponentsAll)
             ]),
-//            'totalFilterUrl' => fn($componentId, array $additionalParams = []) => route(
-//                ComponentController::ROUTE_NAME, [
-//                'filters' => array_merge([
-//                    'physical_object_id' => [$report['object']->id],
-//                    'relative_component_id' => [$componentId]
-//                ], $additionalParams)
-//            ]),
 
         ]);
+    }
+
+    private function clearTotalStatStatuses(array $statuses, string $status): array {
+        unset($statuses[0]);
+        unset($statuses[ComponentManufactorStatus::NOT_REQUIRED]);
+        $statusesToClear = [
+            'manufactor_status' => [ComponentManufactorStatus::DD_NOT_TRANSMITTED,
+                ComponentManufactorStatus::HAVE_NOT_SZ],
+            'purchase_status' => [ComponentPurchaserStatus::DOES_NOT_DONE],
+        ];
+        foreach ($statusesToClear as $statusToClear => $values) {
+            if($statusToClear === $status) {
+                foreach ($values as $value) {
+                    unset($statuses[$value]);
+                }
+            }
+        }
+
+        return $statuses;
     }
 
     private function baseFilters(PhysicalObject $object, array $highLevelComponents, array $highLevelComponentsAll): array

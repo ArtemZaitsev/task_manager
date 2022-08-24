@@ -3,13 +3,28 @@
 @section('grid')
 
     <style>
+
         .table thead th {
-            top: 0;
+            background-color: #f6eecd;
+            top:0;
             z-index: 1;
+            position: sticky
+        }
+
+
+        .table thead th:first-child {
+            left:0;
+            z-index: 2;
             position: sticky;
             background-color: #f6eecd;
         }
 
+        .table tbody tr td:first-child {
+            left:0;
+            z-index: 0;
+            position: sticky;
+            background-color: #f6eecd;
+        }
     </style>
 
 
@@ -32,7 +47,6 @@
                 Экспорт в Excel
             </a>
         @endif
-
 
 
         <script>
@@ -111,7 +125,8 @@
             <tr class="text-center ">
                 @foreach($grid->getColumns() as $column)
                     @if($grid->needDisplay($column->getName()))
-                        <th scope="col" class="text-center">
+                        <th scope="col" class="text-center"
+                        @foreach($column->getHeaderAttrs() as $attr => $value) {{ $attr}}="{{$value}}" @endforeach>
                             @if($column->getFilter() != null)
                                 <div @if($column->getFilter()->isEnable()) class="filter-applied" @endif>
                                     @include($column->getFilter()->template(), [
@@ -143,7 +158,7 @@
             <tr>
                 @foreach($grid->getColumns() as $column)
                     @if($grid->needDisplay($column->getName()))
-                        <td data-column-name="{{$column->getName()}}">
+                        <td data-column-name="{{$column->getName()}}" @foreach($column->getCellAttrs() as $attr => $value) {{ $attr}}="{{$value}}" @endforeach>
                             {!! $column->render($row) !!}
                         </td>
                     @endif
@@ -153,6 +168,6 @@
         </tbody>
     </table>
 
-    {{ $data->links() }}
+    {{ $data->links() }} <b>Всего:</b> {{ $data->total() }}
 
 @endsection

@@ -80,13 +80,16 @@
         <tr>
             {{--            <th colspan="3" style="text-align: center; vertical-align: middle; background-color: #a6ff75;--}}
             {{--">{{$report['object']->label()}}</th>--}}
-            <th class="first-column" style="text-align: center; vertical-align: middle; background-color: #e5ffd6;
+            <th class="first-column" style="font-size: 22px; text-align: center; vertical-align: middle;
+            background-color: #e5ffd6;
 ">{{$report['object']->label()}}</th>
             @foreach($report['status'] as $status => $statusData)
                 <td class="group-header status-{{$status}}" colspan="{{ count($statusData) + 1 }}">
                     Всего {{ $report['status_titles'][$status] }}:
 
-                    {{ $report['totalStatusWithoutNotRequired'][$status] ?? '' }}
+                    <a class="data-link" href="{{  $report['totalStatusWithoutNotRequired'][$status]['url'] }}" target="_blank">
+                        {{ $report['totalStatusWithoutNotRequired'][$status]['count'] ?? '' }}
+                    </a>
                 </td>
             @endforeach
         </tr>

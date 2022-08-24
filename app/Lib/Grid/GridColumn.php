@@ -15,7 +15,9 @@ class GridColumn
         private ?string $orderField = null,
         private ?Filter $filter = null,
         private bool $displayDefault = true,
-        private bool $needExport = true
+        private bool $needExport = true,
+        private array $headerAttrs = [],
+        private array $cellAttrs = [],
 
     )
     {
@@ -60,6 +62,19 @@ class GridColumn
     {
         return $this->needExport;
     }
+
+    public function getHeaderAttrs(): array
+    {
+        return $this->headerAttrs;
+    }
+
+
+    public function getCellAttrs(): array
+    {
+        return $this->cellAttrs;
+    }
+
+
 
 
 
