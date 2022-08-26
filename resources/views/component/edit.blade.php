@@ -270,7 +270,7 @@
             @if($fieldsToEdit === null || in_array('manufactor_id', $fieldsToEdit))
                 @include('lib.fields.select', [
                         'required' => false,
-                        'label' => 'Ответственный ЗОК',
+                        'label' => 'Контроль ЗОК',
                         'fieldName' => 'manufactor_id',
                         'currentValue' => $entity->manufactor_id,
                         'multiple' => false,
@@ -355,7 +355,7 @@
             @if($fieldsToEdit === null || in_array('purchaser_id', $fieldsToEdit))
                 @include('lib.fields.select', [
                         'required' => false,
-                        'label' => 'Ответственный закупщик',
+                        'label' => 'Контроль закупок',
                         'fieldName' => 'purchaser_id',
                         'currentValue' => $entity->purchaser_id,
                         'multiple' => false,
