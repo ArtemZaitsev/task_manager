@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Task\Request;
 
 use App\BuisinessLogick\AuditService;
-use App\BuisinessLogick\TaskVoter;
+use App\BuisinessLogick\Voter\TaskVoter;
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Family;

@@ -28,10 +28,10 @@ class ComponentVoter
 
     public function canEdit(Component $entity): bool
     {
-        if ($this->userIsAdmin()) {
+        if (VoterUtils::userIsAdmin()) {
             return true;
         }
-        if ($this->userIsPlaner()) {
+        if ($this->userIsComponentPlaner($entity)) {
             return true;
         }
         if (Auth::id() === $entity->constructor_id) {
@@ -43,35 +43,27 @@ class ComponentVoter
         if (Auth::id() === $entity->manufactor_id) {
             return true;
         }
-//
-//        $direction = $entity->constructor?->direction;
-//        if ($direction === null) {
-//            return true;
-//        }
-//        $directionPlanerId = $direction->planer_id;
-//        if ($directionPlanerId === null) {
-//            return true;
-//        }
 
 
         return false;
-
-//        return Auth::id() === $directionPlanerId;
-
     }
 
     public function canDelete(Component $entity): bool
     {
-        if ($this->userIsPlaner()) {
+        if (VoterUtils::userIsAdmin()) {
             return true;
         }
+        if ($this->userIsComponentPlaner($entity)) {
+            return true;
+        }
+
         return false;
     }
 
     public function editRole(Component $entity): ?string
     {
 
-        if ($this->userIsPlaner()) {
+        if ($this->userIsComponentPlaner($entity)) {
             return self::ROLE_PLANER;
         }
         if (Auth::id() === $entity->constructor_id) {
@@ -86,24 +78,17 @@ class ComponentVoter
         return null;
     }
 
-    public function userIsPlaner(): bool
+    private function userIsComponentPlaner(Component $entity): bool
     {
-        if ($this->isPlaner !== null) {
-            return $this->isPlaner;
-        }
-        $this->isPlaner = $this->planerService->userIsPlaner(Auth::id());
-        return $this->isPlaner;
-    }
-
-    private function userIsAdmin(): bool
-    {
-        $user = Auth::user();
-        $permissions = $user->permissions;
-        if (!isset($permissions['platform.index'])) {
+        $constructor = $entity->constructor;
+        if($constructor === null) {
             return false;
         }
-        $permission = (int)$permissions['platform.index'];
-        return $permission === 1;
+        $direction = $constructor->direction;
+        if($direction === null) {
+            return false;
+        }
+        return $direction->userIsPlaner(Auth::id());
     }
 
 

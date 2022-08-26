@@ -6,6 +6,9 @@ use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property User $user
+ */
 class Task extends Model
 {
 //    use HasFactory;

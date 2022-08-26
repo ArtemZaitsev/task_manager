@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
-use App\BuisinessLogick\TaskVoter;
+use App\BuisinessLogick\Voter\TaskVoter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Task\Request\TaskEditRequest;
 use App\Models\Component\Component;

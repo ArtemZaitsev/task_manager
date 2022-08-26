@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens\Direction;
 
 use App\Models\Direction;
+use App\Models\User;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Table;
@@ -40,7 +41,10 @@ class DirectionListLayout extends Table
                 }),
             TD::make('planer_id', 'Планер направления')
                 ->render(function (Direction $direction) {
-                    return $direction->planer?->label;
+                    $users = $direction->planers()->get()->all();
+                    $users = array_map(fn(User $head)=>$head->label(),$users);
+                    $label = implode("</br>", $users);
+                    return $label;
                 }),
 
             TD::make('created_at', 'Created'),

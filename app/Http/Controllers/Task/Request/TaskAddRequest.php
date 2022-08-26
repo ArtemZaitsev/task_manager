@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Task\Request;
 
-use App\BuisinessLogick\TaskVoter;
+use App\BuisinessLogick\Voter\TaskVoter;
 
 class TaskAddRequest extends BaseTaskRequest
 {

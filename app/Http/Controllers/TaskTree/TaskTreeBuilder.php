@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\TaskTree;
 
-use App\BuisinessLogick\TaskVoter;
+use App\BuisinessLogick\Voter\TaskVoter;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Support\Facades\DB;

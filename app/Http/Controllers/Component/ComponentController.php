@@ -6,7 +6,7 @@ use App\BuisinessLogick\Voter\ComponentVoter;
 use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\Voter\ProjectVoter;
 use App\BuisinessLogick\TaskService;
-use App\BuisinessLogick\TaskVoter;
+use App\BuisinessLogick\Voter\TaskVoter;
 use Illuminate\Http\Request;
 
 class ComponentController

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Component\Request;
 
 use App\BuisinessLogick\Voter\ComponentVoter;
-use App\BuisinessLogick\TaskVoter;
+use App\BuisinessLogick\Voter\TaskVoter;
 
 class ComponentAddRequest extends ComponentBaseRequest
 {

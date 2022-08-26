@@ -1,7 +1,8 @@
 <?php
 
-namespace App\BuisinessLogick;
+namespace App\BuisinessLogick\Voter;
 
+use App\BuisinessLogick\PlanerService;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,10 +24,14 @@ class TaskVoter
 
     public function canEdit(Task $task): bool
     {
+        if (VoterUtils::userIsAdmin()) {
+            return true;
+        }
+
         if (Auth::id() === $task->user_id) {
             return true;
         }
-        if ($this->userIsPlaner()) {
+        if ($this->userIsDirectionPlaner($task)) {
             return true;
         }
         return false;
@@ -44,7 +49,10 @@ class TaskVoter
 
     public function canDelete(Task $task): bool
     {
-        if ($this->userIsPlaner()) {
+        if (VoterUtils::userIsAdmin()) {
+            return true;
+        }
+        if ($this->userIsDirectionPlaner($task)) {
             return true;
         }
         return false;
@@ -59,14 +67,28 @@ class TaskVoter
         return $this->isPlaner;
     }
 
-    public function editRole(Task $task): ?string {
-        if($this->userIsPlaner()) {
+    public function editRole(Task $task): ?string
+    {
+        if ($this->userIsPlaner()) {
             return self::ROLE_PLANER;
         }
-        if(Auth::id() === $task->user_id) {
+        if (Auth::id() === $task->user_id) {
             return self::ROLE_PERFORMER;
         }
         return null;
+    }
+
+    private function userIsDirectionPlaner(Task $task): bool
+    {
+        $user = $task->user;
+        if ($user === null) {
+            return false;
+        }
+        $direction = $user->direction;
+        if ($direction === null) {
+            return false;
+        }
+        return $direction->userIsPlaner(Auth::id());
     }
 
 }

@@ -331,7 +331,8 @@
             @if($fieldsToEdit === null || in_array('user_id', $fieldsToEdit))
                 <div class="form-group w-50 mt-2">
                     <label for="userId">Ответственный</label>
-                    <select name="user_id" class="form-control {{ $errors->has('user_id') ? 'is-invalid' : '' }}"
+                    <select name="user_id" class="select2 form-control {{ $errors->has('user_id') ? 'is-invalid' : ''
+                     }}"
                             id="userId" required>
                         <option value></option>
                         @foreach($users as $user )

@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Direction;
 use App\Models\Direction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
@@ -91,14 +92,15 @@ class DirectionEditScreen extends Screen
                     ->fromModel(User::class, 'surname')
                     ->displayAppend('label'),
 
-                Relation::make('direction.planer_id')
-                    ->title('Планер направления')
+                Relation::make('direction.planers.')
+                    ->title('Планеры направления')
                     ->fromModel(User::class, 'surname')
+                    ->multiple()
                     ->displayAppend('label'),
             ])
         ];
     }
-    public function createOrUpdate(Direction $direction, Request $request)
+    public function createOrUpdate(Direction $entity, Request $request)
     {
         $request->validate([
             'direction.head_id' => [
@@ -106,21 +108,19 @@ class DirectionEditScreen extends Screen
                 'integer',
                 Rule::exists(User::class, 'id')
             ],
-            'direction.planer_id' => [
-                'nullable',
-                'integer',
-                Rule::exists(User::class, 'id'),
-            ],
+            'direction.planers' => 'array',
+            'direction.planers.*' => Rule::exists(User::class, 'id'),
             'direction.title' => [
                 'required',
-                Rule::unique(Direction::class, 'title')->ignore($direction),
+                Rule::unique(Direction::class, 'title')->ignore($entity),
             ]
 
         ]);
 
-
-
-        $direction->fill($request->get('direction'))->save();
+        DB::transaction(function () use ($request, $entity) {
+            $entity->fill($request->get('direction'))->save();
+            $entity->planers()->sync($request->input('direction.planers', []));
+        });
 
         Alert::info('You have successfully created an post.');
 

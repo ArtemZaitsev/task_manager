@@ -48,7 +48,11 @@ class MultiSelectFilter implements Filter
         $data = array_map(fn($item) => (int)$item, $data);
 
         if (in_array(0, $data)) {
-            $query->whereNull($this->fieldName);
+            $data = array_filter($data, fn(int $value) => $value !== 0);
+            $query->where(function ($subQuery) use ($data) {
+                $subQuery->whereIn($this->fieldName, $data)
+                    ->orWhereNull($this->fieldName);
+            });
         } else {
             $query->whereIn($this->fieldName, $data);
         }

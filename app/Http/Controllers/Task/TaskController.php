@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Task;
 use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\Voter\ProjectVoter;
 use App\BuisinessLogick\TaskService;
-use App\BuisinessLogick\TaskVoter;
+use App\BuisinessLogick\Voter\TaskVoter;
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Direction;
@@ -47,7 +47,7 @@ class TaskController extends BaseController
         ];
 
 
-        return view('task_list', [
+        return view('task.task_list', [
             'taskVoter' => $this->taskVoter,
             'projectVoter' => $this->projectVoter,
             'taskService' => $this->taskService,
