@@ -4,7 +4,7 @@
 
     <style>
         .table thead th {
-            top:0;
+            top: 0;
             z-index: 1;
             position: sticky;
             background-color: #f4fbfd;
@@ -54,10 +54,10 @@
                     Выход из системы
                 </a>
 
-                    <a class="btn btn-outline-info m-3"
-                       href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME) }}">
-                        Компоненты
-                    </a>
+                <a class="btn btn-outline-info m-3"
+                   href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME) }}">
+                    Компоненты
+                </a>
             </div>
         </div>
 
@@ -66,8 +66,6 @@
         <a class="btn btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под
             пользователя</a>
         @endImpersonating
-
-
 
 
         <table class="table table-bordered table-hover">
@@ -224,6 +222,13 @@
                     'subgroup', request())  }}">Подгруппа
                                     <?php \App\Http\Controllers\Task\TaskController::sortColumn('subgroup', request()) ?>
                                 </a>
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('gantt'))
+                        <th scope="col" class="text-center" style="min-width: 170px;">
+                            <div scope="col" class="text-center for-headers">
+                                Диаграмма Гантта
                             </div>
                         </th>
                     @endif
@@ -612,13 +617,25 @@
                             {{ $task->user?->subgroup?->title }}
                         </td>
                     @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('gantt'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            @if($task->show_in_gantt && $tasksHasChilds[$task->id])
+                                <a href="{{route(
+                                App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['task' =>
+                                $task->id])}}"
+                                   target="_blank">Ссылка</a>
+                            @endif
+
+                        </td>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             @foreach($task->projects as $project)
                                 @if($projectVoter->canSeeGantt($project))
                                     <a href="{{route(
-                                App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['id' =>
+                                App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['project' =>
                                 $project->id])}}"
                                        target="_blank">{{
                                 $project->title }}</a>

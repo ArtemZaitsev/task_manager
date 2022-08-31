@@ -14,9 +14,12 @@ use App\Models\Group;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Subgroup;
+use App\Models\Task;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
 use function view;
 
 
@@ -40,6 +43,7 @@ class TaskController extends BaseController
     {
         $fetcher = new TaskFetcher();
         $tasks = $fetcher->fetchTasks($request->query);
+        $tasksHasChilds = $this->buildTasksHasChilds($tasks->items());
 
         $sum = [
             'execute_time_plan' => $fetcher->sumByColumn('execute_time_plan', $request->query),
@@ -63,6 +67,7 @@ class TaskController extends BaseController
             'tasks' => $tasks,
             'sum' => $sum,
             'users' => User::all(),
+            'tasksHasChilds' => $tasksHasChilds,
             'request' => $request->query,
             'orderFields' => TaskFetcher::ORDER_FIELDS,
             'exportUrl' => route(TasksExportController::EXPORT_ACTION) . '?' . http_build_query($request->query->all()),
@@ -91,6 +96,31 @@ class TaskController extends BaseController
 </b>";
             }
         }
+    }
+
+    private function buildTasksHasChilds(array $tasks): array
+    {
+        if(count($tasks) === 0) {
+            return [];
+        }
+
+        $taskIds = array_map(fn(Task $task) => $task->id, $tasks);
+        $taskIdsStr= implode(',', $taskIds);
+
+        $sql = <<<SQL
+SELECT t.id, (SELECT COUNT(*) from tasks t2 where t2.parent_id = t.id) as childs_count
+from tasks t
+WHERE t.id IN ({$taskIdsStr})
+SQL;
+
+        $rows = DB::select($sql);
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row->id] = ((int) $row->childs_count) > 0;
+        }
+
+        return $result;
     }
 
 }

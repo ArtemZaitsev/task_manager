@@ -29,6 +29,7 @@ use App\Http\Controllers\Task\TaskLogController;
 use App\Http\Controllers\Task\TasksExportController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectSaveController;
+use App\Http\Controllers\TaskTree\TaskTreeTaskSaverController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationCreateController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationDeleteController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationEditController;
@@ -61,12 +62,13 @@ Route::get('/', [TaskController::class, 'list'])
     ->name(TaskController::ACTION_LIST)
     ->middleware('auth');
 
-Route::get('/tasks/project/{id}/tree', [TaskTreeProjectController::class, 'index'])
+Route::get('/tasks/tree', [TaskTreeProjectController::class, 'index'])
     ->name(TaskTreeProjectController::ROUTE_NAME);
 
 Route::post('/tasks/project/{id}/save', [TaskTreeProjectSaveController::class, 'save'])
     ->name(TaskTreeProjectSaveController::ROUTE_NAME);
-
+Route::post('/tasks/{id}/tree/save', [TaskTreeTaskSaverController::class, 'save'])
+    ->name(TaskTreeTaskSaverController::ROUTE_NAME);
 
 Route::get('/task/add', [TaskAddController::class, 'index'])->name('task.showFormAdd');
 Route::post('/task/add', [TaskAddController::class, 'processForm'])->name('task.store');

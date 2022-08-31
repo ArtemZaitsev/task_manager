@@ -14,7 +14,25 @@ class TaskTreeBuilder
     {
     }
 
-    public function build(Project $project): array
+    public function forTask(Task $task)
+    {
+        $sql = <<<SQL
+with recursive tree as (
+    select * from tasks t where t.id=:taskId
+    union all
+    select t2.* from tasks t2 inner join tree on tree.id = t2.parent_id
+)
+select * from tree
+SQL;
+        $tasks = DB::select($sql, ['taskId' => $task->id]);
+        $tasks = array_map(fn($obj) => (array) $obj, $tasks);
+        $tasks = array_map(fn(array $row) => (new Task())->fill($row), $tasks);
+
+        $rootTasks = [$task];
+        return $this->buildJsonForTasks($tasks, $rootTasks);
+    }
+
+    public function forProject(Project $project): array
     {
         /** @var Task[] $tasks */
         $tasks = Task::query()
@@ -26,11 +44,26 @@ class TaskTreeBuilder
             ->orderBy('number')
             ->get()
             ->all();
-
-        $prevTasks = $this->buildPrevTasks($project);
-
-
         $rootTasks = array_filter($tasks, fn(Task $task) => $task->parent_id === null);
+
+       return $this->buildJsonForTasks($tasks, $rootTasks);
+    }
+
+    private function buildTree(TreeItem $treeNode, array $tasksChilds) {
+        $childs = $tasksChilds[$treeNode->getData()->id] ?? [];
+        $childNodes = array_map(fn(Task $task) => new TreeItem($task), $childs);
+
+        foreach ($childNodes as $childNode) {
+            $treeNode->addChild($childNode);
+        }
+        foreach ($childNodes as $childNode) {
+            $this->buildTree($childNode, $tasksChilds);
+        }
+    }
+
+    private function buildJsonForTasks(array $tasks, array $rootTasks) {
+        //$prevTasks = $this->buildPrevTasks($project);
+        $rootTaskIds = array_map(fn(Task $task) => $task->id, $rootTasks);
         $rootTrees = array_map(fn(Task $task) => new TreeItem($task), $rootTasks);
 
         $treeItemIdMap = [];
@@ -38,34 +71,11 @@ class TaskTreeBuilder
             $treeItemIdMap[$item->getData()->id] = $item;
         }
 
-        $tasks = array_filter($tasks, fn(Task $task) => $task->parent_id !== null);
-        $taskIds = [];
-        foreach ($tasks as $task) {
-            $taskIds[$task->id] = $task;
-        }
+        $tasks = array_filter($tasks, fn(Task $task) => !in_array($task->id, $rootTaskIds));
+        $tasksChilds = $this->buildTaskChilds($tasks);
 
-        foreach ($taskIds as $task) {
-            $taskCopy = $task;
-            /** @var TreeItem $rootItem */
-            $rootItem = null;
-
-            while (true) {
-                if (isset($treeItemIdMap[$taskCopy->parent_id])) {
-                    $rootItem = $treeItemIdMap[$taskCopy->parent_id];
-                    break;
-                } else {
-                    if (!isset($taskIds[$taskCopy->parent_id])) {
-                        throw new \LogicException();
-                    }
-                    $taskCopy = $taskIds[$taskCopy->parent_id];
-                }
-            }
-
-            $child = new TreeItem($taskCopy);
-            $rootItem->addChild($child);
-
-            unset($taskIds[$taskCopy->id]);
-            $treeItemIdMap[$taskCopy->id] = $child;
+        foreach ($rootTrees as $treeNode) {
+            $this->buildTree($treeNode, $tasksChilds);
         }
 
         foreach ($rootTrees as $idx => $treeItem) {
@@ -77,16 +87,21 @@ class TaskTreeBuilder
             $this->clearShowInGanttTassk($treeItem);
         }
 
+        foreach ($rootTrees as $treeItem) {
+            $treeItem->sort(fn(Task $a, Task $b)=> $a->number <=> $b->number);
+        }
+
         $tasksJson = [];
         foreach ($rootTrees as $treeRoot) {
-            $rootTasks = $this->treeList($treeRoot, $prevTasks);
+            $rootTasks = $this->treeList($treeRoot);
             $tasksJson = array_merge($tasksJson, $rootTasks);
         }
 
-     //   $this->buildDepends($tasksJson, $prevTasks);
+        //   $this->buildDepends($tasksJson, $prevTasks);
 
         return $tasksJson;
     }
+
 
     private function buildDepends(array &$tasksJson, array $prevTasks): void
     {
@@ -215,5 +230,22 @@ class TaskTreeBuilder
         foreach ($treeItem->getChilds() as $child) {
             $this->clearShowInGanttTassk($child);
         }
+    }
+
+    private function buildTaskChilds(array $tasks): array
+    {
+        $childs = [];
+
+        /** @var Task $task */
+        foreach ($tasks as $task) {
+            if($task->parent_id !== null) {
+                if(!isset($childs[$task->parent_id])) {
+                    $childs[$task->parent_id] = [];
+                }
+                $childs[$task->parent_id][] = $task;
+            }
+        }
+
+        return $childs;
     }
 }

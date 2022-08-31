@@ -407,16 +407,59 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'text-center align-middle']
             ),
-            new GridColumn(
-                'sz',
-                'СЗ (ссылка)',
+//            new GridColumn(
+//                'sz',
+//                'СЗ (ссылка)',
+//                fn(Component $entity) => $entity->sz === null ? '' :
+//                    sprintf('<a href="%s" target="_blank">%s</a>',
+//                        '/files/' . $entity->sz->file_path,
+//                        $entity->sz->label()
+//                    ),
+//                null,
+//                null,
+//                false,
+//                true,
+//                [],
+//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+//
+//            ),
+                        new GridColumn(
+                'sz_number',
+                'СЗ (номер)',
                 fn(Component $entity) => $entity->sz === null ? '' :
                     sprintf('<a href="%s" target="_blank">%s</a>',
                         '/files/' . $entity->sz->file_path,
-                        $entity->sz->label()
+                        $entity->sz->number
                     ),
-                null,
-                null,
+                'sz.number',
+                new StringFilter('sz.number','sz_number'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+
+            ),
+            new GridColumn(
+                'sz_title',
+                'СЗ (Название)',
+                fn(Component $entity) => $entity->sz === null ? '' :
+                        $entity->sz->title,
+                'sz.title',
+                new StringFilter('sz.title','sz_title'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+
+            ),
+            new GridColumn(
+                'sz_date',
+                'СЗ (дата)',
+                fn(Component $entity) => $entity->sz === null ? '' :
+                    DateUtils::dateToDisplayFormat($entity->sz->date),
+                'sz.date',
+                new DateFilter('sz.date', 'sz_date
+                '),
                 false,
                 true,
                 [],
@@ -592,6 +635,7 @@ class ComponentGrid extends AbstractGrid
     {
         $query = Component::query()
             ->leftJoin('users', 'users.id', '=', 'components.constructor_id')
+            ->leftJoin('sz', 'sz.id', '=', 'components.sz_id')
             //->leftJoin('directions', '', '=', 'directions.id');
             ->select('components.*');
         $this->applyFilters($query, $request);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\TaskTree;
 class TreeItem
 {
     private ?TreeItem $parent = null;
+    /** @var TreeItem[] */
     private array $childs;
     private $data;
 
@@ -15,16 +16,29 @@ class TreeItem
         $this->childs = $childs;
     }
 
-    public function level(): int {
-        if($this->parent === null) {
+    public function level(): int
+    {
+        if ($this->parent === null) {
             return 0;
         }
         return $this->parent->level() + 1;
     }
 
-    public function addChild(TreeItem $child):void{
+    public function addChild(TreeItem $child): void
+    {
         $child->setParent($this);
         $this->childs[] = $child;
+    }
+
+    public function sort(callable $sortCallback): void
+    {
+        if (count($this->childs) > 0) {
+            usort($this->childs, fn(TreeItem $a, TreeItem $b) => $sortCallback($a->getData(), $b->getData()));
+            foreach ($this->childs as $child) {
+                $child->sort($sortCallback);
+            }
+        }
+
     }
 
     public function getParent(): ?TreeItem
@@ -32,7 +46,8 @@ class TreeItem
         return $this->parent;
     }
 
-    public function removeChild(int $idx) {
+    public function removeChild(int $idx)
+    {
         unset($this->childs[$idx]);
     }
 
@@ -53,8 +68,6 @@ class TreeItem
     {
         $this->parent = $parent;
     }
-
-
 
 
 }

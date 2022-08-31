@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ComponentVoter
 {
+    public const ROLE_ADMIN = 'admin';
     public const ROLE_PLANER = 'planer';
     public const ROLE_CONSTRUCTOR = 'constructor';
     public const ROLE_MANUFACTOR = 'manufactor';
@@ -62,7 +63,9 @@ class ComponentVoter
 
     public function editRole(Component $entity): ?string
     {
-
+        if(VoterUtils::userIsAdmin()) {
+            return self::ROLE_ADMIN;
+        }
         if ($this->userIsComponentPlaner($entity)) {
             return self::ROLE_PLANER;
         }

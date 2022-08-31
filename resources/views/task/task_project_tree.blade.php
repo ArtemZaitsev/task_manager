@@ -139,8 +139,7 @@
             }
         }
 
-        $.ajax('{{ route(App\Http\Controllers\TaskTree\TaskTreeProjectSaveController::ROUTE_NAME, ['id' =>
-        $project->id]) }}', {
+        $.ajax('{{ $saveUrl  }}', {
             dataType: "json",
             data: {project: JSON.stringify(prj)},
             type: "POST",

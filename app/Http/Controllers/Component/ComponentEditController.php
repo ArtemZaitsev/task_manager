@@ -29,6 +29,7 @@ class ComponentEditController extends Controller
         $entity = Component::findOrFail($id);
 
         $fieldsToEdit = match ($this->voter->editRole($entity)) {
+            ComponentVoter::ROLE_ADMIN => null,
             ComponentVoter::ROLE_PLANER => null,
             ComponentVoter::ROLE_CONSTRUCTOR => [
                 'quantity_in_object',
