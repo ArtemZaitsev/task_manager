@@ -11,7 +11,7 @@ class ComponentDdStatus
 
     public const LABELS = [
         self::NOT_REQUIRED => 'Не требуется',
-        self::DOES_NOT_DONE => 'Не отработано',
+        self::DOES_NOT_DONE => 'Нет чертежей',
         self::IN_PROGRESS => 'В процессе',
         self::DONE => 'Готово',
     ];
