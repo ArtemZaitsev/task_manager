@@ -86,8 +86,8 @@ class ComponentBaseRequest extends FormRequest
                 'drawing_date' => ['nullable', 'date'],
                 'tz_files' => ['nullable', 'string'],
                 'tz_date' => ['nullable', 'date'],
-
             ]);
+        $this->rules[ComponentVoter::ROLE_ADMIN]= $this->rules[ComponentVoter::ROLE_PLANER];
     }
 
     public function authorize()

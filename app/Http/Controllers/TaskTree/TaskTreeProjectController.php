@@ -15,17 +15,28 @@ class TaskTreeProjectController extends Controller
     public const ROUTE_NAME = 'project.gantt';
 
     public function __construct(
-        private ProjectVoter $projectVoter,
+        private ProjectVoter    $projectVoter,
         private TaskTreeBuilder $treeBuilder
     )
     {
     }
 
-    public function index(Request $request, $id)
+    public function index(Request $request)
     {
-        $project = Project::findOrFail($id);
+        /** @var Task $task */
+        $task = null;
+        $project = null;
 
-        $tasks = $this->treeBuilder->build($project);
+        if ($request->query->has('task')) {
+            $task = Task::query()->findOrFail($request->query->get('task'));
+            $tasks = $this->treeBuilder->forTask($task);
+        } elseif ($request->query->has('project')) {
+            $project = Project::findOrFail($request->query->get('project'));
+            $tasks = $this->treeBuilder->forProject($project);
+        } else {
+            throw new \LogicException();
+        }
+
 
         $result = [
             'tasks' => $tasks,
@@ -39,19 +50,17 @@ class TaskTreeProjectController extends Controller
             "zoom" => "1Q"
         ];
 
+        $taskProject = $project ?? $task->projects->get(0);
         return view('task/task_project_tree', [
-            'project' => $project,
+            'project' => $taskProject,
             'projectVoter' => $this->projectVoter,
+            'saveUrl' => $project !== null ?
+                route(TaskTreeProjectSaveController::ROUTE_NAME, ['id' => $project->id])
+                : route(TaskTreeTaskSaverController::ROUTE_NAME, ['id' => $task->id]),
             'tasks' => json_encode($result)
         ]);
 
     }
-
-
-
-
-
-
 
 
 }

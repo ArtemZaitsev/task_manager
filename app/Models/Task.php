@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property User $user
+ * @property ?int number
  */
 class Task extends Model
 {
@@ -81,6 +82,7 @@ class Task extends Model
     ];
 
     protected $fillable = [
+        'id',
         'number',
         'base',
         'setting_date',
