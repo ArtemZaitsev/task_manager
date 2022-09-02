@@ -51,8 +51,6 @@ class ComponentBaseRequest extends FormRequest
         $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
             'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],
             'manufactor_date_plan' => ['nullable', 'date'],
-            'manufactor_sz_files' => ['nullable', 'string'],
-            'manufactor_sz_date' => ['nullable', 'date'],
             'manufactor_sz_quantity' => ['nullable', 'numeric'],
             'manufactor_priority' => ['nullable', 'numeric'],
             'manufactor_comment' => ['nullable', 'string'],
@@ -61,8 +59,6 @@ class ComponentBaseRequest extends FormRequest
         $this->rules[ComponentVoter::ROLE_PURCHASER] = [
             'purchase_status' => ['nullable', Rule::in(ComponentPurchaserStatus::values())],
             'purchase_date_plan' => ['nullable', 'date'],
-            'purchase_request_files' => ['nullable', 'string'],
-            'purchase_request_date' => ['nullable', 'date'],
             'purchase_request_quantity' => ['nullable', 'numeric'],
             'purchase_request_priority' => ['nullable', 'numeric'],
             'purchase_comment' => ['nullable', 'string'],

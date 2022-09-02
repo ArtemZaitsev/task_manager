@@ -51,6 +51,7 @@ use Orchid\Screen\AsSource;
  * @property $purchase_request_quantity
  * @property $purchase_request_priority
  * @property $purchase_comment
+ * @property ?int $purchase_order_id
  * @property boolean $is_highlevel
  *
  * @property $relative_component_id

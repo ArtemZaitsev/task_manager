@@ -308,24 +308,6 @@
                         ])
             @endif
 
-            @if($fieldsToEdit === null || in_array('manufactor_sz_files', $fieldsToEdit))
-                @include('lib.fields.input', [
-                        'required' => false,
-                        'label' => 'СЗ',
-                        'fieldName' => 'manufactor_sz_files',
-                        'currentValue' => $entity->manufactor_sz_files,
-                ])
-            @endif
-
-            @if($fieldsToEdit === null || in_array('manufactor_sz_date', $fieldsToEdit))
-                @include('lib.fields.date', [
-                        'required' => false,
-                        'label' => 'Дата СЗ',
-                        'fieldName' => 'manufactor_sz_date',
-                        'currentValue' => $entity->manufactor_sz_date,
-                ])
-            @endif
-
             @if($fieldsToEdit === null || in_array('manufactor_sz_quantity', $fieldsToEdit))
                 @include('lib.fields.number', [
                         'required' => false,
@@ -387,7 +369,7 @@
             @if($fieldsToEdit === null || in_array('purchase_order_id', $fieldsToEdit))
                 @include('lib.fields.select', [
                         'required' => false,
-                        'label' => 'Заявка',
+                        'label' => 'Заявка на закупку',
                         'fieldName' => 'purchase_order_id',
                         'currentValue' => $entity->purchase_order_id,
                         'multiple' => false,
@@ -395,23 +377,6 @@
                         ])
             @endif
 
-            @if($fieldsToEdit === null || in_array('purchase_request_files', $fieldsToEdit))
-                @include('lib.fields.input', [
-                        'required' => false,
-                        'label' => 'Заявка',
-                        'fieldName' => 'purchase_request_files',
-                        'currentValue' => $entity->purchase_request_files,
-                ])
-            @endif
-
-            @if($fieldsToEdit === null || in_array('purchase_request_date', $fieldsToEdit))
-                @include('lib.fields.date', [
-                        'required' => false,
-                        'label' => 'Дата заявки',
-                        'fieldName' => 'purchase_request_date',
-                        'currentValue' => $entity->purchase_request_date,
-                ])
-            @endif
 
             @if($fieldsToEdit === null || in_array('purchase_request_quantity', $fieldsToEdit))
                 @include('lib.fields.number', [

@@ -423,7 +423,7 @@ class ComponentGrid extends AbstractGrid
 //                ['style' => 'min-width: 400px', 'class' => 'align-middle']
 //
 //            ),
-                        new GridColumn(
+            new GridColumn(
                 'sz_number',
                 'СЗ (номер)',
                 fn(Component $entity) => $entity->sz === null ? '' :
@@ -432,7 +432,7 @@ class ComponentGrid extends AbstractGrid
                         $entity->sz->number
                     ),
                 'sz.number',
-                new StringFilter('sz.number','sz_number'),
+                new StringFilter('sz.number', 'sz_number'),
                 false,
                 true,
                 [],
@@ -443,9 +443,9 @@ class ComponentGrid extends AbstractGrid
                 'sz_title',
                 'СЗ (Название)',
                 fn(Component $entity) => $entity->sz === null ? '' :
-                        $entity->sz->title,
+                    $entity->sz->title,
                 'sz.title',
-                new StringFilter('sz.title','sz_title'),
+                new StringFilter('sz.title', 'sz_title'),
                 false,
                 true,
                 [],
@@ -465,28 +465,6 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['style' => 'min-width: 400px', 'class' => 'align-middle']
 
-            ),
-            new GridColumn(
-                'manufactor_sz_files',
-                'СЗ',
-                fn(Component $entity) => $entity->manufactor_sz_files,
-                'manufactor_sz_files',
-                new StringFilter('manufactor_sz_files'),
-                false,
-                true,
-                [],
-                ['class' => 'align-middle']
-            ),
-            new GridColumn(
-                'manufactor_sz_date',
-                'Дата СЗ',
-                fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->manufactor_sz_date),
-                'manufactor_sz_date',
-                new DateFilter('manufactor_sz_date'),
-                false,
-                true,
-                [],
-                ['class' => 'text-center align-middle']
             ),
             new GridColumn(
                 'manufactor_sz_quantity',
@@ -557,15 +535,15 @@ class ComponentGrid extends AbstractGrid
                 ['class' => 'text-center align-middle']
             ),
             new GridColumn(
-                'purchase_order_id',
-                'Заявка (ссылка)',
-                fn(Component $entity) => $entity->purchaseOrder === null ? '' :
+                'purchase_order_number',
+                'Заявка на закупку (номер)',
+                fn(Component $entity) => $entity->purchase_order_id === null ? '' :
                     sprintf('<a href="%s" target="_blank">%s</a>',
                         '/files/' . $entity->purchaseOrder->file_path,
-                        $entity->purchaseOrder->label()
+                        $entity->purchaseOrder->number
                     ),
-                null,
-                null,
+                'purchase_orders.number',
+                new StringFilter('purchase_orders.number', 'purchase_order_number'),
                 false,
                 true,
                 [],
@@ -573,27 +551,33 @@ class ComponentGrid extends AbstractGrid
 
             ),
             new GridColumn(
-                'purchase_request_files',
-                'Заявка',
-                fn(Component $entity) => $entity->purchase_request_files,
-                'purchase_request_files',
-                new StringFilter('purchase_request_files'),
-                true,
+                'purchase_order_title',
+                'Заявка на закупку (Название)',
+                fn(Component $entity) => $entity->purchase_order_id === null ? '' :
+                    $entity->purchaseOrder->title,
+                'purchase_orders.title',
+                new StringFilter('purchase_orders.title', 'purchase_order_title'),
+                false,
                 true,
                 [],
-                ['class' => 'align-middle']
+                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+
             ),
             new GridColumn(
-                'purchase_request_date',
-                'Дата заявки',
-                fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->purchase_request_date),
-                'purchase_request_date',
-                new DateFilter('purchase_request_date'),
-                true,
+                'purchase_order_date',
+                'Заявка на закупку (дата)',
+                fn(Component $entity) => $entity->purchase_order_id === null ? '' :
+                    DateUtils::dateToDisplayFormat($entity->purchaseOrder->date),
+                'purchase_orders.date',
+                new DateFilter('purchase_orders.date', 'purchase_order_date
+                '),
+                false,
                 true,
                 [],
-                ['class' => 'text-center align-middle']
+                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+
             ),
+
             new GridColumn(
                 'purchase_request_quantity',
                 'Количество в заявке',
@@ -636,6 +620,7 @@ class ComponentGrid extends AbstractGrid
         $query = Component::query()
             ->leftJoin('users', 'users.id', '=', 'components.constructor_id')
             ->leftJoin('sz', 'sz.id', '=', 'components.sz_id')
+            ->leftJoin('purchase_orders', 'purchase_orders.id', '=', 'components.purchase_order_id')
             //->leftJoin('directions', '', '=', 'directions.id');
             ->select('components.*');
         $this->applyFilters($query, $request);
