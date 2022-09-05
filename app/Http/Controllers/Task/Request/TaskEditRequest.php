@@ -28,8 +28,10 @@ class  TaskEditRequest extends BaseTaskRequest
 
     protected function prepareForValidation()
     {
+        $voter = $this->container->get(TaskVoter::class);
+        assert($voter instanceof TaskVoter);
+
         $task = $this->currentTask();
-        $voter = new TaskVoter();
         $role = $voter->editRole($task);
 
         if ($role === 'performer') {
@@ -46,9 +48,10 @@ class  TaskEditRequest extends BaseTaskRequest
      */
     public function rules()
     {
-        $task = $this->currentTask();
+        $voter = $this->container->get(TaskVoter::class);
+        assert($voter instanceof TaskVoter);
 
-        $voter = new TaskVoter();
+        $task = $this->currentTask();
         return $this->rules[$voter->editRole($task)];
     }
 

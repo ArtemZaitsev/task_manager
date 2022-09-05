@@ -3,10 +3,6 @@
 namespace App\Http\Controllers\Component;
 
 use App\BuisinessLogick\Voter\ComponentVoter;
-use App\BuisinessLogick\PlanerService;
-use App\BuisinessLogick\Voter\ProjectVoter;
-use App\BuisinessLogick\TaskService;
-use App\BuisinessLogick\Voter\TaskVoter;
 use Illuminate\Http\Request;
 
 class ComponentController

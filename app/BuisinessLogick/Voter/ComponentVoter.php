@@ -63,7 +63,7 @@ class ComponentVoter
 
     public function editRole(Component $entity): ?string
     {
-        if(VoterUtils::userIsAdmin()) {
+        if (VoterUtils::userIsAdmin()) {
             return self::ROLE_ADMIN;
         }
         if ($this->userIsComponentPlaner($entity)) {
@@ -84,11 +84,15 @@ class ComponentVoter
     private function userIsComponentPlaner(Component $entity): bool
     {
         $constructor = $entity->constructor;
-        if($constructor === null) {
+        if ($constructor === null) {
+            if ($this->planerService->userIsPlaner(Auth::id())) {
+                return true;
+            }
             return false;
         }
+
         $direction = $constructor->direction;
-        if($direction === null) {
+        if ($direction === null) {
             return false;
         }
         return $direction->userIsPlaner(Auth::id());

@@ -38,9 +38,9 @@
 
 
             @include('lib.fields.file', [
-                       'required' => true,
+                       'required' => false,
                        'label' => 'Файл',
-                       'fieldName' => 'szFile',
+                       'fieldName' => 'file',
                ])
 
             <button type="submit" class="btn btn-info mt-3">Сохранить</button>

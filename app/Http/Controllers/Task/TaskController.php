@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Task;
 
 use App\BuisinessLogick\PlanerService;
 use App\BuisinessLogick\Voter\ProjectVoter;
-use App\BuisinessLogick\TaskService;
 use App\BuisinessLogick\Voter\TaskVoter;
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
@@ -16,7 +15,6 @@ use App\Models\Project;
 use App\Models\Subgroup;
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +28,6 @@ class TaskController extends BaseController
 
     public function __construct(
         private TaskVoter     $taskVoter,
-        private TaskService   $taskService,
         private PlanerService $planerService,
         private ProjectVoter  $projectVoter,
 
@@ -54,7 +51,6 @@ class TaskController extends BaseController
         return view('task.task_list', [
             'taskVoter' => $this->taskVoter,
             'projectVoter' => $this->projectVoter,
-            'taskService' => $this->taskService,
             'planerService' => $this->planerService,
             'projects' => Project::all(),
             'families' => Family::all(),

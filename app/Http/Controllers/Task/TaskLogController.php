@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Task;
 
-use App\BuisinessLogick\TaskService;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\TaskLog;
@@ -59,7 +58,6 @@ class TaskLogController extends Controller
     public function deleteLog(Request $request, $id){
         /** @var TaskLog $taskLog */
 
-        $taskService = new TaskService();
         $taskLog = TaskLog::findOrFail($id);
         $task = $taskLog->task;
         $taskLog->delete();

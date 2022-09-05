@@ -164,7 +164,7 @@ class ComponentGrid extends AbstractGrid
                 'Название компонента',
                 fn(Component $entity) => $entity->title,
                 'title',
-                new StringFilter('title'),
+                new StringFilter('components.title', 'component_title'),
                 true,
                 true,
                 [],
@@ -407,22 +407,7 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'text-center align-middle']
             ),
-//            new GridColumn(
-//                'sz',
-//                'СЗ (ссылка)',
-//                fn(Component $entity) => $entity->sz === null ? '' :
-//                    sprintf('<a href="%s" target="_blank">%s</a>',
-//                        '/files/' . $entity->sz->file_path,
-//                        $entity->sz->label()
-//                    ),
-//                null,
-//                null,
-//                false,
-//                true,
-//                [],
-//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
-//
-//            ),
+
             new GridColumn(
                 'sz_number',
                 'СЗ (номер)',
@@ -458,8 +443,7 @@ class ComponentGrid extends AbstractGrid
                 fn(Component $entity) => $entity->sz === null ? '' :
                     DateUtils::dateToDisplayFormat($entity->sz->date),
                 'sz.date',
-                new DateFilter('sz.date', 'sz_date
-                '),
+                new DateFilter('sz.date', 'sz_date'),
                 false,
                 true,
                 [],

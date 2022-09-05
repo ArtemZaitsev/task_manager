@@ -12,13 +12,9 @@ class TaskVoter
     public const ROLE_PLANER = 'planer';
     public const ROLE_PERFORMER = 'performer';
 
-    private ?bool $isPlaner = null;
-    private PlanerService $planerService;
 
-
-    public function __construct()
+    public function __construct(private PlanerService $planerService)
     {
-        $this->planerService = new PlanerService();
 
     }
 
@@ -60,11 +56,7 @@ class TaskVoter
 
     public function userIsPlaner(): bool
     {
-        if ($this->isPlaner !== null) {
-            return $this->isPlaner;
-        }
-        $this->isPlaner = $this->planerService->userIsPlaner(Auth::id());
-        return $this->isPlaner;
+        return $this->planerService->userIsPlaner(Auth::id());
     }
 
     public function editRole(Task $task): ?string

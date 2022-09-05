@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.grid')
 @section('title') Список задач @endsection
-@section('content')
+@section('grid')
 
     <style>
         .table thead th {
@@ -14,14 +14,8 @@
 
     <div class="main">
 
-        @if(Session::has('success'))
-            <div class="alert alert-success">
-                {{ Session::get('success')}}
-            </div>
-        @endif
         <div class="">
-            <div class="position-absolute top-0 end-0">
-                <div><b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()}}</b></div>
+            <div class="position-absolute top-30 end-0">
                 <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
                     <button type="button" class="btn btn-outline-success"
                             data-text="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы"
@@ -49,15 +43,6 @@
                         Экспорт в Excel
                     </a>
                 @endif
-                <a class="btn btn-outline-danger m-1 "
-                   href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
-                    Выход из системы
-                </a>
-
-                <a class="btn btn-outline-info m-3"
-                   href="{{ route(\App\Http\Controllers\Component\ComponentController::ROUTE_NAME) }}">
-                    Компоненты
-                </a>
             </div>
         </div>
 

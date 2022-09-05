@@ -79,9 +79,10 @@ abstract class AbstractDocumentGrid extends AbstractGrid
             new GridColumn(
                 'file_path',
                 'Файл',
-                fn(AbstractDocument $entity) => sprintf('<a href="%s" target="_blank">%s</a>',
-                    '/files/' . $entity->file_path,
-                    'Файл'),
+                fn(AbstractDocument $entity) => $entity->file_path === null ? '' :
+                    sprintf('<a href="%s" target="_blank">%s</a>',
+                        '/files/' . $entity->file_path,
+                        'Файл'),
                 null,
                 null,
                 true
