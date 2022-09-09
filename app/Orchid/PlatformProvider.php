@@ -7,6 +7,8 @@ namespace App\Orchid;
 use App\Models\Component\PhysicalObject;
 
 use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectListScreen;
+use App\Orchid\Screens\Component\Subsystem\SubsystemListScreen;
+use App\Orchid\Screens\Component\System\SystemListScreen;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
@@ -69,7 +71,15 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make('Объекты')
                 ->icon('envelope-letter')
-                ->route(PhysicalObjectListScreen::ROUTE_NAME),
+                ->route(PhysicalObjectListScreen::ROUTE_NAME)
+                ->title('Состав'),
+
+            Menu::make('Системы')
+                ->icon('envelope-letter')
+                ->route(SystemListScreen::ROUTE_NAME),
+            Menu::make('Подсистемы')
+                ->icon('envelope-letter')
+                ->route(SubsystemListScreen::ROUTE_NAME),
 
 //            Menu::make('Example screen')
 //                ->icon('monitor')

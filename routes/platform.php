@@ -6,6 +6,10 @@ use App\Models\Direction;
 use App\Orchid\Screens\Audit\AuditListScreen;
 use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectEditScreen;
 use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectListScreen;
+use App\Orchid\Screens\Component\Subsystem\SubsystemEditScreen;
+use App\Orchid\Screens\Component\Subsystem\SubsystemListScreen;
+use App\Orchid\Screens\Component\System\SystemEditScreen;
+use App\Orchid\Screens\Component\System\SystemListScreen;
 use App\Orchid\Screens\Direction\DirectionEditScreen;
 use App\Orchid\Screens\Direction\DirectionListScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
@@ -59,6 +63,19 @@ Route::screen('physical_objects', PhysicalObjectListScreen::class)
 
 Route::screen('physical_object/{entity?}', PhysicalObjectEditScreen::class)
     ->name(PhysicalObjectEditScreen::ROUTE_NAME);
+
+Route::screen('systems', SystemListScreen::class)
+    ->name(SystemListScreen::ROUTE_NAME);
+
+Route::screen('system/{entity?}', SystemEditScreen::class)
+    ->name(SystemEditScreen::ROUTE_NAME);
+
+Route::screen('subsystems', SubsystemListScreen::class)
+    ->name(SubsystemListScreen::ROUTE_NAME);
+
+Route::screen('subsystem/{entity?}', SubsystemEditScreen::class)
+    ->name(SubsystemEditScreen::ROUTE_NAME);
+
 
 Route::screen('audit', AuditListScreen::class)
     ->name('platform.audit.list');

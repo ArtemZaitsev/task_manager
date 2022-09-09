@@ -23,6 +23,28 @@
                  ])
             @endif
 
+            @if($fieldsToEdit === null || in_array('system_id', $fieldsToEdit))
+                @include('lib.fields.select', [
+                        'required' => false,
+                        'label' => 'Система',
+                        'fieldName' => 'system_id',
+                        'currentValue' => $entity->system_id,
+                        'multiple' => false,
+                        'data' => $systemsSelectData
+                 ])
+            @endif
+
+            @if($fieldsToEdit === null || in_array('subsystem_id', $fieldsToEdit))
+                @include('lib.fields.select', [
+                        'required' => false,
+                        'label' => 'Подсистема',
+                        'fieldName' => 'subsystem_id',
+                        'currentValue' => $entity->subsystem_id,
+                        'multiple' => false,
+                        'data' => $subsystemsSelectData
+                 ])
+            @endif
+
             @if($fieldsToEdit === null || in_array('quantity_in_object', $fieldsToEdit))
                 @include('lib.fields.number', [
                         'required' => false,

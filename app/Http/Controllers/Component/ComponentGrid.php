@@ -22,6 +22,8 @@ use App\Models\Component\ComponentSourceType;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
 use App\Models\Component\PhysicalObject;
+use App\Models\Component\Subsystem;
+use App\Models\Component\System;
 use App\Models\Direction;
 use App\Models\User;
 use App\Utils\DateUtils;
@@ -120,21 +122,37 @@ class ComponentGrid extends AbstractGrid
                 ['style' => 'max-width: 250px;'],
                 ['class' => 'align-middle']
             ),
-            new GridColumn(
-                'direction',
-                'Направление',
-                fn(Component $entity) => $entity->constructor?->direction?->label(),
-                null,
-                new MultiSelectFilter('users.direction_id',
-                    SelectUtils::entityListToLabelMap(
-                        Direction::all()->all(),
-                        fn(Direction $o) => $o->label())
-                ),
-                true,
-                true,
-                ['style' => 'max-width: 250px;'],
-                ['class' => 'align-middle']
-            ),
+           new GridColumn(
+               'system_id',
+               'Система',
+               fn(Component $entity) => $entity->system?->label(),
+               null,
+               new MultiSelectFilter('system_id',
+                   SelectUtils::entityListToLabelMap(
+                       System::all()->all(),
+                       fn(System $o) => $o->label()),
+               ),
+               true,
+               true,
+               ['style' => 'max-width: 250px;'],
+               ['class' => 'align-middle']
+           ),
+           new GridColumn(
+               'subsystem_id',
+               'Подсистема',
+               fn(Component $entity) => $entity->subsystem?->label(),
+               null,
+               new MultiSelectFilter('subsystem_id',
+                   SelectUtils::entityListToLabelMap(
+                       Subsystem::all()->all(),
+                       fn(Subsystem $o) => $o->label()),
+               ),
+               true,
+               true,
+               ['style' => 'max-width: 250px;'],
+               ['class' => 'align-middle']
+           ),
+
             new GridColumn(
                 'relative_component_id',
                 'Верхнеуровневый компонент',
@@ -238,6 +256,21 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'align-middle']
             ),
+           new GridColumn(
+               'direction',
+               'Направление',
+               fn(Component $entity) => $entity->constructor?->direction?->label(),
+               null,
+               new MultiSelectFilter('users.direction_id',
+                   SelectUtils::entityListToLabelMap(
+                       Direction::all()->all(),
+                       fn(Direction $o) => $o->label())
+               ),
+               false,
+               true,
+               ['style' => 'max-width: 250px;'],
+               ['class' => 'align-middle']
+           ),
             new GridColumn(
                 'constructor_id',
                 'Конструктор',

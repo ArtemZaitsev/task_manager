@@ -15,6 +15,8 @@ use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\PurchaseOrder;
+use App\Models\Component\Subsystem;
+use App\Models\Component\System;
 use App\Models\Component\Sz;
 use App\Models\Component\TechnicalTaskCalculation;
 use App\Models\User;
@@ -75,6 +77,8 @@ class ComponentBaseRequest extends FormRequest
                 'title' => ['required', 'max:255'],
                 'identifier' => ['nullable', 'max:255'],
                 'is_highlevel' => ['required', 'boolean'],
+                'system_id' => ['nullable', Rule::exists(System::class, 'id')],
+                'subsystem_id' => ['nullable', Rule::exists(Subsystem::class, 'id')],
                 'constructor_id' => ['nullable', Rule::exists(User::class, 'id')],
                 'physical_object_id' => ['nullable', Rule::exists(PhysicalObject::class, 'id')],
                 'relative_component_id' => ['nullable', Rule::exists(Component::class, 'id')],

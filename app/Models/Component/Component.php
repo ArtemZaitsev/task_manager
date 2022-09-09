@@ -109,6 +109,8 @@ class Component extends Model
         'purchase_comment',
         'relative_component_id',
         'physical_object_id',
+        'system_id',
+        'subsystem_id',
         'quantity_in_object',
         'is_highlevel',
         'sz_id',
@@ -140,6 +142,16 @@ class Component extends Model
     public function physicalObject()
     {
         return $this->belongsTo(PhysicalObject::class);
+    }
+
+    public function system()
+    {
+        return $this->belongsTo(System::class);
+    }
+
+    public function subsystem()
+    {
+        return $this->belongsTo(Subsystem::class);
     }
 
     public function sz()

@@ -6,6 +6,8 @@ use App\Lib\SelectUtils;
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\PurchaseOrder;
+use App\Models\Component\Subsystem;
+use App\Models\Component\System;
 use App\Models\Component\Sz;
 use App\Models\Component\TechnicalTaskCalculation;
 use App\Models\User;
@@ -35,7 +37,15 @@ class ComponentControllerViewBuilder
             ),
             'physicalObjectsSelectData' => SelectUtils::entityListToLabelMap(
                 PhysicalObject::all()->all(),
-                fn(PhysicalObject $entity) => $entity->label()
+                fn(PhysicalObject $user) => $user->label()
+            ),
+            'systemsSelectData' => SelectUtils::entityListToLabelMap(
+                System::all()->all(),
+                fn(System $entity) => $entity->title
+            ),
+            'subsystemsSelectData' => SelectUtils::entityListToLabelMap(
+                Subsystem::all()->all(),
+                fn(Subsystem $entity) => $entity->title
             ),
             'componentsSelectData' => SelectUtils::entityListToLabelMap(
                 $entity->id === null ?
