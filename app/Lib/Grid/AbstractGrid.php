@@ -2,6 +2,8 @@
 
 namespace App\Lib\Grid;
 
+use App\Lib\Grid\Field\Field;
+use App\Lib\Grid\Field\FieldSet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -10,11 +12,22 @@ abstract class AbstractGrid
     /** @var GridColumn[] */
     protected array $columns;
     protected string $gridName;
+    protected FieldSet $fieldSet;
 
     public function __construct(string $gridName)
     {
         $this->gridName = $gridName;
+        $this->columns = $this->buildColumns();
+        $this->fieldSet = new FieldSet(array_map(
+            fn(GridColumn $column) => new Field($column->getName(), $column->getLabel(), $column->isDisplayDefault()),
+            $this->columns),
+            $this->gridName
+        );
+        // $this->fieldSet->load();
+
     }
+
+    protected abstract function buildColumns(): array;
 
     /**
      * @return GridColumn[]
@@ -66,27 +79,25 @@ abstract class AbstractGrid
         $query->orderBy($orderField, $orderDirection);
     }
 
-    public function needDisplay(string $columnName): bool {
-        $column = $this->findColumn($columnName);
-        if($column === null) {
-            throw new \LogicException(sprintf('Column name=%s not exist', $columnName));
-        }
-
-        $fields = session()->get($this->gridName, null);
-        if($fields === null) {
-            return $column->isDisplayDefault();
-        }
-        return in_array($columnName, $fields);
+    public function getFields(): array
+    {
+        $this->fieldSet->load();
+        return $this->fieldSet->getFields();
     }
 
-    public function saveFields(array $fields): void {
-        session()->put($this->gridName, $fields);
+    public function saveFields(array $fields): void
+    {
+       $this->fieldSet->save($fields);
+    }
+
+    public function needDisplay(string $fieldName): bool {
+        return $this->fieldSet->needDisplay($fieldName);
     }
 
     private function findColumn(string $columnName): ?GridColumn
     {
-        foreach ($this->columns as $column){
-            if($column->getName() === $columnName) {
+        foreach ($this->columns as $column) {
+            if ($column->getName() === $columnName) {
                 return $column;
             }
         }

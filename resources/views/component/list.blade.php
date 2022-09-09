@@ -49,75 +49,9 @@
         @endif
 
 
-        <script>
-            function saveFields() {
-                var form = $('#display-fields-form');
-                $.ajax({
-                    type: "POST",
-                    url: form.attr('action'),
-                    data: form.serialize(), // serializes the form's elements.
-                    success: function (data) {
-                        document.location.reload();
-                    },
-                    error: function (data) {
-                        console.log(data); // show response from the php script.
-                    },
-                });
-            }
-
-            $(function () {
-                dialog = $("#display-fields").dialog({
-                    autoOpen: false,
-                    height: 400,
-                    width: 350,
-                    modal: true,
-                    buttons: {
-                        "Сохранить": saveFields,
-                        "Отменить": function () {
-                            dialog.dialog("close");
-                        }
-                    },
-                    close: function () {
-
-                    }
-                });
-
-
-                $("#show-display-fields").button().on("click", function () {
-                    dialog.dialog("open");
-                });
-
-                $("#fields_select-all").on("click", function () {
-                    $('#display-fields-form input').prop('checked', true);
-                })
-
-            });
-
-        </script>
-
-
-        <button class="btn btn-outline-info m-3" id="show-display-fields">Настроить столбцы</button>
-        <div id="display-fields" style="display: none">
-
-
-            <button id="fields_select-all">Выбрать все</button>
-            <form id="display-fields-form"
-                  action="{{ route(\App\Http\Controllers\Component\ComponentDisplayFieldsController::ROUTE_NAME) }}">
-                @csrf
-                <table>
-                    @foreach($grid->getColumns() as $column)
-                        <tr>
-                            <td>{{ $column->getLabel() }}</td>
-                            <td>
-                                <input type="checkbox" name="fields[{{ $column->getName() }}]"
-                                       @if($grid->needDisplay($column->getName())) checked @endif>
-                            </td>
-                        </tr>
-                    @endforeach
-                </table>
-            </form>
-        </div>
-    </div>
+       @include('lib.columns_form', ['url' => route
+       (App\Http\Controllers\Component\ComponentController::SAVE_FIELDS_ROUTE_NAME),
+       'fields' => $grid->getFields()])
 
     <table class="table table-bordered table-hover">
         <thead class="thead-dark" style="position:sticky; top: 0; z-index: 1;">

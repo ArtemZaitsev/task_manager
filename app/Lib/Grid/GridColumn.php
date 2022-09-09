@@ -2,9 +2,7 @@
 
 namespace App\Lib\Grid;
 
-use App\Http\Controllers\Component\ComponentDisplayFieldsController;
 use App\Http\Controllers\Component\Filter\Filter;
-use function session;
 
 class GridColumn
 {

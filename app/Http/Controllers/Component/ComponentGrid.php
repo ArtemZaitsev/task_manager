@@ -30,19 +30,21 @@ use Illuminate\Http\Request;
 
 class ComponentGrid extends AbstractGrid
 {
-
     public function __construct(
         private ComponentVoter $componentVoter
     )
     {
         parent::__construct('components');
+    }
 
-        $userSelectFilterData = SelectUtils::entityListToLabelMap(
+    protected function buildColumns(): array
+    {
+         $userSelectFilterData = SelectUtils::entityListToLabelMap(
             User::all()->all(),
             fn(User $entity) => $entity->label()
         );
 
-        $this->columns = [
+       return [
             new GridColumn(
                 'actions',
                 'Действия',
@@ -598,6 +600,8 @@ class ComponentGrid extends AbstractGrid
             ),
         ];
     }
+
+
 
     public function buildQuery(Request $request): Builder
     {

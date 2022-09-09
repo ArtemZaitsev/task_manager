@@ -4,6 +4,8 @@ namespace App\Http\Controllers\PhysicalObject;
 
 use App\Http\Controllers\Component\ComponentController;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
+use App\Lib\Grid\Field\Field;
+use App\Lib\Grid\Field\FieldSet;
 use App\Lib\SelectUtils;
 use App\Http\Controllers\Controller;
 use App\Models\Component\Component;
@@ -20,6 +22,21 @@ use Illuminate\Support\Facades\DB;
 class PhysicalObjectReportController extends Controller
 {
     public const ROUTE_NAME = 'physical_object.report';
+    public const SAVE_FIELDS_ROUTE_NAME = 'physical_object.save_fields';
+
+    const STATUS_3d = '3d_status';
+    const DD_STATUS = 'dd_status';
+    const CALC_STATUS = 'calc_status';
+    const MANUFACTOR_STATUS = 'manufactor_status';
+    const PURCHASE_STATUS = 'purchase_status';
+
+    const STATUS_FIELD_LABELS = [
+        self::STATUS_3d => '3D модели',
+        self::DD_STATUS => 'Чертежи',
+        self::CALC_STATUS => 'Расчеты',
+        self::MANUFACTOR_STATUS => 'Производство',
+        self::PURCHASE_STATUS => 'Закупки',
+    ];
 
     public function index(Request $request, $id)
     {
@@ -38,18 +55,18 @@ class PhysicalObjectReportController extends Controller
         $report = [
             'object' => $object,
             'status' => [
-                '3d_status' => Component3dStatus::LABELS,
-                'dd_status' => ComponentDdStatus::LABELS,
-                'calc_status' => ComponentCalcStatus::LABELS,
-                'manufactor_status' => ComponentManufactorStatus::LABELS,
-                'purchase_status' => ComponentPurchaserStatus::LABELS
+                self::STATUS_3d => Component3dStatus::LABELS,
+                self::DD_STATUS => ComponentDdStatus::LABELS,
+                self::CALC_STATUS => ComponentCalcStatus::LABELS,
+                self::MANUFACTOR_STATUS => ComponentManufactorStatus::LABELS,
+                self::PURCHASE_STATUS => ComponentPurchaserStatus::LABELS
             ],
             'status_titles' => [
-                '3d_status' => '3D-моделей',
-                'dd_status' => 'чертежей',
-                'calc_status' => 'в расчетах',
-                'manufactor_status' => 'в изготовлении',
-                'purchase_status' => 'в закупках'
+                self::STATUS_3d => '3D-моделей',
+                self::DD_STATUS => 'чертежей',
+                self::CALC_STATUS => 'в расчетах',
+                self::MANUFACTOR_STATUS => 'в изготовлении',
+                self::PURCHASE_STATUS => 'в закупках'
             ],
             'rows' => [],
             'totalStatusWithoutNotRequired' => [],
@@ -59,7 +76,7 @@ class PhysicalObjectReportController extends Controller
 
         /** @var Component $component */
         foreach ($highLevelComponents as $component) {
-            $fields = ['3d_status', 'dd_status', 'calc_status', 'manufactor_status', 'purchase_status'];
+            $fields = [self::STATUS_3d, self::DD_STATUS, self::CALC_STATUS, self::MANUFACTOR_STATUS, self::PURCHASE_STATUS];
             $report['rows'][$component->id] = [
                 'component' => $component,
                 'total' => 0,
@@ -110,8 +127,12 @@ class PhysicalObjectReportController extends Controller
         $report['footer']['status'] = $totalStatusSum;
 
 
+        $fieldSet = $this->buildFieldSet();
+        $fieldSet->load();
+
         return view('physical_object.report', [
             'report' => $report,
+            'fieldSet' => $fieldSet,
             'filters' => [
                 'component' => new MultiSelectFilter('component_id', SelectUtils::entityListToLabelMap(
                     $highLevelComponentsAll,
@@ -144,16 +165,47 @@ class PhysicalObjectReportController extends Controller
         ]);
     }
 
-    private function clearTotalStatStatuses(array $statuses, string $status): array {
+    public function saveDisplayFields(Request $request)
+    {
+        $requestFields = array_keys($request->request->get('fields'));
+        $fieldSet = $this->buildFieldSet();
+        $fieldSet->save($requestFields);
+
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    private function buildFieldSet(): FieldSet
+    {
+        $fields = [
+            self::STATUS_3d,
+            self::DD_STATUS,
+            self::CALC_STATUS,
+            self::MANUFACTOR_STATUS,
+            self::PURCHASE_STATUS
+        ];
+        return new FieldSet(
+            array_map(
+                fn(string $field) => new Field($field, self::STATUS_FIELD_LABELS[$field], true),
+                $fields
+            ),
+            'phys_obj_report'
+        );
+    }
+
+    private function clearTotalStatStatuses(array $statuses, string $status): array
+    {
         unset($statuses[0]);
         unset($statuses[ComponentManufactorStatus::NOT_REQUIRED]);
         $statusesToClear = [
-            'manufactor_status' => [ComponentManufactorStatus::DD_NOT_TRANSMITTED,
+            self::MANUFACTOR_STATUS => [ComponentManufactorStatus::DD_NOT_TRANSMITTED,
                 ComponentManufactorStatus::HAVE_NOT_SZ],
-            'purchase_status' => [ComponentPurchaserStatus::DOES_NOT_DONE],
+            self::PURCHASE_STATUS => [ComponentPurchaserStatus::DOES_NOT_DONE],
         ];
         foreach ($statusesToClear as $statusToClear => $values) {
-            if($statusToClear === $status) {
+            if ($statusToClear === $status) {
                 foreach ($values as $value) {
                     unset($statuses[$value]);
                 }

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@include('layouts.navbar')
 @section('title') {{$report['object']->label()}} @endsection
 @section('content')
     <style>
@@ -76,6 +77,10 @@
 
     </style>
 
+    @include('lib.columns_form', ['url' => route
+      (App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::SAVE_FIELDS_ROUTE_NAME),
+      'fields' => $fieldSet->getFields()])
+
     <table class="table table-bordered table-hover" id="report-table">
         <tr>
             {{--            <th colspan="3" style="text-align: center; vertical-align: middle; background-color: #a6ff75;--}}
@@ -84,13 +89,16 @@
             background-color: #e5ffd6;
 ">{{$report['object']->label()}}</th>
             @foreach($report['status'] as $status => $statusData)
-                <td class="group-header status-{{$status}}" colspan="{{ count($statusData) + 1 }}">
-                    Всего {{ $report['status_titles'][$status] }}:
+                @if($fieldSet->getField($status)->isNeedDisplay())
+                    <td class="group-header status-{{$status}}" colspan="{{ count($statusData) + 1 }}">
+                        Всего {{ $report['status_titles'][$status] }}:
 
-                    <a class="data-link" href="{{  $report['totalStatusWithoutNotRequired'][$status]['url'] }}" target="_blank">
-                        {{ $report['totalStatusWithoutNotRequired'][$status]['count'] ?? '' }}
-                    </a>
-                </td>
+                        <a class="data-link" href="{{  $report['totalStatusWithoutNotRequired'][$status]['url'] }}"
+                           target="_blank">
+                            {{ $report['totalStatusWithoutNotRequired'][$status]['count'] ?? '' }}
+                        </a>
+                    </td>
+                @endif
             @endforeach
         </tr>
         <form method="get">
@@ -112,20 +120,23 @@
                     <div style="text-align: center; vertical-align: middle; min-width: 80px;">Всего позиций</div>
                 </td>
                 @foreach($report['status'] as $status => $statusData)
-                    <th class="not-specified status-{{$status}}"
-                        style="text-align: center; vertical-align: middle; min-width: 80px;">Не
-                        указано
-                    </th>
-                    @foreach($statusData as $value => $label)
-                        <th class="status-header status-{{$status}}" style="min-width: 80px;">
-                            {{ $label }}
+                    @if($fieldSet->getField($status)->isNeedDisplay())
+                        <th class="not-specified status-{{$status}}"
+                            style="text-align: center; vertical-align: middle; min-width: 80px;">Не
+                            указано
                         </th>
-                    @endforeach
+                        @foreach($statusData as $value => $label)
+                            <th class="status-header status-{{$status}}" style="min-width: 80px;">
+                                {{ $label }}
+                            </th>
+                        @endforeach
+                    @endif
                 @endforeach
             </tr>
         </form>
         @foreach($report['rows'] as $row)
             <tr>
+
                 <td class="first-column">
                     <div style="width: 150px;  border-right: 1px solid black;">{{
                     $row['component']->constructor?->direction?->label() }}</div>
@@ -139,21 +150,22 @@
                 </td>
 
                 @foreach($report['status'] as $field => $statusData)
-                    <td class="value status-{{$field}}">
-                        <a class="data-link" target="_blank"
-                           href="{{ $filterUrl($row['component']->id, [ $field => [0]]) }}">
-                            {{$row['byStatus'][$field][0] ?? 0 }}</a>
-                    </td>
-                    @foreach($statusData as $value => $label)
+                    @if($fieldSet->getField($field)->isNeedDisplay())
                         <td class="value status-{{$field}}">
-                            <a class="data-link" target="_blank" href="{{ $filterUrl($row['component']->id, [ $field =>
+                            <a class="data-link" target="_blank"
+                               href="{{ $filterUrl($row['component']->id, [ $field => [0]]) }}">
+                                {{$row['byStatus'][$field][0] ?? 0 }}</a>
+                        </td>
+                        @foreach($statusData as $value => $label)
+                            <td class="value status-{{$field}}">
+                                <a class="data-link" target="_blank" href="{{ $filterUrl($row['component']->id, [ $field =>
                             [$value]])
                             }}">
-                                {{$row['byStatus'][$field][$value] ?? 0 }}
-                            </a>
-                        </td>
-                    @endforeach
-
+                                    {{$row['byStatus'][$field][$value] ?? 0 }}
+                                </a>
+                            </td>
+                        @endforeach
+                    @endif
                 @endforeach
             </tr>
         @endforeach
@@ -170,25 +182,24 @@
 
 
             @foreach($report['status'] as $field => $statusData)
-                <th class="value status-{{$field}}">
-                    <a href="{{ $totalFilterUrl($field, 0) }}" class="data-link" target="_blank">
-                        {{$report['footer']['status'][$field][0] ?? 0 }}
-                    </a>
-                </th>
-                @foreach($statusData as $value => $label)
+                @if($fieldSet->getField($field)->isNeedDisplay())
                     <th class="value status-{{$field}}">
-                        <a href="{{ $totalFilterUrl($field, $value) }}" target="_blank"
-                           class="data-link">
-                            {{$report['footer']['status'][$field][$value] ?? 0 }}
+                        <a href="{{ $totalFilterUrl($field, 0) }}" class="data-link" target="_blank">
+                            {{$report['footer']['status'][$field][0] ?? 0 }}
                         </a>
-
-{{--                        <a href="{{ $totalFilterUrl($row['component']->id, [ $field => [$value]]) }}"--}}
-{{--                           target="_blank" class="data-link">--}}
-{{--                            {{$report['footer']['status'][$field][$value] ?? 0 }}--}}
-{{--                        </a>--}}
-
                     </th>
-                @endforeach
+
+
+                    @foreach($statusData as $value => $label)
+                        <th class="value status-{{$field}}">
+                            <a href="{{ $totalFilterUrl($field, $value) }}" target="_blank"
+                               class="data-link">
+                                {{$report['footer']['status'][$field][$value] ?? 0 }}
+                            </a>
+                        </th>
+                    @endforeach
+                @endif
+
             @endforeach
         </tr>
     </table>
