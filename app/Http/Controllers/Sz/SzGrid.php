@@ -13,7 +13,8 @@ class SzGrid extends AbstractDocumentGrid
         parent::__construct(
             'sz',
             SzEditController::INDEX_ACTION,
-            SzDeleteController::ROUTE_NAME
+            SzDeleteController::ROUTE_NAME,
+            SzFileDownloadController::INDEX_ACTION
         );
     }
 

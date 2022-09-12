@@ -47,10 +47,7 @@
         </div>
 
 
-        @impersonating()
-        <a class="btn btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под
-            пользователя</a>
-        @endImpersonating
+
 
 
         <table class="table table-bordered table-hover">

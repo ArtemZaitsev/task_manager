@@ -23,6 +23,7 @@
             font-weight: bold;
             text-align: center;
             vertical-align: middle;
+            font-size: 18px;
         }
 
         #report-table .status-header {
@@ -60,19 +61,85 @@
         /*    position: static;*/
         /*}*/
 
-        .first-column {
-            display: flex;
-            justify-content: space-between;
-            left: 0;
+        /*.first-column {*/
+        /*    display: flex;*/
+        /*    justify-content: space-between;*/
+        /*    left: 0;*/
+        /*    position: sticky;*/
+        /*    background: #e5ffd6 !important;*/
+        /*    z-index: 2;*/
+        /*}*/
+
+        /*.first-column > div {*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*}*/
+
+        .sticky-col {
+            position: -webkit-sticky;
             position: sticky;
             background: #e5ffd6 !important;
-            z-index: 2;
         }
 
-        .first-column > div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .first-col {
+            /*width: 150px;*/
+            /*min-width: 100px;*/
+            /*max-width: 200px;*/
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+            left: 0;
+            z-index: 2;
+            background: #e5ffd6 !important;
+        }
+
+        .second-col {
+            /*width: 200px;*/
+            /*min-width: 200px;*/
+            /*max-width: 300px;*/
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+            left: 200px;
+            z-index: 2;
+            background: #e5ffd6 !important;
+        }
+
+        .third-col {
+            /*width: 250px;*/
+            /*min-width: 100px;*/
+            /*max-width: 500px;*/
+            width: 450px;
+            min-width: 450px;
+            max-width: 450px;
+            left: 400px;
+            z-index: 2;
+            background: #e5ffd6 !important;
+        }
+
+        .forth-col {
+            /*width: 100px;*/
+            /*min-width: 100px;*/
+            /*max-width: 100px;*/
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+            left: 850px;
+            z-index: 2;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        #object-title {
+            /*width: 700px;*/
+            /*min-width: 600px;*/
+            width: 950px;
+            min-width: 950px;
+            left: 0;
+            z-index: 2;
+            background: #e5ffd6 !important;
+
         }
 
     </style>
@@ -83,11 +150,8 @@
 
     <table class="table table-bordered table-hover" id="report-table">
         <tr>
-            {{--            <th colspan="3" style="text-align: center; vertical-align: middle; background-color: #a6ff75;--}}
-            {{--">{{$report['object']->label()}}</th>--}}
-            <th class="first-column" style="font-size: 22px; text-align: center; vertical-align: middle;
-            background-color: #e5ffd6;
-">{{$report['object']->label()}}</th>
+            <td id="object-title" class="sticky-col group-header" colspan="4" style="font-size: 22px; text-align: center;
+            vertical-align: middle; background-color: #e5ffd6;">{{$report['object']->label()}}</td>
             @foreach($report['status'] as $status => $statusData)
                 @if($fieldSet->getField($status)->isNeedDisplay())
                     <td class="group-header status-{{$status}}" colspan="{{ count($statusData) + 1 }}">
@@ -103,21 +167,33 @@
         </tr>
         <form method="get">
             <tr>
-                <td class="first-column" style="font-weight: bold;height: 110px;">
-{{--                    <div--}}
-{{--                        style="text-align: center; vertical-align: middle; min-width: 150px; border-right: 1px solid black;">--}}
-{{--                        Направление--}}
-{{--                    </div>--}}
-                    <div class="component" style="text-align: center; vertical-align: middle;
-                min-width:400px;border-right: 1px solid black;">
-                        Компонент <br/>
-                        @include($filters['component']->template(), [
-                                        'filter' => $filters['component'],
-                                        'filterData' => $filters['component']->templateData(request())
+                <td   class="sticky-col first-col group-header">
+                    Система <br/>
+                    @include($filters['system']->template(), [
+                                        'filter' => $filters['system'],
+                                        'filterData' => $filters['system']->templateData(request())
                                         ])
-                        @include('lib.filters.filter_buttons', ['filterName' => $filters['component']->name()])
-                    </div>
-                    <div style="text-align: center; vertical-align: middle; min-width: 80px;">Всего позиций</div>
+                    @include('lib.filters.filter_buttons', ['filterName' => $filters['system']->name()])
+
+                </td>
+                <td class="sticky-col second-col group-header">
+                    Подсистема <br/>
+                    @include($filters['subsystem']->template(), [
+                                        'filter' => $filters['subsystem'],
+                                        'filterData' => $filters['subsystem']->templateData(request())
+                                        ])
+                    @include('lib.filters.filter_buttons', ['filterName' => $filters['subsystem']->name()])
+                </td>
+                <td class="sticky-col third-col group-header">
+                    Компонент <br/>
+                    @include($filters['component']->template(), [
+                                    'filter' => $filters['component'],
+                                    'filterData' => $filters['component']->templateData(request())
+                                    ])
+                    @include('lib.filters.filter_buttons', ['filterName' => $filters['component']->name()])
+                </td>
+                <td class="sticky-col forth-col group-header">
+                    Всего позиций
                 </td>
                 @foreach($report['status'] as $status => $statusData)
                     @if($fieldSet->getField($status)->isNeedDisplay())
@@ -136,17 +212,18 @@
         </form>
         @foreach($report['rows'] as $row)
             <tr>
-
-                <td class="first-column">
-                    <div style="width: 150px;  border-right: 1px solid black;">{{
-                    $row['component']->constructor?->direction?->label() }}</div>
-                    <div style="width: 400px; border-right: 1px solid black;" class="component">{{ $row['component']->label
-                    () }}</div>
-                    <div style="width: 80px;  font-size: 22px;  font-weight: bold;
-                    text-decoration: none;" class="value">
-                        <a class="data-link" target="_blank" href="{{ $filterUrl($row['component']->id) }}">{{
+                <td class="sticky-col first-col">
+                    {{  $row['component']->system?->label() }}
+                </td>
+                <td class="sticky-col second-col">
+                    {{ $row['component']->subsystem?->label() }}
+                </td>
+                <td class="sticky-col third-col">
+                    {{ $row['component']->label() }}
+                </td>
+                <td class="sticky-col forth-col">
+                    <a class="data-link" target="_blank" href="{{ $filterUrl($row['component']->id) }}">{{
                     $row['total'] }}</a>
-                    </div>
                 </td>
 
                 @foreach($report['status'] as $field => $statusData)
@@ -170,14 +247,16 @@
             </tr>
         @endforeach
         <tr>
-            <td class="first-column">
-                <div style="width: 550px; font-weight: bold; border-right: 1px solid black;">Всего в составе</div>
-                <div class="value" style="width: 80px; ">
-                    <a href="{{ $totalUrl }}"
-                       class="data-link" target="_blank">
-                        {{$report['footer']['total']}}
-                    </a>
-                </div>
+            <td class="sticky-col first-col text-end" style="font-weight: bold; font-size: 20px;" colspan="3">Всего в
+                составе</td>
+{{--            <td class="sticky-col second-col"></td>--}}
+{{--            <td class="sticky-col third-col">--}}
+            </td>
+            <td class="sticky-col forth-col">
+                <a href="{{ $totalUrl }}"
+                   class="data-link" target="_blank">
+                    {{$report['footer']['total']}}
+                </a>
             </td>
 
 

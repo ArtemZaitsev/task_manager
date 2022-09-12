@@ -13,7 +13,8 @@ class TechnicalTaskCalculationGrid  extends AbstractDocumentGrid
         parent::__construct(
             'ttc',
             TechnicalTaskCalculationEditController::INDEX_ACTION,
-            TechnicalTaskCalculationDeleteController::ROUTE_NAME
+            TechnicalTaskCalculationDeleteController::ROUTE_NAME,
+            TechnicalTaskCalculationFileDownloadController::INDEX_ACTION
         );
     }
 

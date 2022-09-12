@@ -31,16 +31,16 @@
                 @endforeach
 
                 <li class="nav-item position-absolute end-0">
-
+                    @impersonating()
+                    <a class="btn btn-sm btn-danger m-1" href="{{ route('impersonate.leave') }}">Выйти из-под
+                        пользователя</a>
+                    @endImpersonating
                     <a class="btn btn-sm btn-outline-secondary m-1 "
                        href="{{ route(\App\Http\Controllers\LoginController::LOGOUT_ACTION) }}">
                         Выход из системы
                     </a>
 
-                    @impersonating()
-                    <a class="btn btn-sm btn-outline-info m-1" href="{{ route('impersonate.leave') }}">Выйти из-под
-                        пользователя</a>
-                    @endImpersonating
+
 
                         <b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()}}</b>
 

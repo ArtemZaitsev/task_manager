@@ -16,7 +16,8 @@ abstract class AbstractDocumentGrid extends AbstractGrid
     public function __construct(
         string           $gridName,
         protected string $editRoute,
-        protected string $deleteRoute)
+        protected string $deleteRoute,
+        protected string $downloadRouteName = '')
     {
         parent::__construct($gridName);
     }
@@ -84,7 +85,7 @@ abstract class AbstractDocumentGrid extends AbstractGrid
                'Файл',
                fn(AbstractDocument $entity) => $entity->file_path === null ? '' :
                    sprintf('<a href="%s" target="_blank">%s</a>',
-                       '/files/' . $entity->file_path,
+                       route($this->downloadRouteName, ['id' => $entity->id]),
                        'Файл'),
                null,
                null,

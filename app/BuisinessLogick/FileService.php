@@ -8,9 +8,16 @@ class FileService
 {
     private const FILES_SAVE_DIR = __DIR__ . '/../../public/files/';
 
+    public function filePath(string $file): string {
+        return self::FILES_SAVE_DIR . $file;
+    }
+
+    public function fileExtension(string $fileName): string {
+        return pathinfo($fileName, PATHINFO_EXTENSION);
+    }
     public function saveUploadedFile(UploadedFile $uploadedFile, string $baseDir): string
     {
-        $extension = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_EXTENSION);
+        $extension = $this->fileExtension($uploadedFile->getClientOriginalName());
 
         $hash = hash('sha256', $uploadedFile->getClientOriginalName()) . uniqid();
         $dir = substr($hash, 0, 2) . "/" . substr($hash, 2, 2);

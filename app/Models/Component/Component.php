@@ -51,7 +51,6 @@ use Orchid\Screen\AsSource;
  * @property $purchase_request_quantity
  * @property $purchase_request_priority
  * @property $purchase_comment
- * @property ?int $purchase_order_id
  * @property boolean $is_highlevel
  *
  * @property $relative_component_id
@@ -62,7 +61,10 @@ use Orchid\Screen\AsSource;
  * @property int $quantity_in_object
  * @property int $manufactor_start_way
  *
+ * @property ?TechnicalTaskCalculation $technicalTaskCalculation
  * @property ?Sz $sz
+ * @property ?PurchaseOrder $purchaseOrder
+ *
  */
 class Component extends Model
 {
@@ -113,6 +115,7 @@ class Component extends Model
         'subsystem_id',
         'quantity_in_object',
         'is_highlevel',
+
         'sz_id',
         'purchase_order_id',
         'technical_task_calculation_id',

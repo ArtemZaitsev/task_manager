@@ -13,7 +13,8 @@ class PurchaseOrderGrid extends AbstractDocumentGrid
         parent::__construct(
             'purchase_order',
             PurchaseOrderEditController::INDEX_ACTION,
-            PurchaseOrderDeleteController::ROUTE_NAME
+            PurchaseOrderDeleteController::ROUTE_NAME,
+            PurchaseOrderDownloadController::INDEX_ACTION,
         );
     }
 
@@ -21,5 +22,7 @@ class PurchaseOrderGrid extends AbstractDocumentGrid
     {
         return PurchaseOrder::query();
     }
+
+
 }
 

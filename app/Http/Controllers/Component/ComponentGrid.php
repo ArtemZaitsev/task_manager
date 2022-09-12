@@ -41,12 +41,12 @@ class ComponentGrid extends AbstractGrid
 
     protected function buildColumns(): array
     {
-         $userSelectFilterData = SelectUtils::entityListToLabelMap(
+        $userSelectFilterData = SelectUtils::entityListToLabelMap(
             User::all()->all(),
             fn(User $entity) => $entity->label()
         );
 
-       return [
+        return [
             new GridColumn(
                 'actions',
                 'Действия',
@@ -122,36 +122,36 @@ class ComponentGrid extends AbstractGrid
                 ['style' => 'max-width: 250px;'],
                 ['class' => 'align-middle']
             ),
-           new GridColumn(
-               'system_id',
-               'Система',
-               fn(Component $entity) => $entity->system?->label(),
-               null,
-               new MultiSelectFilter('system_id',
-                   SelectUtils::entityListToLabelMap(
-                       System::all()->all(),
-                       fn(System $o) => $o->label()),
-               ),
-               true,
-               true,
-               ['style' => 'max-width: 250px;'],
-               ['class' => 'align-middle']
-           ),
-           new GridColumn(
-               'subsystem_id',
-               'Подсистема',
-               fn(Component $entity) => $entity->subsystem?->label(),
-               null,
-               new MultiSelectFilter('subsystem_id',
-                   SelectUtils::entityListToLabelMap(
-                       Subsystem::all()->all(),
-                       fn(Subsystem $o) => $o->label()),
-               ),
-               true,
-               true,
-               ['style' => 'max-width: 250px;'],
-               ['class' => 'align-middle']
-           ),
+            new GridColumn(
+                'system_id',
+                'Система',
+                fn(Component $entity) => $entity->system?->label(),
+                null,
+                new MultiSelectFilter('system_id',
+                    SelectUtils::entityListToLabelMap(
+                        System::all()->all(),
+                        fn(System $o) => $o->label()),
+                ),
+                true,
+                true,
+                ['style' => 'max-width: 250px;'],
+                ['class' => 'align-middle']
+            ),
+            new GridColumn(
+                'subsystem_id',
+                'Подсистема',
+                fn(Component $entity) => $entity->subsystem?->label(),
+                null,
+                new MultiSelectFilter('subsystem_id',
+                    SelectUtils::entityListToLabelMap(
+                        Subsystem::all()->all(),
+                        fn(Subsystem $o) => $o->label()),
+                ),
+                true,
+                true,
+                ['style' => 'max-width: 250px;'],
+                ['class' => 'align-middle']
+            ),
 
             new GridColumn(
                 'relative_component_id',
@@ -190,17 +190,7 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'align-middle', 'style' => 'min-width: 250px;']
             ),
-            new GridColumn(
-                'quantity_in_object',
-                'Количество в объекте',
-                fn(Component $entity) => $entity->quantity_in_object === 0 ? '' : $entity->quantity_in_object,
-                'quantity_in_object',
-                new IntegerFilter('quantity_in_object'),
-                false,
-                true,
-                ['style' => 'max-width: 100px;'],
-                ['class' => 'text-center align-middle']
-            ),
+
             new GridColumn(
                 'type',
                 'Тип компонента',
@@ -211,6 +201,17 @@ class ComponentGrid extends AbstractGrid
                 true,
                 [],
                 ['class' => 'align-middle']
+            ),
+            new GridColumn(
+                'quantity_in_object',
+                'Количество в объекте',
+                fn(Component $entity) => $entity->quantity_in_object === 0 ? '' : $entity->quantity_in_object,
+                'quantity_in_object',
+                new IntegerFilter('quantity_in_object'),
+                false,
+                true,
+                ['style' => 'max-width: 100px;'],
+                ['class' => 'text-center align-middle']
             ),
             new GridColumn(
                 'version',
@@ -256,21 +257,21 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'align-middle']
             ),
-           new GridColumn(
-               'direction',
-               'Направление',
-               fn(Component $entity) => $entity->constructor?->direction?->label(),
-               null,
-               new MultiSelectFilter('users.direction_id',
-                   SelectUtils::entityListToLabelMap(
-                       Direction::all()->all(),
-                       fn(Direction $o) => $o->label())
-               ),
-               false,
-               true,
-               ['style' => 'max-width: 250px;'],
-               ['class' => 'align-middle']
-           ),
+            new GridColumn(
+                'direction',
+                'Направление',
+                fn(Component $entity) => $entity->constructor?->direction?->label(),
+                null,
+                new MultiSelectFilter('users.direction_id',
+                    SelectUtils::entityListToLabelMap(
+                        Direction::all()->all(),
+                        fn(Direction $o) => $o->label())
+                ),
+                false,
+                true,
+                ['style' => 'max-width: 250px;'],
+                ['class' => 'align-middle']
+            ),
             new GridColumn(
                 'constructor_id',
                 'Конструктор',
@@ -348,44 +349,51 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'text-center align-middle']
             ),
-            new GridColumn(
-                'technical_task_calculation_id',
-                'ТЗ (ссылка)',
-                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
-                    sprintf('<a href="%s" target="_blank">%s</a>',
-                        '/files/' . $entity->technicalTaskCalculation->file_path,
-                        $entity->technicalTaskCalculation->label()
-                    ),
-                null,
-                null,
-                false,
-                true,
-                [],
-                ['class' => 'align-middle', 'style' => 'min-width: 250px']
-            ),
 
-            new GridColumn(
-                'tz_files',
-                'ТЗ',
-                fn(Component $entity) => $entity->tz_files,
-                'tz_files',
-                new StringFilter('tz_files'),
-                false,
-                true,
-                [],
-                ['class' => 'align-middle']
-            ),
-            new GridColumn(
-                'tz_date',
-                'Дата ТЗ',
-                fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->tz_date),
-                'tz_date',
-                new DateFilter('tz_date'),
-                true,
-                true,
-                [],
-                ['class' => 'text-center align-middle']
-            ),
+//
+//            new GridColumn(
+//                'ttc_number',
+//                'ТЗ на расчет (номер)',
+//                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
+//                    sprintf('<a href="%s" target="_blank">%s</a>',
+//                        '/files/' . $entity->technicalTaskCalculation->file_path,
+//                        $entity->technicalTaskCalculation->number
+//                    ),
+//                'technical_task_calculation.number',
+//                new StringFilter('technical_task_calculations.number', 'ttc_number'),
+//                false,
+//                true,
+//                [],
+//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+//
+//            ),
+//            new GridColumn(
+//                'ttc_title',
+//                'ТЗ на расчет (Название)',
+//                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
+//                    $entity->technicalTaskCalculation->title,
+//                'technical_task_calculations.title',
+//                new StringFilter('technical_task_calculations.title', 'ttc_title'),
+//                false,
+//                true,
+//                [],
+//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+//
+//            ),
+//            new GridColumn(
+//                'ttc_date',
+//                'ТЗ на расчет (дата)',
+//                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
+//                    DateUtils::dateToDisplayFormat($entity->technicalTaskCalculation->date),
+//                'technical_task_calculations.date',
+//                new DateFilter('technical_task_calculations.date', 'ttc_date'),
+//                false,
+//                true,
+//                [],
+//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+//
+//            ),
+
             new GridColumn(
                 'constructor_priority',
                 'Приоритет конструктора',
@@ -457,8 +465,8 @@ class ComponentGrid extends AbstractGrid
                 true,
                 [],
                 ['style' => 'min-width: 400px', 'class' => 'align-middle']
-
             ),
+
             new GridColumn(
                 'sz_title',
                 'СЗ (Название)',
@@ -553,10 +561,11 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'text-center align-middle']
             ),
+
             new GridColumn(
                 'purchase_order_number',
-                'Заявка на закупку (номер)',
-                fn(Component $entity) => $entity->purchase_order_id === null ? '' :
+                'Заявка (номер)',
+                fn(Component $entity) => $entity->purchaseOrder === null ? '' :
                     sprintf('<a href="%s" target="_blank">%s</a>',
                         '/files/' . $entity->purchaseOrder->file_path,
                         $entity->purchaseOrder->number
@@ -571,8 +580,8 @@ class ComponentGrid extends AbstractGrid
             ),
             new GridColumn(
                 'purchase_order_title',
-                'Заявка на закупку (Название)',
-                fn(Component $entity) => $entity->purchase_order_id === null ? '' :
+                'Заявка (Название)',
+                fn(Component $entity) => $entity->purchaseOrder === null ? '' :
                     $entity->purchaseOrder->title,
                 'purchase_orders.title',
                 new StringFilter('purchase_orders.title', 'purchase_order_title'),
@@ -584,12 +593,11 @@ class ComponentGrid extends AbstractGrid
             ),
             new GridColumn(
                 'purchase_order_date',
-                'Заявка на закупку (дата)',
-                fn(Component $entity) => $entity->purchase_order_id === null ? '' :
+                'Заявка (дата)',
+                fn(Component $entity) => $entity->purchaseOrder === null ? '' :
                     DateUtils::dateToDisplayFormat($entity->purchaseOrder->date),
                 'purchase_orders.date',
-                new DateFilter('purchase_orders.date', 'purchase_order_date
-                '),
+                new DateFilter('purchase_orders.date', 'purchase_order_date'),
                 false,
                 true,
                 [],
@@ -633,7 +641,6 @@ class ComponentGrid extends AbstractGrid
             ),
         ];
     }
-
 
 
     public function buildQuery(Request $request): Builder

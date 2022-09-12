@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\PhysicalObject;
 
 use App\Http\Controllers\Component\ComponentController;
+use App\Http\Controllers\Component\Filter\Filter;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
 use App\Lib\Grid\Field\Field;
 use App\Lib\Grid\Field\FieldSet;
@@ -15,6 +16,8 @@ use App\Models\Component\ComponentDdStatus;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\PhysicalObject;
+use App\Models\Component\Subsystem;
+use App\Models\Component\System;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +52,22 @@ class PhysicalObjectReportController extends Controller
             ->get()
             ->all();
 
-        $highLevelComponents = $this->filterComponents($highLevelComponentsAll, $request);
+        $filters =  [
+            'component' => new MultiSelectFilter('id', SelectUtils::entityListToLabelMap(
+                $highLevelComponentsAll,
+                fn(Component $entity) => $entity->label()
+            )),
+            'system' => new MultiSelectFilter('system_id', SelectUtils::entityListToLabelMap(
+                System::all()->all(),
+                fn(System $entity) => $entity->label()
+            )),
+            'subsystem' => new MultiSelectFilter('subsystem_id', SelectUtils::entityListToLabelMap(
+                Subsystem::all()->all(),
+                fn(Subsystem $entity) => $entity->label()
+            ))
+        ];
+
+        $highLevelComponents = $this->filterComponents($request, $object, $filters);
         usort($highLevelComponents, fn(Component $a, Component $b) => $a->constructor?->direction?->title <=> $b->constructor?->direction?->title);
 
         $report = [
@@ -133,12 +151,7 @@ class PhysicalObjectReportController extends Controller
         return view('physical_object.report', [
             'report' => $report,
             'fieldSet' => $fieldSet,
-            'filters' => [
-                'component' => new MultiSelectFilter('component_id', SelectUtils::entityListToLabelMap(
-                    $highLevelComponentsAll,
-                    fn(Component $entity) => $entity->label()
-                ))
-            ],
+            'filters' => $filters,
             'filterUrl' => fn($componentId, array $additionalParams = []) => route(
                 ComponentController::ROUTE_NAME, [
                 'filters' => array_merge([
@@ -263,27 +276,27 @@ class PhysicalObjectReportController extends Controller
     }
 
     private
-    function filterComponents(array $highLevelComponentsAll, Request $request): array
+    function filterComponents(Request $request, PhysicalObject $object, array $filters): array
     {
-        if (!$request->query->has('filters')) {
-            return $highLevelComponentsAll;
+        $query = Component::query()
+            ->where('physical_object_id', $object->id)
+            ->where('is_highlevel', 1);
+
+        if ($request->query->has('filters')) {
+            $filtersData= $request->query->get('filters');
+            foreach ($filters as $filter) {
+                /** @var Filter $filter */
+                $filterData = $filtersData[$filter->name()] ?? null;
+                if($filterData !== null) {
+                    $filter->apply($query, $filterData);
+                }
+            }
         }
-        $filters = $request->query->get('filters');
-        if (!isset($filters['component_id'])) {
-            return $highLevelComponentsAll;
-        }
 
-        $filterValue = (array)$filters['component_id'];
-        if (empty($filterValue)) {
-            return $highLevelComponentsAll;
-        }
+        $components = $query
+            ->get()
+            ->all();
 
-        $filterValue = array_map(fn($value) => (int)$value, $filterValue);
-
-
-        $highLevelComponentsAll = array_filter($highLevelComponentsAll,
-            fn(Component $component) => in_array($component->id, $filterValue));
-        return $highLevelComponentsAll;
-
+        return $components;
     }
 }

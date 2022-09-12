@@ -45,14 +45,7 @@
                  ])
             @endif
 
-            @if($fieldsToEdit === null || in_array('quantity_in_object', $fieldsToEdit))
-                @include('lib.fields.number', [
-                        'required' => false,
-                        'label' => 'Количество в объекте',
-                        'fieldName' => 'quantity_in_object',
-                        'currentValue' => $entity->quantity_in_object,
-                ])
-            @endif
+
 
             @if($fieldsToEdit === null || in_array('is_highlevel', $fieldsToEdit))
                 @include('lib.fields.select', [
@@ -134,6 +127,15 @@
                         'currentValue' => $entity->type,
                         'multiple' => false,
                         'data' =>  App\Models\Component\ComponentType::LABELS
+                ])
+            @endif
+
+            @if($fieldsToEdit === null || in_array('quantity_in_object', $fieldsToEdit))
+                @include('lib.fields.number', [
+                        'required' => false,
+                        'label' => 'Количество в объекте',
+                        'fieldName' => 'quantity_in_object',
+                        'currentValue' => $entity->quantity_in_object,
                 ])
             @endif
 

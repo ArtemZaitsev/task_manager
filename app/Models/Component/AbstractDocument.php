@@ -26,7 +26,7 @@ abstract class AbstractDocument extends Model
         return sprintf('%s № %s%s от %s',
             $this->documentName(),
             $this->number,
-            $this->title !== null ? ' ' . $this->title : '',
+            $this->title === null ? '': ' ' .$this->title,
             DateUtils::dateToDisplayFormat($this->date)
         );
     }

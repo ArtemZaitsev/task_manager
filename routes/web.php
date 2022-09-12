@@ -10,12 +10,14 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
 use App\Http\Controllers\PurchaseOrder\PurchaseOrderCreateController;
 use App\Http\Controllers\PurchaseOrder\PurchaseOrderDeleteController;
+use App\Http\Controllers\PurchaseOrder\PurchaseOrderDownloadController;
 use App\Http\Controllers\PurchaseOrder\PurchaseOrderEditController;
 use App\Http\Controllers\PurchaseOrder\PurchaseOrderListController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Sz\SzCreateController;
 use App\Http\Controllers\Sz\SzDeleteController;
 use App\Http\Controllers\Sz\SzEditController;
+use App\Http\Controllers\Sz\SzFileDownloadController;
 use App\Http\Controllers\Sz\SzListController;
 use App\Http\Controllers\Task\PerformerTaskEditController;
 use App\Http\Controllers\Task\TaskAddController;
@@ -30,6 +32,7 @@ use App\Http\Controllers\TaskTree\TaskTreeTaskSaverController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationCreateController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationDeleteController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationEditController;
+use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationFileDownloadController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationListController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
@@ -133,6 +136,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sz/{id}/edit', [SzEditController::class, 'processForm'])
         ->where('id', '[0-9]+')
         ->name(SzEditController::PROCESS_FORM_ACTION);
+    Route::get('/sz/{id}/file-download', [SzFileDownloadController::class, 'index'])
+        ->where('id', '[0-9]+')
+        ->name(SzFileDownloadController::INDEX_ACTION);
+
 
     Route::get('/purchase_order/list', [PurchaseOrderListController::class, 'index'])
         ->name(PurchaseOrderListController::ROUTE_NAME);
@@ -148,6 +155,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/purchase_order/{id}/edit', [PurchaseOrderEditController::class, 'processForm'])
         ->where('id', '[0-9]+')
         ->name(PurchaseOrderEditController::PROCESS_FORM_ACTION);
+    Route::get('/purchase_order/{id}/file-download', [PurchaseOrderDownloadController::class, 'index'])
+        ->where('id', '[0-9]+')
+        ->name(PurchaseOrderDownloadController::INDEX_ACTION);
 
     Route::get('/ttc/list', [TechnicalTaskCalculationListController::class, 'index'])
         ->name(TechnicalTaskCalculationListController::ROUTE_NAME);
@@ -163,7 +173,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ttc/{id}/edit', [TechnicalTaskCalculationEditController::class, 'processForm'])
         ->where('id', '[0-9]+')
         ->name(TechnicalTaskCalculationEditController::PROCESS_FORM_ACTION);
-
+    Route::get('/ttc/{id}/file-download', [TechnicalTaskCalculationFileDownloadController::class, 'index'])
+        ->where('id', '[0-9]+')
+        ->name(TechnicalTaskCalculationFileDownloadController::INDEX_ACTION);
 
 
     Route::get('/test/file_upload', [FileUploadTestController::class, 'index']);
