@@ -104,10 +104,10 @@
         <form method="get">
             <tr>
                 <td class="first-column" style="font-weight: bold;height: 110px;">
-                    <div
-                        style="text-align: center; vertical-align: middle; min-width: 150px; border-right: 1px solid black;">
-                        Направление
-                    </div>
+{{--                    <div--}}
+{{--                        style="text-align: center; vertical-align: middle; min-width: 150px; border-right: 1px solid black;">--}}
+{{--                        Направление--}}
+{{--                    </div>--}}
                     <div class="component" style="text-align: center; vertical-align: middle;
                 min-width:400px;border-right: 1px solid black;">
                         Компонент <br/>
