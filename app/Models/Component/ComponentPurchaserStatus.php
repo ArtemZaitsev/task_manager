@@ -13,7 +13,7 @@ class ComponentPurchaserStatus
 
     public const LABELS = [
         self::NOT_REQUIRED => 'Не требуется',
-        self::DOES_NOT_DONE => 'Заявка не оформлена',
+        self::DOES_NOT_DONE => 'СЗ не оформлена',
         self::DECOR_PURCHASE_REQUEST => 'Оформление заявки',
         self::AGREEMENT => 'Согласование заявки',
         self::IN_PROGRESS => 'В процессе',

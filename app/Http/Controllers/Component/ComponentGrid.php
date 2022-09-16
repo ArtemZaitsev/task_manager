@@ -132,7 +132,7 @@ class ComponentGrid extends AbstractGrid
                         System::all()->all(),
                         fn(System $o) => $o->label()),
                 ),
-                true,
+                false,
                 true,
                 ['style' => 'max-width: 250px;'],
                 ['class' => 'align-middle']
@@ -147,7 +147,7 @@ class ComponentGrid extends AbstractGrid
                         Subsystem::all()->all(),
                         fn(Subsystem $o) => $o->label()),
                 ),
-                true,
+                false,
                 true,
                 ['style' => 'max-width: 250px;'],
                 ['class' => 'align-middle']

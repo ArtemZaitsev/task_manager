@@ -10,6 +10,8 @@ use App\Models\Component\AbstractDocument;
 use App\Utils\DateUtils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use App\BuisinessLogick\PlanerService;
+use Illuminate\Support\Facades\Auth;
 
 abstract class AbstractDocumentGrid extends AbstractGrid
 {
@@ -26,6 +28,9 @@ abstract class AbstractDocumentGrid extends AbstractGrid
     {
        return [
 
+//           if (userIsPlaner(Auth::id())) {
+//
+//           };
            new GridColumn(
                'actions',
                'Действия',

@@ -2,11 +2,9 @@
 
 namespace App\BuisinessLogick;
 
-use App\Models\Direction;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class PlanerService

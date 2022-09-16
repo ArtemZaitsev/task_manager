@@ -122,9 +122,9 @@
             /*width: 100px;*/
             /*min-width: 100px;*/
             /*max-width: 100px;*/
-            width: 100px;
-            min-width: 100px;
-            max-width: 100px;
+            width: 150px;
+            min-width: 150px;
+            max-width: 150px;
             left: 850px;
             z-index: 2;
             text-align: center;
@@ -168,7 +168,7 @@
         <form method="get">
             <tr>
                 <td   class="sticky-col first-col group-header">
-                    Система <br/>
+                    Системы <br/>
                     @include($filters['system']->template(), [
                                         'filter' => $filters['system'],
                                         'filterData' => $filters['system']->templateData(request())
@@ -177,7 +177,7 @@
 
                 </td>
                 <td class="sticky-col second-col group-header">
-                    Подсистема <br/>
+                    Подсистемы <br/>
                     @include($filters['subsystem']->template(), [
                                         'filter' => $filters['subsystem'],
                                         'filterData' => $filters['subsystem']->templateData(request())
@@ -185,7 +185,7 @@
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['subsystem']->name()])
                 </td>
                 <td class="sticky-col third-col group-header">
-                    Компонент <br/>
+                    Верхнеуровневый компоненты <br/>
                     @include($filters['component']->template(), [
                                     'filter' => $filters['component'],
                                     'filterData' => $filters['component']->templateData(request())
@@ -193,7 +193,7 @@
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['component']->name()])
                 </td>
                 <td class="sticky-col forth-col group-header">
-                    Всего позиций
+                    Компоненты
                 </td>
                 @foreach($report['status'] as $status => $statusData)
                     @if($fieldSet->getField($status)->isNeedDisplay())

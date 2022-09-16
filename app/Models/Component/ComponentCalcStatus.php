@@ -12,7 +12,7 @@ class ComponentCalcStatus
 
     public const LABELS = [
         self::NOT_REQUIRED => 'Не требуется',
-        self::DOES_NOT_DONE => 'Не отработано',
+        self::DOES_NOT_DONE => 'Нет расчетов',
         self::WRITING_TZ => 'Написание ТЗ',
         self::IN_PROGRESS => 'В процессе',
         self::DONE => 'Готово',
