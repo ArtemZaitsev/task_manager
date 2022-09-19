@@ -81,7 +81,17 @@
             position: sticky;
             background: #e5ffd6 !important;
         }
-
+        .zero-col {
+            /*width: 150px;*/
+            /*min-width: 100px;*/
+            /*max-width: 200px;*/
+            width: 300px;
+            min-width: 300px;
+            max-width: 300px;
+            left: 0;
+            z-index: 2;
+            background: #e5ffd6 !important;
+        }
         .first-col {
             /*width: 150px;*/
             /*min-width: 100px;*/
@@ -89,7 +99,7 @@
             width: 200px;
             min-width: 200px;
             max-width: 200px;
-            left: 0;
+            left: 300px;
             z-index: 2;
             background: #e5ffd6 !important;
         }
@@ -101,7 +111,7 @@
             width: 200px;
             min-width: 200px;
             max-width: 200px;
-            left: 200px;
+            left: 500px;
             z-index: 2;
             background: #e5ffd6 !important;
         }
@@ -113,7 +123,7 @@
             width: 450px;
             min-width: 450px;
             max-width: 450px;
-            left: 400px;
+            left: 700px;
             z-index: 2;
             background: #e5ffd6 !important;
         }
@@ -125,7 +135,7 @@
             width: 150px;
             min-width: 150px;
             max-width: 150px;
-            left: 850px;
+            left: 1150px;
             z-index: 2;
             text-align: center;
             vertical-align: middle;
@@ -152,7 +162,8 @@
         <thead class="thead-dark" style="position:sticky; top: 0; z-index: 5;">
 
         <tr>
-            <td id="object-title" class="sticky-col group-header" colspan="4" style="font-size: 22px; text-align: center;
+            <td id="object-title" class="sticky-col group-header" colspan="5" style="font-size: 22px; text-align:
+            center;
             vertical-align: middle; background-color: #e5ffd6;">{{$report['object']->label()}}</td>
             @foreach($report['status'] as $status => $statusData)
                 @if($fieldSet->getField($status)->isNeedDisplay())
@@ -169,6 +180,15 @@
         </tr>
         <form method="get">
             <tr>
+                <td class="sticky-col zero-col group-header">
+                    Верхнеуровневые системы <br/>
+                    @include($filters['metasystem']->template(), [
+                                        'filter' => $filters['metasystem'],
+                                        'filterData' => $filters['metasystem']->templateData(request()),
+                                         'attrs' => ['style' => 'width: 100%']
+                                        ])
+                    @include('lib.filters.filter_buttons', ['filterName' => $filters['metasystem']->name()])
+                </td>
                 <td class="sticky-col first-col group-header">
                     Системы <br/>
                     @include($filters['system']->template(), [
@@ -218,6 +238,9 @@
         </thead>
         @foreach($report['rows'] as $row)
             <tr>
+                <td class="sticky-col zero-col">
+                    {{  $row['component']->metasystem?->label() }}
+                </td>
                 <td class="sticky-col first-col">
                     {{  $row['component']->system?->label() }}
                 </td>
@@ -253,7 +276,7 @@
             </tr>
         @endforeach
         <tr>
-            <td class="sticky-col first-col text-end" style="font-weight: bold; font-size: 20px;" colspan="3">Всего в
+            <td class="sticky-col zero-col text-end" style="font-weight: bold; font-size: 20px;" colspan="4">Всего в
                 составе
             </td>
             {{--            <td class="sticky-col second-col"></td>--}}

@@ -15,6 +15,7 @@ use App\Models\Component\ComponentCalcStatus;
 use App\Models\Component\ComponentDdStatus;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;
+use App\Models\Component\Metasystem;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\Subsystem;
 use App\Models\Component\System;
@@ -56,6 +57,10 @@ class PhysicalObjectReportController extends Controller
             'component' => new MultiSelectFilter('id', SelectUtils::entityListToLabelMap(
                 $highLevelComponentsAll,
                 fn(Component $entity) => $entity->label()
+            )),
+            'metasystem' => new MultiSelectFilter('metasystem_id', SelectUtils::entityListToLabelMap(
+                Metasystem::all()->all(),
+                fn(Metasystem $entity) => $entity->label()
             )),
             'system' => new MultiSelectFilter('system_id', SelectUtils::entityListToLabelMap(
                 System::all()->all(),
