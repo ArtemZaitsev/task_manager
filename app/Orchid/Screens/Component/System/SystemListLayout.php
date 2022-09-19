@@ -2,8 +2,6 @@
 
 namespace App\Orchid\Screens\Component\System;
 
-use App\Models\Component\Detail;
-use App\Models\Component\PhysicalObject;
 use App\Models\Component\System;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Input;
@@ -23,6 +21,13 @@ class SystemListLayout extends Table
                 ->render(function (System $entity) {
                     return Link::make($entity->title)
                         ->route(SystemEditScreen::ROUTE_NAME, $entity);
+                }),
+            TD::make('metasystem_id', 'Название верхнеуровневой системы')
+                ->render(function (System $entity) {
+                    if ($entity->metasystem === null) {
+                        return "";
+                    }
+                    return $entity->metasystem->title;
                 }),
 
             TD::make('created_at', 'Created'),

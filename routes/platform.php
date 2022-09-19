@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Models\Direction;
 use App\Orchid\Screens\Audit\AuditListScreen;
+use App\Orchid\Screens\Component\Metasystem\MetasystemEditScreen;
+use App\Orchid\Screens\Component\Metasystem\MetasystemListScreen;
 use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectEditScreen;
 use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectListScreen;
 use App\Orchid\Screens\Component\Subsystem\SubsystemEditScreen;
@@ -75,6 +77,12 @@ Route::screen('subsystems', SubsystemListScreen::class)
 
 Route::screen('subsystem/{entity?}', SubsystemEditScreen::class)
     ->name(SubsystemEditScreen::ROUTE_NAME);
+
+Route::screen('metasystems', MetasystemListScreen::class)
+    ->name(MetasystemListScreen::ROUTE_NAME);
+
+Route::screen('metasystem/{entity?}', MetasystemEditScreen::class)
+    ->name(MetasystemEditScreen::ROUTE_NAME);
 
 
 Route::screen('audit', AuditListScreen::class)

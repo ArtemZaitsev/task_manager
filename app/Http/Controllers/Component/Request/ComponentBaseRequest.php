@@ -13,6 +13,7 @@ use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
+use App\Models\Component\Metasystem;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\PurchaseOrder;
 use App\Models\Component\Subsystem;
@@ -77,6 +78,7 @@ class ComponentBaseRequest extends FormRequest
                 'title' => ['required', 'max:255'],
                 'identifier' => ['nullable', 'max:255'],
                 'is_highlevel' => ['required', 'boolean'],
+                'metasystem_id' => ['nullable', Rule::exists(Metasystem::class, 'id')],
                 'system_id' => ['nullable', Rule::exists(System::class, 'id')],
                 'subsystem_id' => ['nullable', Rule::exists(Subsystem::class, 'id')],
                 'constructor_id' => ['nullable', Rule::exists(User::class, 'id')],

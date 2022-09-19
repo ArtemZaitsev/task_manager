@@ -149,6 +149,8 @@
       'fields' => $fieldSet->getFields()])
 
     <table class="table table-bordered table-hover" id="report-table">
+        <thead class="thead-dark" style="position:sticky; top: 0; z-index: 5;">
+
         <tr>
             <td id="object-title" class="sticky-col group-header" colspan="4" style="font-size: 22px; text-align: center;
             vertical-align: middle; background-color: #e5ffd6;">{{$report['object']->label()}}</td>
@@ -167,11 +169,12 @@
         </tr>
         <form method="get">
             <tr>
-                <td   class="sticky-col first-col group-header">
+                <td class="sticky-col first-col group-header">
                     Системы <br/>
                     @include($filters['system']->template(), [
                                         'filter' => $filters['system'],
-                                        'filterData' => $filters['system']->templateData(request())
+                                        'filterData' => $filters['system']->templateData(request()),
+                                         'attrs' => ['style' => 'width: 100%']
                                         ])
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['system']->name()])
 
@@ -180,7 +183,8 @@
                     Подсистемы <br/>
                     @include($filters['subsystem']->template(), [
                                         'filter' => $filters['subsystem'],
-                                        'filterData' => $filters['subsystem']->templateData(request())
+                                        'filterData' => $filters['subsystem']->templateData(request()),
+                                         'attrs' => ['style' => 'width: 100%']
                                         ])
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['subsystem']->name()])
                 </td>
@@ -188,7 +192,8 @@
                     Верхнеуровневый компоненты <br/>
                     @include($filters['component']->template(), [
                                     'filter' => $filters['component'],
-                                    'filterData' => $filters['component']->templateData(request())
+                                    'filterData' => $filters['component']->templateData(request()),
+                                    'attrs' => ['style' => 'width: 100%']
                                     ])
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['component']->name()])
                 </td>
@@ -210,6 +215,7 @@
                 @endforeach
             </tr>
         </form>
+        </thead>
         @foreach($report['rows'] as $row)
             <tr>
                 <td class="sticky-col first-col">
@@ -248,9 +254,10 @@
         @endforeach
         <tr>
             <td class="sticky-col first-col text-end" style="font-weight: bold; font-size: 20px;" colspan="3">Всего в
-                составе</td>
-{{--            <td class="sticky-col second-col"></td>--}}
-{{--            <td class="sticky-col third-col">--}}
+                составе
+            </td>
+            {{--            <td class="sticky-col second-col"></td>--}}
+            {{--            <td class="sticky-col third-col">--}}
             </td>
             <td class="sticky-col forth-col">
                 <a href="{{ $totalUrl }}"

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Orchid\Screens\Component\System;
+namespace App\Orchid\Screens\Component\Metasystem;
 
 use App\Models\Component\Metasystem;
-use App\Models\Component\System;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Orchid\Screen\Actions\Button;
@@ -13,9 +12,9 @@ use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Layout;
 
-class SystemEditScreen  extends Screen
+class MetasystemEditScreen  extends Screen
 {
-    public const ROUTE_NAME = "platform.system.edit";
+    public const ROUTE_NAME = "platform.metasystem.edit";
 
     public $entity;
 
@@ -24,7 +23,7 @@ class SystemEditScreen  extends Screen
      *
      * @return array
      */
-    public function query(System $entity): iterable
+    public function query(Metasystem $entity): iterable
     {
         return [
             'entity' => $entity,
@@ -43,7 +42,7 @@ class SystemEditScreen  extends Screen
 
     public function description(): ?string
     {
-        return "Системы";
+        return "Верхнеуровневая система";
     }
 
     /**
@@ -80,9 +79,6 @@ class SystemEditScreen  extends Screen
     {
         return [
             Layout::rows([
-                Relation::make('entity.metasystem_id')
-                    ->title('Верхнеуровневые cистемы')
-                    ->fromModel(Metasystem::class, 'title'),
                 Input::make('entity.title')
                     ->title('Название'),
             ])
@@ -90,19 +86,16 @@ class SystemEditScreen  extends Screen
     }
 
 
-    public function createOrUpdate(System $entity, Request $request)
+    public function createOrUpdate(Metasystem $entity, Request $request)
     {
 
         $data = $request->validate([
             'entity.title' => [
                 'required',
-                Rule::unique(System::class, 'title')
+                Rule::unique(Metasystem::class, 'title')
                     ->ignore($entity),
             ],
-            'entity.metasystem_id' => [
-                'nullable',
-                Rule::exists(Metasystem::class, 'id')
-            ],
+
         ]);
 
         $entity->fill($data['entity'])->save();
@@ -110,14 +103,14 @@ class SystemEditScreen  extends Screen
 
         Alert::info('Данные успешно добавлены.');
 
-        return redirect()->route(SystemListScreen::ROUTE_NAME);
+        return redirect()->route(MetasystemListScreen::ROUTE_NAME);
     }
 
-    public function remove(System $entity)
+    public function remove(Metasystem $entity)
     {
         $entity->delete();
 
         Alert::info('Данные успешно удалены.');
-        return redirect()->route(SystemListScreen::ROUTE_NAME);
+        return redirect()->route(MetasystemListScreen::ROUTE_NAME);
     }
 }

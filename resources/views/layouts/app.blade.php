@@ -33,6 +33,7 @@
             $('.select2').select2({
                 allowClear: true,
                 placeholder: "Выберите элемент",
+                width: 'resolve'
             });
             let dateFilters = $('div[data-filter="date"]');
             dateFilters.each(function () {

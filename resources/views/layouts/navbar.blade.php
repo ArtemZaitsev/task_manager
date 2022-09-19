@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-{{--        <a class="navbar-brand" href="/">Цуп</a>--}}
+        {{--        <a class="navbar-brand" href="/">Цуп</a>--}}
 
-{{--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"--}}
-{{--                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"--}}
-{{--                aria-label="Toggle navigation">--}}
-{{--            <span class="navbar-toggler-icon"></span>--}}
-{{--        </button>--}}
+        {{--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"--}}
+        {{--                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"--}}
+        {{--                aria-label="Toggle navigation">--}}
+        {{--            <span class="navbar-toggler-icon"></span>--}}
+        {{--        </button>--}}
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 @php($menuItems = [
@@ -31,6 +31,13 @@
                 @endforeach
 
                 <li class="nav-item position-absolute end-0">
+                    @if(App\BuisinessLogick\Voter\VoterUtils::userIsAdmin())
+                        <a class="btn btn-sm btn-outline-secondary m-1 "
+                           href="/admin">
+                            Администрирование
+                        </a>
+                    @endif
+
                     @impersonating()
                     <a class="btn btn-sm btn-danger m-1" href="{{ route('impersonate.leave') }}">Выйти из-под
                         пользователя</a>
@@ -41,8 +48,7 @@
                     </a>
 
 
-
-                        <b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()}}</b>
+                    <b>{{ Illuminate\Support\Facades\Auth::user()->labelFull()}}</b>
 
                 </li>
             </ul>

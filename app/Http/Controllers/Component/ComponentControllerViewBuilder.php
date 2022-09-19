@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Component;
 
 use App\Lib\SelectUtils;
 use App\Models\Component\Component;
+use App\Models\Component\Metasystem;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\PurchaseOrder;
 use App\Models\Component\Subsystem;
@@ -38,6 +39,10 @@ class ComponentControllerViewBuilder
             'physicalObjectsSelectData' => SelectUtils::entityListToLabelMap(
                 PhysicalObject::all()->all(),
                 fn(PhysicalObject $user) => $user->label()
+            ),
+            'metasystemsSelectData' => SelectUtils::entityListToLabelMap(
+                Metasystem::all()->all(),
+                fn(Metasystem $entity) => $entity->title
             ),
             'systemsSelectData' => SelectUtils::entityListToLabelMap(
                 System::all()->all(),

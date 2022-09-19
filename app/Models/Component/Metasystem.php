@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
-class System extends Model
+class Metasystem extends Model
 {
     use HasFactory;
     use AsSource;
@@ -15,17 +15,10 @@ class System extends Model
 
     protected $fillable= [
         "title",
-        "metasystem_id"
     ];
     protected $allowedFilters = [
         'title',
     ];
-
-    public function metasystem()
-    {
-        return $this->belongsTo(Metasystem::class);
-    }
-
     public function label(){
         return $this->title;
     }

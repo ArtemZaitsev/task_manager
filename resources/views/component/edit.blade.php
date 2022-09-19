@@ -23,6 +23,17 @@
                  ])
             @endif
 
+            @if($fieldsToEdit === null || in_array('metasystem_id', $fieldsToEdit))
+                @include('lib.fields.select', [
+                        'required' => false,
+                        'label' => 'Верхнеуровневая система',
+                        'fieldName' => 'metasystem_id',
+                        'currentValue' => $entity->metasystem_id,
+                        'multiple' => false,
+                        'data' => $metasystemsSelectData
+                 ])
+            @endif
+
             @if($fieldsToEdit === null || in_array('system_id', $fieldsToEdit))
                 @include('lib.fields.select', [
                         'required' => false,

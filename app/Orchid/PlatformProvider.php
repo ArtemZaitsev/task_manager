@@ -6,6 +6,7 @@ namespace App\Orchid;
 
 use App\Models\Component\PhysicalObject;
 
+use App\Orchid\Screens\Component\Metasystem\MetasystemListScreen;
 use App\Orchid\Screens\Component\PhysicalObject\PhysicalObjectListScreen;
 use App\Orchid\Screens\Component\Subsystem\SubsystemListScreen;
 use App\Orchid\Screens\Component\System\SystemListScreen;
@@ -74,6 +75,9 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route(PhysicalObjectListScreen::ROUTE_NAME)
                 ->title('Состав'),
 
+            Menu::make('Верхнеуровневые системы')
+                ->icon('envelope-letter')
+                ->route(MetasystemListScreen::ROUTE_NAME),
             Menu::make('Системы')
                 ->icon('envelope-letter')
                 ->route(SystemListScreen::ROUTE_NAME),

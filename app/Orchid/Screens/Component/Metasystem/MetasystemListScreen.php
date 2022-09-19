@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Orchid\Screens\Component\System;
+namespace App\Orchid\Screens\Component\Metasystem;
 
-use App\Models\Component\System;
+use App\Models\Component\Metasystem;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
-class SystemListScreen extends Screen
+class MetasystemListScreen extends Screen
 {
-    public const ROUTE_NAME = "platform.system.list";
+    public const ROUTE_NAME = "platform.metasystem.list";
 
     /**
      * Query data.
@@ -18,7 +18,7 @@ class SystemListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'entity' => System::query()
+            'entity' => Metasystem::query()
                 ->filters()
                 ->paginate()
         ];
@@ -31,7 +31,7 @@ class SystemListScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Системы';
+        return 'Верхнеуровневые системы';
     }
 
     /**
@@ -42,9 +42,9 @@ class SystemListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Создать новую систему')
+            Link::make('Создать новую верхнеуровневую систему')
                 ->icon('pencil')
-                ->route(SystemEditScreen::ROUTE_NAME)
+                ->route(MetasystemEditScreen::ROUTE_NAME)
         ];
     }
 
@@ -56,7 +56,7 @@ class SystemListScreen extends Screen
     public function layout(): iterable
     {
         return [
-            SystemListLayout::class
+            MetasystemListLayout::class
         ];
     }
 }

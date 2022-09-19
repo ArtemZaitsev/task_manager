@@ -3,7 +3,6 @@
 namespace App\Models\Component;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Orchid\Filters\Filterable;
@@ -111,6 +110,7 @@ class Component extends Model
         'purchase_comment',
         'relative_component_id',
         'physical_object_id',
+        'metasystem_id',
         'system_id',
         'subsystem_id',
         'quantity_in_object',
@@ -147,6 +147,11 @@ class Component extends Model
         return $this->belongsTo(PhysicalObject::class);
     }
 
+
+    public function metasystem()
+    {
+        return $this->belongsTo(Metasystem::class);
+    }
     public function system()
     {
         return $this->belongsTo(System::class);

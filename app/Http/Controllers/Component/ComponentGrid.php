@@ -8,6 +8,7 @@ use App\Http\Controllers\Component\Filter\IntegerFilter;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
 use App\Http\Controllers\Component\Filter\StringFilter;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
+use App\Http\Controllers\Sz\SzFileDownloadController;
 use App\Lib\Grid\AbstractGrid;
 use App\Lib\Grid\GridColumn;
 use App\Lib\SelectUtils;
@@ -21,6 +22,7 @@ use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
+use App\Models\Component\Metasystem;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\Subsystem;
 use App\Models\Component\System;
@@ -118,6 +120,21 @@ class ComponentGrid extends AbstractGrid
                         fn(PhysicalObject $o) => $o->label()),
                 ),
                 true,
+                true,
+                ['style' => 'max-width: 250px;'],
+                ['class' => 'align-middle']
+            ),
+            new GridColumn(
+                'metasystem_id',
+                'Верхнеуровневая система',
+                fn(Component $entity) => $entity->metasystem?->label(),
+                null,
+                new MultiSelectFilter('metasystem_id',
+                    SelectUtils::entityListToLabelMap(
+                        Metasystem::all()->all(),
+                        fn(Metasystem $o) => $o->label()),
+                ),
+                false,
                 true,
                 ['style' => 'max-width: 250px;'],
                 ['class' => 'align-middle']
@@ -454,11 +471,10 @@ class ComponentGrid extends AbstractGrid
             new GridColumn(
                 'sz_number',
                 'СЗ (номер)',
-                fn(Component $entity) => $entity->sz === null ? '' :
+                fn(Component $entity) => $entity->sz === null || $entity->sz?->file_path === null ? '' :
                     sprintf('<a href="%s" target="_blank">%s</a>',
-                        '/files/' . $entity->sz->file_path,
-                        $entity->sz->number
-                    ),
+                        route(SzFileDownloadController::INDEX_ACTION, ['id' => $entity->sz->id]),
+                        $entity->sz->number),
                 'sz.number',
                 new StringFilter('sz.number', 'sz_number'),
                 false,
