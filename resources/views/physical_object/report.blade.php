@@ -239,7 +239,7 @@
         @foreach($report['rows'] as $row)
             <tr>
                 <td class="sticky-col zero-col">
-                    {{  $row['component']->metasystem?->label() }}
+                    {{  $row['component']->system?->metasystem?->label() }}
                 </td>
                 <td class="sticky-col first-col">
                     {{  $row['component']->system?->label() }}

@@ -152,6 +152,7 @@ class Component extends Model
     {
         return $this->belongsTo(Metasystem::class);
     }
+
     public function system()
     {
         return $this->belongsTo(System::class);
