@@ -53,7 +53,7 @@ class PhysicalObjectReportController extends Controller
             ->get()
             ->all();
 
-        $filters =  [
+        $filters = [
             'component' => new MultiSelectFilter('id', SelectUtils::entityListToLabelMap(
                 $highLevelComponentsAll,
                 fn(Component $entity) => $entity->label()
@@ -73,7 +73,8 @@ class PhysicalObjectReportController extends Controller
         ];
 
         $highLevelComponents = $this->filterComponents($request, $object, $filters);
-        usort($highLevelComponents, fn(Component $a, Component $b) => $a->constructor?->direction?->title <=> $b->constructor?->direction?->title);
+        usort($highLevelComponents,
+            fn(Component $a, Component $b) => $a->metasystem?->title <=> $b->metasystem?->title);
 
         $report = [
             'object' => $object,
@@ -288,11 +289,11 @@ class PhysicalObjectReportController extends Controller
             ->where('is_highlevel', 1);
 
         if ($request->query->has('filters')) {
-            $filtersData= $request->query->get('filters');
+            $filtersData = $request->query->get('filters');
             foreach ($filters as $filter) {
                 /** @var Filter $filter */
                 $filterData = $filtersData[$filter->name()] ?? null;
-                if($filterData !== null) {
+                if ($filterData !== null) {
                     $filter->apply($query, $filterData);
                 }
             }
