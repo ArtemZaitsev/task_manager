@@ -180,7 +180,7 @@
         </tr>
         <form method="get">
             <tr>
-                <td class="sticky-col zero-col group-header">
+                <td class="sticky-col zero-col group-header" style="vertical-align: middle;">
                     Верхнеуровневые системы <br/>
                     @include($filters['metasystem']->template(), [
                                         'filter' => $filters['metasystem'],
@@ -189,7 +189,7 @@
                                         ])
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['metasystem']->name()])
                 </td>
-                <td class="sticky-col first-col group-header">
+                <td class="sticky-col first-col group-header" style="vertical-align: middle;">
                     Системы <br/>
                     @include($filters['system']->template(), [
                                         'filter' => $filters['system'],
@@ -199,7 +199,7 @@
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['system']->name()])
 
                 </td>
-                <td class="sticky-col second-col group-header">
+                <td class="sticky-col second-col group-header" style="vertical-align: middle;">
                     Подсистемы <br/>
                     @include($filters['subsystem']->template(), [
                                         'filter' => $filters['subsystem'],
@@ -208,7 +208,7 @@
                                         ])
                     @include('lib.filters.filter_buttons', ['filterName' => $filters['subsystem']->name()])
                 </td>
-                <td class="sticky-col third-col group-header">
+                <td class="sticky-col third-col group-header" style="vertical-align: middle;">
                     Верхнеуровневый компоненты <br/>
                     @include($filters['component']->template(), [
                                     'filter' => $filters['component'],
