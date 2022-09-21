@@ -163,6 +163,17 @@
 {{--                </div>--}}
 {{--            @endif--}}
 
+            @if($fieldsToEdit === null || in_array('task_document_id', $fieldsToEdit))
+                @include('lib.fields.select', [
+                       'required' => false,
+                       'label' => 'Документ',
+                       'fieldName' => 'task_document_id',
+                       'currentValue' =>$entity->task_document_id,
+                       'multiple' => false,
+                       'data' => $taskDocuments
+               ])
+            @endif
+
             @if($fieldsToEdit === null || in_array('base', $fieldsToEdit))
                 <div class="form-group mt-2">
                     <label for="base">Основание</label>

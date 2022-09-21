@@ -109,7 +109,8 @@ class Task extends Model
         'execute_time_plan',
         'execute_time_fact',
         'component_id',
-        'show_in_gantt'
+        'show_in_gantt',
+        'task_document_id',
     ];
 
     public function user()
@@ -162,5 +163,8 @@ class Task extends Model
         return $this->belongsToMany(Task::class, 'tasks_prev','task_id', 'task_prev_id');
     }
 
+    public function taskDocument(){
+        return $this->belongsTo(TaskDocument::class);
+    }
 
 }

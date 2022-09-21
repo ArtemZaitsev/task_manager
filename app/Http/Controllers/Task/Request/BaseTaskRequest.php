@@ -10,6 +10,7 @@ use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\TaskDocument;
 use App\Models\TaskLog;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -94,7 +95,8 @@ abstract class BaseTaskRequest extends FormRequest
             'coperformers.*' => Rule::exists(User::class, 'id'),
             'end_date' => 'nullable|date',
             'execute_time_plan' => ['nullable', 'numeric', 'min:0', 'max:10000'],
-            'show_in_gantt' => ['required', 'boolean']
+            'show_in_gantt' => ['required', 'boolean'],
+            'task_document_id' => ['nullable', 'integer', Rule::exists(TaskDocument::class, 'id')],
         ]);
 
     }

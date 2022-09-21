@@ -35,7 +35,6 @@ class ComponentBaseRequest extends FormRequest
 
         $this->rules[ComponentVoter::ROLE_CONSTRUCTOR] = [
             'quantity_in_object' => ['nullable', 'numeric'],
-            'entry_level' => ['nullable', 'numeric'],
             'source_type' => ['nullable', Rule::in(ComponentSourceType::values())],
             'version' => ['nullable', Rule::in(ComponentVersion::values())],
             'type' => ['nullable', Rule::in(ComponentType::values())],

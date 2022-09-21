@@ -264,25 +264,6 @@
                         ])
             @endif
 
-
-            @if($fieldsToEdit === null || in_array('tz_files', $fieldsToEdit))
-                @include('lib.fields.input', [
-                        'required' => false,
-                        'label' => 'ТЗ',
-                        'fieldName' => 'tz_files',
-                        'currentValue' => $entity->tz_files,
-                ])
-            @endif
-
-            @if($fieldsToEdit === null || in_array('tz_date', $fieldsToEdit))
-                @include('lib.fields.date', [
-                        'required' => false,
-                        'label' => 'Дата ТЗ',
-                        'fieldName' => 'tz_date',
-                        'currentValue' => $entity->tz_date,
-                ])
-            @endif
-
             @if($fieldsToEdit === null || in_array('constructor_priority', $fieldsToEdit))
                 @include('lib.fields.number', [
                         'required' => false,

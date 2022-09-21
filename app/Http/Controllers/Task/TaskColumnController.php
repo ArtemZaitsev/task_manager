@@ -12,6 +12,7 @@ class TaskColumnController extends BaseController
         'updated_at' => 'Дата редактирования',
         'priority' => 'Приоритет',
         'type' => 'Тип',
+        'task_document_id' => 'Документ задачи',
         'base' => 'Основание',
         'setting_date' => 'Дата постановки',
         'task_creator' => 'Постановщик',
@@ -32,6 +33,7 @@ class TaskColumnController extends BaseController
         'execute_time_plan' => 'Кол-во ч/ч, план',
         'execute_time_fact' => 'Кол-во ч/ч, факт',
         'comment' => 'Комментарии',
+
 
     ];
 

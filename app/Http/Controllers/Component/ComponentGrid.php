@@ -241,18 +241,7 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'align-middle']
             ),
-            new GridColumn(
-                'entry_level',
-                'Уровень входимости',
-                fn(Component $entity) => $entity->entry_level === 0 ? '' : $entity->entry_level,
-                null,
-                new IntegerFilter('entry_level'),
-                false,
-                true,
-                ['style' => 'max-width: 100px;'],
-                ['class' => 'text-center align-middle']
-            ),
-            new GridColumn(
+                       new GridColumn(
                 'source_type',
                 'Как получаем',
                 fn(Component $entity) => ComponentSourceType::LABELS[$entity->source_type] ?? '',
@@ -367,49 +356,49 @@ class ComponentGrid extends AbstractGrid
                 ['class' => 'text-center align-middle']
             ),
 
-//
-//            new GridColumn(
-//                'ttc_number',
-//                'ТЗ на расчет (номер)',
-//                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
-//                    sprintf('<a href="%s" target="_blank">%s</a>',
-//                        '/files/' . $entity->technicalTaskCalculation->file_path,
-//                        $entity->technicalTaskCalculation->number
-//                    ),
-//                'technical_task_calculation.number',
-//                new StringFilter('technical_task_calculations.number', 'ttc_number'),
-//                false,
-//                true,
-//                [],
-//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
-//
-//            ),
-//            new GridColumn(
-//                'ttc_title',
-//                'ТЗ на расчет (Название)',
-//                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
-//                    $entity->technicalTaskCalculation->title,
-//                'technical_task_calculations.title',
-//                new StringFilter('technical_task_calculations.title', 'ttc_title'),
-//                false,
-//                true,
-//                [],
-//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
-//
-//            ),
-//            new GridColumn(
-//                'ttc_date',
-//                'ТЗ на расчет (дата)',
-//                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
-//                    DateUtils::dateToDisplayFormat($entity->technicalTaskCalculation->date),
-//                'technical_task_calculations.date',
-//                new DateFilter('technical_task_calculations.date', 'ttc_date'),
-//                false,
-//                true,
-//                [],
-//                ['style' => 'min-width: 400px', 'class' => 'align-middle']
-//
-//            ),
+
+            new GridColumn(
+                'ttc_number',
+                'ТЗ на расчет (номер)',
+                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
+                    sprintf('<a href="%s" target="_blank">%s</a>',
+                        '/files/' . $entity->technicalTaskCalculation->file_path,
+                        $entity->technicalTaskCalculation->number
+                    ),
+                'technical_task_calculation.number',
+                new StringFilter('technical_task_calculations.number', 'ttc_number'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+
+            ),
+            new GridColumn(
+                'ttc_title',
+                'ТЗ на расчет (название)',
+                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
+                    $entity->technicalTaskCalculation->title,
+                'technical_task_calculations.title',
+                new StringFilter('technical_task_calculations.title', 'ttc_title'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+
+            ),
+            new GridColumn(
+                'ttc_date',
+                'ТЗ на расчет (дата)',
+                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
+                    DateUtils::dateToDisplayFormat($entity->technicalTaskCalculation->date),
+                'technical_task_calculations.date',
+                new DateFilter('technical_task_calculations.date', 'ttc_date'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+
+            ),
 
             new GridColumn(
                 'constructor_priority',
@@ -485,7 +474,7 @@ class ComponentGrid extends AbstractGrid
 
             new GridColumn(
                 'sz_title',
-                'СЗ (Название)',
+                'СЗ (название)',
                 fn(Component $entity) => $entity->sz === null ? '' :
                     $entity->sz->title,
                 'sz.title',

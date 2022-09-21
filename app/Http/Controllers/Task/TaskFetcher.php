@@ -126,6 +126,11 @@ class TaskFetcher
             $this->applyMultipleValuesFilter($execute, $tasksQuery, 'subgroups.id');
         }
 
+        if ($query->has('taskDocument')) {
+            $execute = $query->get('taskDocument');
+            $this->applyMultipleValuesFilter($execute, $tasksQuery, 'tasks.task_document_id');
+        }
+
         if ($query->has('base')) {
             $baseFilter = trim($query->get('base'));
             if ($baseFilter !== "") {

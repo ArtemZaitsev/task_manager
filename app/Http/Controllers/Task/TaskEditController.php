@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Task;
 use App\BuisinessLogick\Voter\TaskVoter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Task\Request\TaskEditRequest;
+use App\Lib\SelectUtils;
 use App\Models\Component\Component;
 use App\Models\Component\PhysicalObject;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Task;
+use App\Models\TaskDocument;
 use App\Models\TaskLog;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -58,7 +60,10 @@ class TaskEditController extends Controller
             'families' => Family::all(),
             'products' => Product::all(),
             'components' => Component::all('id', 'title', 'identifier'),
-
+            'taskDocuments' => SelectUtils::entityListToLabelMap(
+                TaskDocument::query()->get()->all(),
+                fn(TaskDocument $entity) => $entity->label()
+            ),
             'physical_objects' => PhysicalObject::all(),
             'tasks' => Task::all(),
             'task' => $task,

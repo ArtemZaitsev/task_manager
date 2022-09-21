@@ -73,8 +73,21 @@ class PhysicalObjectReportController extends Controller
         ];
 
         $highLevelComponents = $this->filterComponents($request, $object, $filters);
-        usort($highLevelComponents,
-            fn(Component $a, Component $b) => $a->metasystem?->title <=> $b->metasystem?->title);
+        usort($highLevelComponents, function (Component $a, Component $b) {
+            if ($a->metasystem?->id !== $b->metasystem?->id) {
+                return $a->metasystem?->title <=> $b->metasystem?->title;
+            }
+            if ($a->system?->id !== $b->system?->id) {
+                return $a->system?->title <=> $b->system?->title;
+            }
+            if ($a->subsystem?->id !== $b->subsystem?->id) {
+                return $a->system?->title <=> $b->system?->title;
+            }
+            return $a?->title <=> $b?->title;
+
+
+        });
+
 
         $report = [
             'object' => $object,
@@ -206,10 +219,15 @@ class PhysicalObjectReportController extends Controller
             self::PURCHASE_STATUS
         ];
         return new FieldSet(
-            array_map(
-                fn(string $field) => new Field($field, self::STATUS_FIELD_LABELS[$field], true),
-                $fields
-            ),
+            [
+//                new Field('metasystem', 'Верхнеуровневая система', true),
+//                new Field('system', 'Система', true),
+//                new Field('subsystem', 'Подсистема', true),
+                ... array_map(
+                    fn(string $field) => new Field($field, self::STATUS_FIELD_LABELS[$field], true),
+                    $fields
+                ),
+            ],
             'phys_obj_report'
         );
     }

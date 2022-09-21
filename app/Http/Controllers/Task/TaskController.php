@@ -14,6 +14,7 @@ use App\Models\Product;
 use App\Models\Project;
 use App\Models\Subgroup;
 use App\Models\Task;
+use App\Models\TaskDocument;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -67,6 +68,7 @@ class TaskController extends BaseController
             'request' => $request->query,
             'orderFields' => TaskFetcher::ORDER_FIELDS,
             'exportUrl' => route(TasksExportController::EXPORT_ACTION) . '?' . http_build_query($request->query->all()),
+            'taskDocument' => TaskDocument::all(),
         ]);
 
     }

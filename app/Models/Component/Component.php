@@ -12,7 +12,6 @@ use Orchid\Screen\AsSource;
  * @property int $id
  * @property string $title
  * @property string $identifier
- * @property int $entry_level
  * @property int $source_type
  * @property int $version
  * @property int $type
@@ -74,7 +73,6 @@ class Component extends Model
     protected $fillable = [
         "title",
         'identifier',
-        'entry_level',
         'source_type',
         'version',
         'type',
@@ -88,8 +86,6 @@ class Component extends Model
         'drawing_date',
         'calc_status',
         'calc_date_plan',
-        'tz_files',
-        'tz_date',
         'constructor_priority',
         'constructor_comment',
         'manufactor_id',

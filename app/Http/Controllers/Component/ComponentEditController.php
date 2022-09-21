@@ -33,7 +33,6 @@ class ComponentEditController extends Controller
             ComponentVoter::ROLE_PLANER => null,
             ComponentVoter::ROLE_CONSTRUCTOR => [
                 'quantity_in_object',
-                'entry_level',
                 'source_type',
                 'version',
                 'type',

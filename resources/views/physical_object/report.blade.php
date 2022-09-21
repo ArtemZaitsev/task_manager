@@ -81,6 +81,7 @@
             position: sticky;
             background: #e5ffd6 !important;
         }
+
         .zero-col {
             /*width: 150px;*/
             /*min-width: 100px;*/
@@ -92,6 +93,7 @@
             z-index: 2;
             background: #e5ffd6 !important;
         }
+
         .first-col {
             /*width: 150px;*/
             /*min-width: 100px;*/
@@ -180,35 +182,41 @@
         </tr>
         <form method="get">
             <tr>
-                <td class="sticky-col zero-col group-header" style="vertical-align: middle;">
-                    Верхнеуровневые системы <br/>
-                    @include($filters['metasystem']->template(), [
-                                        'filter' => $filters['metasystem'],
-                                        'filterData' => $filters['metasystem']->templateData(request()),
-                                         'attrs' => ['style' => 'width: 100%']
-                                        ])
-                    @include('lib.filters.filter_buttons', ['filterName' => $filters['metasystem']->name()])
-                </td>
-                <td class="sticky-col first-col group-header" style="vertical-align: middle;">
-                    Системы <br/>
-                    @include($filters['system']->template(), [
-                                        'filter' => $filters['system'],
-                                        'filterData' => $filters['system']->templateData(request()),
-                                         'attrs' => ['style' => 'width: 100%']
-                                        ])
-                    @include('lib.filters.filter_buttons', ['filterName' => $filters['system']->name()])
+{{--                @if($fieldSet->getField('metasystem')->isNeedDisplay())--}}
+                    <td class="sticky-col zero-col group-header ">
+                        Верхнеуровневые системы <br/>
+                        @include($filters['metasystem']->template(), [
+                                            'filter' => $filters['metasystem'],
+                                            'filterData' => $filters['metasystem']->templateData(request()),
+                                             'attrs' => ['style' => 'width: 100%']
+                                            ])
+                        @include('lib.filters.filter_buttons', ['filterName' => $filters['metasystem']->name()])
+                    </td>
+{{--                @endif--}}
+{{--                @if($fieldSet->getField('system')->isNeedDisplay())--}}
+                    <td class="sticky-col first-col group-header">
+                        Системы <br/>
+                        @include($filters['system']->template(), [
+                                            'filter' => $filters['system'],
+                                            'filterData' => $filters['system']->templateData(request()),
+                                             'attrs' => ['style' => 'width: 100%']
+                                            ])
+                        @include('lib.filters.filter_buttons', ['filterName' => $filters['system']->name()])
 
-                </td>
-                <td class="sticky-col second-col group-header" style="vertical-align: middle;">
-                    Подсистемы <br/>
-                    @include($filters['subsystem']->template(), [
-                                        'filter' => $filters['subsystem'],
-                                        'filterData' => $filters['subsystem']->templateData(request()),
-                                         'attrs' => ['style' => 'width: 100%']
-                                        ])
-                    @include('lib.filters.filter_buttons', ['filterName' => $filters['subsystem']->name()])
-                </td>
-                <td class="sticky-col third-col group-header" style="vertical-align: middle;">
+                    </td>
+{{--                @endif--}}
+{{--                @if($fieldSet->getField('subsystem')->isNeedDisplay())--}}
+                    <td class="sticky-col second-col group-header ">
+                        Подсистемы <br/>
+                        @include($filters['subsystem']->template(), [
+                                            'filter' => $filters['subsystem'],
+                                            'filterData' => $filters['subsystem']->templateData(request()),
+                                             'attrs' => ['style' => 'width: 100%']
+                                            ])
+                        @include('lib.filters.filter_buttons', ['filterName' => $filters['subsystem']->name()])
+                    </td>
+{{--                @endif--}}
+                <td class="sticky-col third-col group-header">
                     Верхнеуровневый компоненты <br/>
                     @include($filters['component']->template(), [
                                     'filter' => $filters['component'],
@@ -238,15 +246,21 @@
         </thead>
         @foreach($report['rows'] as $row)
             <tr>
-                <td class="sticky-col zero-col">
-                    {{  $row['component']->metasystem?->label() }}
-                </td>
-                <td class="sticky-col first-col">
-                    {{  $row['component']->system?->label() }}
-                </td>
-                <td class="sticky-col second-col">
-                    {{ $row['component']->subsystem?->label() }}
-                </td>
+{{--                @if($fieldSet->getField('metasystem')->isNeedDisplay())--}}
+                    <td class="sticky-col zero-col">
+                        {{  $row['component']->metasystem?->label() }}
+                    </td>
+{{--                @endif--}}
+{{--                @if($fieldSet->getField('system')->isNeedDisplay())--}}
+                    <td class="sticky-col first-col">
+                        {{  $row['component']->system?->label() }}
+                    </td>
+{{--                @endif--}}
+{{--                @if($fieldSet->getField('subsystem')->isNeedDisplay())--}}
+                    <td class="sticky-col second-col">
+                        {{ $row['component']->subsystem?->label() }}
+                    </td>
+{{--                @endif--}}
                 <td class="sticky-col third-col">
                     {{ $row['component']->label() }}
                 </td>

@@ -26,6 +26,11 @@ use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\Task\TaskDelController;
 use App\Http\Controllers\Task\TaskEditController;
 use App\Http\Controllers\Task\TasksExportController;
+use App\Http\Controllers\TaskDocument\TaskDocumentCreateController;
+use App\Http\Controllers\TaskDocument\TaskDocumentDeleteController;
+use App\Http\Controllers\TaskDocument\TaskDocumentEditController;
+use App\Http\Controllers\TaskDocument\TaskDocumentFileDownloadController;
+use App\Http\Controllers\TaskDocument\TaskDocumentListController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectController;
 use App\Http\Controllers\TaskTree\TaskTreeProjectSaveController;
 use App\Http\Controllers\TaskTree\TaskTreeTaskSaverController;
@@ -176,6 +181,25 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ttc/{id}/file-download', [TechnicalTaskCalculationFileDownloadController::class, 'index'])
         ->where('id', '[0-9]+')
         ->name(TechnicalTaskCalculationFileDownloadController::INDEX_ACTION);
+
+    Route::get('/task_document/list', [TaskDocumentListController::class, 'index'])
+        ->name(TaskDocumentListController::ROUTE_NAME);
+    Route::get('/task_document/{id}/delete', [TaskDocumentDeleteController::class, 'index'])
+        ->name(TaskDocumentDeleteController::ROUTE_NAME);
+    Route::get('/task_document/create', [TaskDocumentCreateController::class, 'index'])
+        ->name(TaskDocumentCreateController::INDEX_ACTION);
+    Route::post('/task_document/create', [TaskDocumentCreateController::class, 'processForm'])
+        ->name(TaskDocumentCreateController::PROCESS_FORM_ACTION);
+    Route::get('/task_document/{id}/edit', [TaskDocumentEditController::class, 'index'])
+        ->where('id', '[0-9]+')
+        ->name(TaskDocumentEditController::INDEX_ACTION);
+    Route::post('/task_document/{id}/edit', [TaskDocumentEditController::class, 'processForm'])
+        ->where('id', '[0-9]+')
+        ->name(TaskDocumentEditController::PROCESS_FORM_ACTION);
+    Route::get('/task_document/{id}/file-download', [TaskDocumentFileDownloadController::class, 'index'])
+        ->where('id', '[0-9]+')
+        ->name(TaskDocumentFileDownloadController::INDEX_ACTION);
+
 
 
     Route::get('/test/file_upload', [FileUploadTestController::class, 'index']);

@@ -117,7 +117,6 @@ class ComponentLoadCommand extends Command
                 'is_highlevel' => 0,
                 'identifier' => $record['Идентификатор (можно с ревизией)'],
                 'title' => $record['Наименование'],
-                'entry_level' => (int)$record['Уровень входимости'],
                 'physical_object_id' => $physicalObjectId,
                 'relative_component_id' => $relativeComponentId,
                 'quantity_in_object' => (int)$record['Количество для объекта'],
