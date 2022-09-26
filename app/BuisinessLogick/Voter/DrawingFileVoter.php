@@ -2,10 +2,11 @@
 
 namespace App\BuisinessLogick\Voter;
 
-class SzVoter implements AbstractDocumentVoter
+class DrawingFileVoter implements AbstractDocumentVoter
 {
     public function canDelete(): bool {
         return true;
     }
 
 }
+

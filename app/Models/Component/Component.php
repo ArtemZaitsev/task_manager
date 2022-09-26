@@ -115,6 +115,7 @@ class Component extends Model
         'sz_id',
         'purchase_order_id',
         'technical_task_calculation_id',
+        'drawing_files_id'
     ];
 
 
@@ -167,6 +168,12 @@ class Component extends Model
     public function purchaseOrder()
     {
         return $this->belongsTo(PurchaseOrder::class);
+    }
+
+
+    public function drawingFiles()
+    {
+        return $this->belongsTo(DrawingFile::class);
     }
 
     public function technicalTaskCalculation()

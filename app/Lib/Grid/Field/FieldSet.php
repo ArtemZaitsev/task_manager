@@ -2,6 +2,9 @@
 
 namespace App\Lib\Grid\Field;
 
+use App\Models\GridSettings;
+use Illuminate\Support\Facades\Auth;
+
 class FieldSet
 {
     /** @var Field[] */
@@ -22,7 +25,24 @@ class FieldSet
 
     public function save(array $fields)
     {
-        session()->put($this->saveIdentifier, $fields);
+        $existingSettingsCollection = GridSettings::query()
+            ->where('user_id', Auth::id())
+            ->where('grid', $this->saveIdentifier)
+            ->get();
+        if($existingSettingsCollection->count() > 0) {
+            $existingSettings = $existingSettingsCollection->get(0);
+        } else {
+            $existingSettings = (new GridSettings());
+            $existingSettings->fill([
+                'user_id' => Auth::id(),
+                'grid' => $this->saveIdentifier
+            ]);
+        }
+
+        $existingSettings->fill(['settings_data' => $fields]);
+        $existingSettings->save();
+
+     //   session()->put($this->saveIdentifier, $fields);
     }
 
     public function getField(string $fieldName): ?Field {
@@ -31,7 +51,17 @@ class FieldSet
 
     public function load()
     {
-        $fields = session()->get($this->saveIdentifier, []);
+        //$fields = session()->get($this->saveIdentifier, []);
+        $settingsCollection =  GridSettings::query()
+            ->where('user_id', Auth::id())
+            ->where('grid', $this->saveIdentifier)
+            ->get();
+        if($settingsCollection->count() > 0) {
+            $fields = $settingsCollection->get(0)->settings_data;
+        } else {
+            $fields = [];
+        }
+
         $visitedFields = [];
 
         foreach ($fields as $fieldName) {

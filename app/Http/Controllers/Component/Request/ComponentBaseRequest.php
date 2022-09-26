@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Component\Request;
 
+use App\BuisinessLogick\AuditService;
 use App\BuisinessLogick\Voter\ComponentVoter;
 use App\Models\Component\Component;
 use App\Models\Component\Component3dStatus;
@@ -13,6 +14,7 @@ use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
+use App\Models\Component\DrawingFile;
 use App\Models\Component\Metasystem;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\PurchaseOrder;
@@ -49,6 +51,7 @@ class ComponentBaseRequest extends FormRequest
             'manufactor_start_way' => ['nullable', Rule::in(ComponentManufactorStartWay::values())],
             'sz_id' => ['nullable', Rule::exists(Sz::class, 'id')],
             'technical_task_calculation_id' => ['nullable', Rule::exists(TechnicalTaskCalculation::class, 'id')],
+            'drawing_files_id' => ['nullable', Rule::exists(DrawingFile::class, 'id')],
         ];
         $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
             'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],
@@ -83,12 +86,10 @@ class ComponentBaseRequest extends FormRequest
                 'constructor_id' => ['nullable', Rule::exists(User::class, 'id')],
                 'physical_object_id' => ['nullable', Rule::exists(PhysicalObject::class, 'id')],
                 'relative_component_id' => ['nullable', Rule::exists(Component::class, 'id')],
-                'drawing_files' => ['nullable', 'string'],
-                'drawing_date' => ['nullable', 'date'],
                 'tz_files' => ['nullable', 'string'],
                 'tz_date' => ['nullable', 'date'],
             ]);
-        $this->rules[ComponentVoter::ROLE_ADMIN]= $this->rules[ComponentVoter::ROLE_PLANER];
+        $this->rules[ComponentVoter::ROLE_ADMIN] = $this->rules[ComponentVoter::ROLE_PLANER];
     }
 
     public function authorize()
@@ -105,11 +106,17 @@ class ComponentBaseRequest extends FormRequest
 
     public function store(Component $entity): void
     {
+        $auditService = $this->container->get(AuditService::class);
         $data = $this->validated();
 
-        DB::transaction(function () use ($entity, $data) {
+        DB::transaction(function () use ($auditService, $entity, $data) {
             $entity->fill($data);
+            $dirty = $entity->isDirty();
             $entity->save();
+
+            if ($dirty) {
+                $auditService->editEntity($entity);
+            }
 
             if (isset($data['physical_objects'])) {
                 $changes = $entity->physicalObjects()->sync($data['physical_objects']);

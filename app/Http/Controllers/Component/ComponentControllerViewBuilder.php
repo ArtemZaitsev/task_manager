@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Component;
 
 use App\Lib\SelectUtils;
 use App\Models\Component\Component;
+use App\Models\Component\DrawingFile;
 use App\Models\Component\Metasystem;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\PurchaseOrder;
@@ -51,6 +52,10 @@ class ComponentControllerViewBuilder
             'subsystemsSelectData' => SelectUtils::entityListToLabelMap(
                 Subsystem::all()->all(),
                 fn(Subsystem $entity) => $entity->title
+            ),
+            'drawingFilesData' => SelectUtils::entityListToLabelMap(
+                DrawingFile::all()->all(),
+                fn(DrawingFile $entity) => $entity->label()
             ),
             'componentsSelectData' => SelectUtils::entityListToLabelMap(
                 $entity->id === null ?

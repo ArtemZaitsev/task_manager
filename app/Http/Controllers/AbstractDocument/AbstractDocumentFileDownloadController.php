@@ -27,7 +27,7 @@ abstract class AbstractDocumentFileDownloadController extends Controller
 
         $filePath = $this->fileService->filePath($entity->file_path);
         $fileName = $this->fileName($entity);
-        return response()->file($filePath, ['Content-Disposition' => sprintf('attachment; filename="%s"',
+        return response()->file($filePath, ['Content-Disposition' => sprintf('inline; filename="%s"',
             $fileName)]);
         //  return response()->json(['success']);
     }

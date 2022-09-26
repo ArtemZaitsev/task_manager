@@ -231,6 +231,18 @@
 {{--            @endif--}}
 
 
+            @if($fieldsToEdit === null || in_array('drawing_files_id', $fieldsToEdit))
+                @include('lib.fields.select', [
+                        'required' => false,
+                        'label' => 'Чертежи',
+                        'fieldName' => 'drawing_files_id',
+                        'currentValue' =>$entity->drawing_files_id,
+                        'multiple' => false,
+                        'data' => $drawingFilesData
+                ])
+            @endif
+
+
 
 
             @if($fieldsToEdit === null || in_array('calc_status', $fieldsToEdit))

@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Sz;
 
 use App\BuisinessLogick\PlanerService;
 use App\Http\Controllers\AbstractDocument\AbstractDocumentGrid;
+use App\Http\Controllers\Component\Filter\MultiSelectFilter;
 use App\Lib\Grid\GridColumn;
+use App\Lib\SelectUtils;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\Sz;
+use App\Models\Direction;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
 class SzGrid extends AbstractDocumentGrid
@@ -24,14 +28,27 @@ class SzGrid extends AbstractDocumentGrid
 
     protected function buildColumns(): array
     {
+        $userSelectFilterData = SelectUtils::entityListToLabelMap(
+            User::all()->all(),
+            fn(User $entity) => $entity->label()
+        );
+
         return [
             ... parent::buildColumns(),
+            new GridColumn(
+                'direction_initiator_id',
+                'Направление',
+                fn(Sz $entity) => $entity->initiator?->direction?->label(),
+                null,
+                null,
+                true
+            ),
             new GridColumn(
                 'initiator_id',
                 'Инициатор',
                 fn(Sz $entity) => $entity->initiator?->label(),
                 'initiator_id',
-                null,
+                new MultiSelectFilter('initiator_id', $userSelectFilterData),
                 true
             ),
             new GridColumn(
@@ -39,20 +56,7 @@ class SzGrid extends AbstractDocumentGrid
                 'Адресат',
                 fn(Sz $entity) => $entity->targetUser?->label(),
                 'target_user_id',
-                null,
-                true
-            ),
-            new GridColumn(
-                'objects',
-                'Объекты',
-                fn(Sz $entity) => implode('<br/>',
-                    array_map(
-                        fn(PhysicalObject $object) => $object->label(),
-                        $entity->physicalObjects->all()
-                    )
-                ),
-                null,
-                null,
+                new MultiSelectFilter('target_user_id', $userSelectFilterData),
                 true
             ),
         ];

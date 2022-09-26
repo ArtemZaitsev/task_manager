@@ -7,6 +7,7 @@ use App\Http\Controllers\Component\Filter\DateFilter;
 use App\Http\Controllers\Component\Filter\IntegerFilter;
 use App\Http\Controllers\Component\Filter\MultiSelectFilter;
 use App\Http\Controllers\Component\Filter\StringFilter;
+use App\Http\Controllers\DrawingFile\DrawingFileDownloadController;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
 use App\Http\Controllers\Sz\SzFileDownloadController;
 use App\Lib\Grid\AbstractGrid;
@@ -333,6 +334,51 @@ class ComponentGrid extends AbstractGrid
                 [],
                 ['class' => 'text-center align-middle']
             ),
+
+
+            new GridColumn(
+                'drawing_file',
+                'Чертежи (номер)',
+                fn(Component $entity) => $entity->drawingFiles === null || $entity->drawingFiles?->file_path === null ? '' :
+                    sprintf('<a href="%s" target="_blank">%s</a>',
+                        route(DrawingFileDownloadController::INDEX_ACTION, ['id' => $entity->drawingFiles->id]),
+                        $entity->drawingFiles->number),
+                'drawing_files.number',
+                new StringFilter('drawing_files.number', 'drawing_file'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
+            ),
+
+            new GridColumn(
+                'drawing_file_title',
+                'Чертежи (название)',
+                fn(Component $entity) => $entity->drawingFiles === null ? '' :
+                    $entity->drawingFiles->title,
+                'drawing_files.title',
+                new StringFilter('drawing_files.title', 'drawingFiles'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 300px', 'class' => 'align-middle']
+
+            ),
+            new GridColumn(
+                'drawing_file_date',
+                'Чертежи (дата)',
+                fn(Component $entity) => $entity->drawingFiles === null ? '' :
+                    DateUtils::dateToDisplayFormat($entity->drawingFiles->date),
+                'drawing_files.date',
+                new DateFilter('drawing_files.date', 'drawing_file_date'),
+                false,
+                true,
+                [],
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
+
+            ),
+
+
             new GridColumn(
                 'calc_status',
                 'Статус Расчетов',
@@ -356,7 +402,6 @@ class ComponentGrid extends AbstractGrid
                 ['class' => 'text-center align-middle']
             ),
 
-
             new GridColumn(
                 'ttc_number',
                 'ТЗ на расчет (номер)',
@@ -365,12 +410,12 @@ class ComponentGrid extends AbstractGrid
                         '/files/' . $entity->technicalTaskCalculation->file_path,
                         $entity->technicalTaskCalculation->number
                     ),
-                'technical_task_calculation.number',
+                'technical_task_calculations.number',
                 new StringFilter('technical_task_calculations.number', 'ttc_number'),
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
 
             ),
             new GridColumn(
@@ -383,7 +428,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 300px', 'class' => 'align-middle']
 
             ),
             new GridColumn(
@@ -396,7 +441,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
 
             ),
 
@@ -469,7 +514,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
             ),
 
             new GridColumn(
@@ -482,7 +527,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 300px', 'class' => 'align-middle']
 
             ),
             new GridColumn(
@@ -495,7 +540,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
 
             ),
             new GridColumn(
@@ -580,7 +625,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
 
             ),
             new GridColumn(
@@ -593,7 +638,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 300px', 'class' => 'align-middle']
 
             ),
             new GridColumn(
@@ -606,7 +651,7 @@ class ComponentGrid extends AbstractGrid
                 false,
                 true,
                 [],
-                ['style' => 'min-width: 400px', 'class' => 'align-middle']
+                ['style' => 'min-width: 150px', 'class' => 'align-middle']
 
             ),
 
@@ -654,7 +699,8 @@ class ComponentGrid extends AbstractGrid
             ->leftJoin('users', 'users.id', '=', 'components.constructor_id')
             ->leftJoin('sz', 'sz.id', '=', 'components.sz_id')
             ->leftJoin('purchase_orders', 'purchase_orders.id', '=', 'components.purchase_order_id')
-            //->leftJoin('directions', '', '=', 'directions.id');
+            ->leftJoin('drawing_files', 'drawing_files.id', '=', 'components.drawing_files_id')
+            ->leftJoin('technical_task_calculations', 'technical_task_calculations.id', '=', 'components.technical_task_calculation_id')
             ->select('components.*');
         $this->applyFilters($query, $request);
         $this->applySort($query, $request);

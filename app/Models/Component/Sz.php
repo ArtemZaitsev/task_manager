@@ -21,13 +21,6 @@ class Sz extends AbstractDocument
         "target_user_id",
     ];
 
-
-    public function physicalObjects()
-    {
-        return $this->belongsToMany(PhysicalObject::class, 'sz_objects',
-        'sz_id', 'object_id');
-    }
-
     public function targetUser()
     {
         return $this->belongsTo(User::class);

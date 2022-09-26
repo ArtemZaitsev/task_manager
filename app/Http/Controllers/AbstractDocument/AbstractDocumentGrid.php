@@ -86,7 +86,7 @@ abstract class AbstractDocumentGrid extends AbstractGrid
             new GridColumn(
                 'file_path',
                 'Файл',
-                fn(AbstractDocument $entity) => $entity->file_path === null ? '' :
+                fn(AbstractDocument $entity) => empty($entity->file_path) ? '' :
                     sprintf('<a href="%s" target="_blank">%s</a>',
                         route($this->downloadRouteName, ['id' => $entity->id]),
                         'Файл'),

@@ -11,14 +11,15 @@
             <ul class="navbar-nav">
                 @php($menuItems = [
                 ['label' => 'Задачи', 'route' => \App\Http\Controllers\Task\TaskController::ACTION_LIST],
-               ['label'=> 'Документы задач', 'route' =>
+               ['label'=> 'Протоколы', 'route' =>
                 \App\Http\Controllers\TaskDocument\TaskDocumentListController::ROUTE_NAME],
                 ['label'=> 'Компоненты', 'route' => \App\Http\Controllers\Component\ComponentController::ROUTE_NAME],
-                ['label'=> 'Изготовление', 'route' => \App\Http\Controllers\Sz\SzListController::ROUTE_NAME],
-                ['label'=> 'Закупки', 'route' =>
-                \App\Http\Controllers\PurchaseOrder\PurchaseOrderListController::ROUTE_NAME],
-                ['label'=> 'Расчеты', 'route' =>
+                 ['label'=> 'Чертежи', 'route' => \App\Http\Controllers\DrawingFile\DrawingFileListController::ROUTE_NAME],
+                 ['label'=> 'Расчеты', 'route' =>
                 \App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationListController::ROUTE_NAME],
+                ['label'=> 'Изготовление', 'route' => \App\Http\Controllers\Sz\SzListController::ROUTE_NAME],
+               ['label'=> 'Закупки', 'route' =>
+                \App\Http\Controllers\PurchaseOrder\PurchaseOrderListController::ROUTE_NAME],
 
 
                 ])

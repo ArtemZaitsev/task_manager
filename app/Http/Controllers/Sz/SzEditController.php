@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Sz;
 use App\BuisinessLogick\FileService;
 use App\Http\Controllers\Controller;
 use App\Lib\RedirectUtils;
+use App\Lib\SelectUtils;
 use App\Models\Component\Sz;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SzEditController extends Controller
@@ -20,9 +22,13 @@ class SzEditController extends Controller
     public function index(Request $request, int $id) {
         $entity = Sz::query()->findOrFail($id);
 
-        return view('abstract_document.edit', [
+        return view('sz.edit', [
             'entity' => $entity,
-            'title' => 'Редактирование СЗ'
+            'title' => 'Редактирование СЗ',
+            'userSelectData' => SelectUtils::entityListToLabelMap(
+                User::all()->all(),
+                fn(User $entity) => $entity->label()
+            ),
         ]);
     }
 

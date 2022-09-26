@@ -20,13 +20,10 @@ use Illuminate\Validation\Rule;
 abstract class BaseTaskRequest extends FormRequest
 {
     protected array $rules = [];
-    protected AuditService $auditService;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
-        $this->auditService = new AuditService();
 
         $this->rules [TaskVoter::ROLE_PERFORMER] = [
 
@@ -132,6 +129,8 @@ abstract class BaseTaskRequest extends FormRequest
 
     public function store(Task $task)
     {
+        $auditService = $this->container->get(AuditService::class);
+
         $data = $this->validated();
 
         $taskLogsIdMap = [];
@@ -139,34 +138,34 @@ abstract class BaseTaskRequest extends FormRequest
             $taskLogsIdMap[$log->id] = $log;
         }
 
-        DB::transaction(function () use ($task, $data, $taskLogsIdMap) {
+        DB::transaction(function () use ($auditService, $task, $data, $taskLogsIdMap) {
             $task->fill($data);
             $dirty = $task->isDirty();
             $task->save();
             if ($dirty) {
-                $this->auditService->editEntity($task);
+                $auditService->editEntity($task);
             }
 
             if (isset($data['coperformers'])) {
                 $changes = $task->coperformers()->sync($data['coperformers']);
-                $this->auditService->editEntityRelation($changes, $task, 'coperformers');
+                $auditService->editEntityRelation($changes, $task, 'coperformers');
             }
 
             if (isset($data['project'])) {
                 $changes = $task->projects()->sync($data['project']);
-                $this->auditService->editEntityRelation($changes, $task, 'projects');
+                $auditService->editEntityRelation($changes, $task, 'projects');
             }
             if (isset($data['family'])) {
                 $changes = $task->families()->sync($data['family']);
-                $this->auditService->editEntityRelation($changes, $task, 'families');
+                $auditService->editEntityRelation($changes, $task, 'families');
             }
             if (isset($data['product'])) {
                 $changes = $task->products()->sync($data['product']);
-                $this->auditService->editEntityRelation($changes, $task, 'products');
+                $auditService->editEntityRelation($changes, $task, 'products');
             }
             if (isset($data['prev_tasks'])) {
                 $changes = $task->prev()->sync($data['prev_tasks']);
-                $this->auditService->editEntityRelation($changes, $task, 'prev_tasks');
+                $auditService->editEntityRelation($changes, $task, 'prev_tasks');
             }
 
 
@@ -177,7 +176,7 @@ abstract class BaseTaskRequest extends FormRequest
                     $taskLog->fill($row);
                     $taskLog->task_id = $task->id;
                     $taskLog->save();
-                    $this->auditService->createEntity($taskLog, ['task_id' => $task->id]);
+                    $auditService->createEntity($taskLog, ['task_id' => $task->id]);
 
                 } else {
                     /** @var TaskLog $existingLog */
@@ -188,7 +187,7 @@ abstract class BaseTaskRequest extends FormRequest
                         $existingLog->save();
 
                         if ($dirty) {
-                            $this->auditService->editEntity($existingLog, ['task_id' => $task->id]);
+                            $auditService->editEntity($existingLog, ['task_id' => $task->id]);
                         }
                     }
                 }
@@ -201,7 +200,7 @@ abstract class BaseTaskRequest extends FormRequest
                 if (!in_array($existingId, $ids)) {
                     $deletingLog = $taskLogsIdMap[$existingId];
                     $deletingLog->delete();
-                    $this->auditService->deleteEntity($deletingLog, [
+                    $auditService->deleteEntity($deletingLog, [
                         "task_name" => $task->name,
                         "taskLog_name" => $deletingLog->trouble,
                     ]);

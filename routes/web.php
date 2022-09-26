@@ -5,6 +5,11 @@ use App\Http\Controllers\Component\ComponentCreateController;
 use App\Http\Controllers\Component\ComponentDeleteController;
 use App\Http\Controllers\Component\ComponentEditController;
 use App\Http\Controllers\Component\ComponentExportController;
+use App\Http\Controllers\DrawingFile\DrawingFileCreateController;
+use App\Http\Controllers\DrawingFile\DrawingFileDeleteController;
+use App\Http\Controllers\DrawingFile\DrawingFileDownloadController;
+use App\Http\Controllers\DrawingFile\DrawingFileEditController;
+use App\Http\Controllers\DrawingFile\DrawingFileListController;
 use App\Http\Controllers\FileUploadTestController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhysicalObject\PhysicalObjectReportController;
@@ -59,7 +64,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::impersonate();
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(callback: function () {
     Route::get('/setupcolumns', [TaskColumnController::class, 'index'])->name('task.setupColumns.show');
     Route::post('/setupcolumns', [TaskColumnController::class, 'processForm'])->name('task.setupColumns.store');
 
@@ -200,7 +205,23 @@ Route::middleware(['auth'])->group(function () {
         ->where('id', '[0-9]+')
         ->name(TaskDocumentFileDownloadController::INDEX_ACTION);
 
-
+    Route::get('/drawing_file/list', [DrawingFileListController::class, 'index'])
+        ->name(DrawingFileListController::ROUTE_NAME);
+    Route::get('/drawing_file/{id}/delete', [DrawingFileDeleteController::class, 'index'])
+        ->name(DrawingFileDeleteController::ROUTE_NAME);
+    Route::get('/drawing_file/create', [DrawingFileCreateController::class, 'index'])
+        ->name(DrawingFileCreateController::INDEX_ACTION);
+    Route::post('/drawing_file/create', [DrawingFileCreateController::class, 'processForm'])
+        ->name(DrawingFileCreateController::PROCESS_FORM_ACTION);
+    Route::get('/drawing_file/{id}/edit', [TaskDocumentEditController::class, 'index'])
+        ->where('id', '[0-9]+')
+        ->name(DrawingFileEditController::INDEX_ACTION);
+    Route::post('/drawing_file/{id}/edit', [DrawingFileEditController::class, 'processForm'])
+        ->where('id', '[0-9]+')
+        ->name(DrawingFileEditController::PROCESS_FORM_ACTION);
+    Route::get('/drawing_file/{id}/file-download', [DrawingFileDownloadController::class, 'index'])
+        ->where('id', '[0-9]+')
+        ->name(DrawingFileDownloadController::INDEX_ACTION);
 
     Route::get('/test/file_upload', [FileUploadTestController::class, 'index']);
     Route::post('/test/file_upload', [FileUploadTestController::class, 'processForm'])
