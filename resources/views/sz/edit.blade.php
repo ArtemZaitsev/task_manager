@@ -54,13 +54,6 @@
               ])
 
 
-
-            @include('lib.fields.file', [
-                       'required' => false,
-                       'label' => 'Файл',
-                       'fieldName' => 'file',
-               ])
-
             <button type="submit" class="btn btn-info mt-3">Сохранить</button>
         </form>
     </div>

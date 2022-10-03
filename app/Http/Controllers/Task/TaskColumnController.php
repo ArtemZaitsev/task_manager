@@ -12,7 +12,6 @@ class TaskColumnController extends BaseController
         'updated_at' => 'Дата редактирования',
         'priority' => 'Приоритет',
         'type' => 'Тип',
-        'task_document_id' => 'Документ задачи',
         'base' => 'Основание',
         'setting_date' => 'Дата постановки',
         'task_creator' => 'Постановщик',

@@ -339,10 +339,7 @@ class ComponentGrid extends AbstractGrid
             new GridColumn(
                 'drawing_file',
                 'Чертежи (номер)',
-                fn(Component $entity) => $entity->drawingFiles === null || $entity->drawingFiles?->file_path === null ? '' :
-                    sprintf('<a href="%s" target="_blank">%s</a>',
-                        route(DrawingFileDownloadController::INDEX_ACTION, ['id' => $entity->drawingFiles->id]),
-                        $entity->drawingFiles->number),
+                fn(Component $entity) => $entity->drawingFiles?->number,
                 'drawing_files.number',
                 new StringFilter('drawing_files.number', 'drawing_file'),
                 false,
@@ -405,11 +402,7 @@ class ComponentGrid extends AbstractGrid
             new GridColumn(
                 'ttc_number',
                 'ТЗ на расчет (номер)',
-                fn(Component $entity) => $entity->technicalTaskCalculation === null ? '' :
-                    sprintf('<a href="%s" target="_blank">%s</a>',
-                        '/files/' . $entity->technicalTaskCalculation->file_path,
-                        $entity->technicalTaskCalculation->number
-                    ),
+                fn(Component $entity) =>$entity->technicalTaskCalculation?->number,
                 'technical_task_calculations.number',
                 new StringFilter('technical_task_calculations.number', 'ttc_number'),
                 false,
@@ -505,10 +498,7 @@ class ComponentGrid extends AbstractGrid
             new GridColumn(
                 'sz_number',
                 'СЗ (номер)',
-                fn(Component $entity) => $entity->sz === null || $entity->sz?->file_path === null ? '' :
-                    sprintf('<a href="%s" target="_blank">%s</a>',
-                        route(SzFileDownloadController::INDEX_ACTION, ['id' => $entity->sz->id]),
-                        $entity->sz->number),
+                fn(Component $entity) => $entity->sz?->number,
                 'sz.number',
                 new StringFilter('sz.number', 'sz_number'),
                 false,
@@ -615,11 +605,7 @@ class ComponentGrid extends AbstractGrid
             new GridColumn(
                 'purchase_order_number',
                 'Заявка (номер)',
-                fn(Component $entity) => $entity->purchaseOrder === null ? '' :
-                    sprintf('<a href="%s" target="_blank">%s</a>',
-                        '/files/' . $entity->purchaseOrder->file_path,
-                        $entity->purchaseOrder->number
-                    ),
+                fn(Component $entity) =>$entity->purchaseOrder?->number,
                 'purchase_orders.number',
                 new StringFilter('purchase_orders.number', 'purchase_order_number'),
                 false,
