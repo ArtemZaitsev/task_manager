@@ -80,6 +80,17 @@
                         ])
             @endif
 
+            @if($fieldsToEdit === null || in_array('status', $fieldsToEdit))
+                @include('lib.fields.select', [
+                        'required' => false,
+                        'label' => 'Статус',
+                        'fieldName' => 'status',
+                        'currentValue' => $entity->status,
+                        'multiple' => false,
+                        'data' => \App\Models\Component\ComponentStatus::LABELS
+                        ])
+            @endif
+
 
             @if($fieldsToEdit === null || in_array('title', $fieldsToEdit))
                 @include('lib.fields.input', [

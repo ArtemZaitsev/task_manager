@@ -12,6 +12,7 @@ use App\Models\Component\ComponentManufactorStartWay;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
+use App\Models\Component\ComponentStatus;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
 use App\Models\Component\DrawingFile;
@@ -52,6 +53,7 @@ class ComponentBaseRequest extends FormRequest
             'sz_id' => ['nullable', Rule::exists(Sz::class, 'id')],
             'technical_task_calculation_id' => ['nullable', Rule::exists(TechnicalTaskCalculation::class, 'id')],
             'drawing_files_id' => ['nullable', Rule::exists(DrawingFile::class, 'id')],
+            'status' => [Rule::in(array_keys(ComponentStatus::LABELS))],
         ];
         $this->rules[ComponentVoter::ROLE_MANUFACTOR] = [
             'manufactor_status' => ['nullable', Rule::in(ComponentManufactorStatus::values())],

@@ -15,6 +15,7 @@ use App\Models\Component\ComponentCalcStatus;
 use App\Models\Component\ComponentDdStatus;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;
+use App\Models\Component\ComponentStatus;
 use App\Models\Component\Metasystem;
 use App\Models\Component\PhysicalObject;
 use App\Models\Component\Subsystem;
@@ -41,6 +42,11 @@ class PhysicalObjectReportController extends Controller
         self::MANUFACTOR_STATUS => 'Производство',
         self::PURCHASE_STATUS => 'Закупки',
     ];
+    const FIELD_METASYSTEM = 'metasystem';
+    const FIELD_SYSTEM = 'system';
+    const FIELD_SUBSYSTEM = 'subsystem';
+    const FIELD_HIGHLEVEL_COMPONENT = 'highlevel_component';
+    const FIELD_HIGHLEVEL_COMPONENT_STATUS = 'highlevel_component_status';
 
     public function index(Request $request, $id)
     {
@@ -58,6 +64,7 @@ class PhysicalObjectReportController extends Controller
                 $highLevelComponentsAll,
                 fn(Component $entity) => $entity->label()
             )),
+            'component_status' => new MultiSelectFilter('status', ComponentStatus::LABELS),
             'metasystem' => new MultiSelectFilter('metasystem_id', SelectUtils::entityListToLabelMap(
                 Metasystem::all()->all(),
                 fn(Metasystem $entity) => $entity->label()
@@ -220,9 +227,11 @@ class PhysicalObjectReportController extends Controller
         ];
         return new FieldSet(
             [
-//                new Field('metasystem', 'Верхнеуровневая система', true),
-//                new Field('system', 'Система', true),
-//                new Field('subsystem', 'Подсистема', true),
+                new Field(self::FIELD_METASYSTEM, 'Верхнеуровневая система', true),
+                new Field(self::FIELD_SYSTEM, 'Система', true),
+                new Field(self::FIELD_SUBSYSTEM, 'Подсистема', true),
+                new Field(self::FIELD_HIGHLEVEL_COMPONENT, 'Верхнеуровневый компонент', true),
+                new Field(self::FIELD_HIGHLEVEL_COMPONENT_STATUS, 'Статус', true),
                 ... array_map(
                     fn(string $field) => new Field($field, self::STATUS_FIELD_LABELS[$field], true),
                     $fields

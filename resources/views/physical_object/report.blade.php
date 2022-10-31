@@ -36,6 +36,11 @@
             vertical-align: middle;
         }
 
+        #report-table td.header, th.header {
+            text-align: left;
+            vertical-align: middle;
+        }
+
         #report-table .status-3d_status {
             background-color: #e7e7ff;
         }
@@ -87,9 +92,9 @@
             /*min-width: 100px;*/
             /*max-width: 200px;*/
             width: 300px;
-            min-width: 300px;
-            max-width: 300px;
-            left: 0;
+            /*min-width: 300px;*/
+            /*max-width: 300px;*/
+            /*left: 0;*/
             z-index: 2;
             background: #e5ffd6 !important;
         }
@@ -98,10 +103,10 @@
             /*width: 150px;*/
             /*min-width: 100px;*/
             /*max-width: 200px;*/
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            left: 300px;
+            /*width: 200px;*/
+            /*min-width: 200px;*/
+            /*max-width: 200px;*/
+            /*left: 300px;*/
             z-index: 2;
             background: #e5ffd6 !important;
         }
@@ -110,10 +115,10 @@
             /*width: 200px;*/
             /*min-width: 200px;*/
             /*max-width: 300px;*/
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            left: 500px;
+            /*width: 200px;*/
+            /*min-width: 200px;*/
+            /*max-width: 200px;*/
+            /*left: 500px;*/
             z-index: 2;
             background: #e5ffd6 !important;
         }
@@ -122,10 +127,10 @@
             /*width: 250px;*/
             /*min-width: 100px;*/
             /*max-width: 500px;*/
-            width: 450px;
-            min-width: 450px;
-            max-width: 450px;
-            left: 700px;
+            /*width: 450px;*/
+            /*min-width: 450px;*/
+            /*max-width: 450px;*/
+            /*left: 700px;*/
             z-index: 2;
             background: #e5ffd6 !important;
         }
@@ -134,10 +139,10 @@
             /*width: 100px;*/
             /*min-width: 100px;*/
             /*max-width: 100px;*/
-            width: 150px;
-            min-width: 150px;
-            max-width: 150px;
-            left: 1150px;
+            /*width: 150px;*/
+            /*min-width: 150px;*/
+            /*max-width: 150px;*/
+            /*left: 1150px;*/
             z-index: 2;
             text-align: center;
             vertical-align: middle;
@@ -160,29 +165,55 @@
       (App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::SAVE_FIELDS_ROUTE_NAME),
       'fields' => $fieldSet->getFields()])
 
+    {{$report['object']->label()}}
+    <table id="report-table">
+        @foreach($report['status'] as $status => $statusData)
+            <tr>
+                {{--        @if($fieldSet->getField($status)->isNeedDisplay())--}}
+                <td class="group-header" >
+                    <span style="padding: 20px;">
+                    Всего {{ $report['status_titles'][$status] }}
+                    </span>
+                </td>
+                <td>
+                     <span style="padding: 20px;">
+                    <a class="data-link" href="{{  $report['totalStatusWithoutNotRequired'][$status]['url'] }}"
+                       target="_blank">
+                        {{ $report['totalStatusWithoutNotRequired'][$status]['count'] ?? '' }}
+                    </a>
+                     </span>
+                </td>
+                {{--        @endif--}}
+            </tr>
+        @endforeach
+    </table>
+
+    <br/>
+
     <table class="table table-bordered table-hover" id="report-table">
         <thead class="thead-dark" style="position:sticky; top: 0; z-index: 5;">
 
-        <tr>
-            <td id="object-title" class="sticky-col group-header" colspan="5" style="font-size: 22px; text-align:
-            center;
-            vertical-align: middle; background-color: #e5ffd6;">{{$report['object']->label()}}</td>
-            @foreach($report['status'] as $status => $statusData)
-                @if($fieldSet->getField($status)->isNeedDisplay())
-                    <td class="group-header status-{{$status}}" colspan="{{ count($statusData) + 1 }}">
-                        Всего {{ $report['status_titles'][$status] }}:
+        {{--        <tr>--}}
+        {{--            <td id="object-title" class="sticky-col group-header" colspan="5" style="font-size: 22px; text-align:--}}
+        {{--            center;--}}
+        {{--            vertical-align: middle; background-color: #e5ffd6;"></td>--}}
+        {{--            @foreach($report['status'] as $status => $statusData)--}}
+        {{--                @if($fieldSet->getField($status)->isNeedDisplay())--}}
+        {{--                    <td class="group-header status-{{$status}}" colspan="{{ count($statusData) + 1 }}">--}}
+        {{--                        Всего {{ $report['status_titles'][$status] }}:--}}
 
-                        <a class="data-link" href="{{  $report['totalStatusWithoutNotRequired'][$status]['url'] }}"
-                           target="_blank">
-                            {{ $report['totalStatusWithoutNotRequired'][$status]['count'] ?? '' }}
-                        </a>
-                    </td>
-                @endif
-            @endforeach
-        </tr>
+        {{--                        <a class="data-link" href="{{  $report['totalStatusWithoutNotRequired'][$status]['url'] }}"--}}
+        {{--                           target="_blank">--}}
+        {{--                            {{ $report['totalStatusWithoutNotRequired'][$status]['count'] ?? '' }}--}}
+        {{--                        </a>--}}
+        {{--                    </td>--}}
+        {{--                @endif--}}
+        {{--            @endforeach--}}
+        {{--        </tr>--}}
         <form method="get">
             <tr>
-{{--                @if($fieldSet->getField('metasystem')->isNeedDisplay())--}}
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_METASYSTEM)
+                ->isNeedDisplay())
                     <td class="sticky-col zero-col group-header ">
                         Верхнеуровневые системы <br/>
                         @include($filters['metasystem']->template(), [
@@ -192,8 +223,9 @@
                                             ])
                         @include('lib.filters.filter_buttons', ['filterName' => $filters['metasystem']->name()])
                     </td>
-{{--                @endif--}}
-{{--                @if($fieldSet->getField('system')->isNeedDisplay())--}}
+                @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_SYSTEM)
+                ->isNeedDisplay())
                     <td class="sticky-col first-col group-header">
                         Системы <br/>
                         @include($filters['system']->template(), [
@@ -204,8 +236,9 @@
                         @include('lib.filters.filter_buttons', ['filterName' => $filters['system']->name()])
 
                     </td>
-{{--                @endif--}}
-{{--                @if($fieldSet->getField('subsystem')->isNeedDisplay())--}}
+                @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_SUBSYSTEM)
+                    ->isNeedDisplay())
                     <td class="sticky-col second-col group-header ">
                         Подсистемы <br/>
                         @include($filters['subsystem']->template(), [
@@ -215,28 +248,46 @@
                                             ])
                         @include('lib.filters.filter_buttons', ['filterName' => $filters['subsystem']->name()])
                     </td>
-{{--                @endif--}}
-                <td class="sticky-col third-col group-header">
-                    Верхнеуровневый компоненты <br/>
-                    @include($filters['component']->template(), [
-                                    'filter' => $filters['component'],
-                                    'filterData' => $filters['component']->templateData(request()),
-                                    'attrs' => ['style' => 'width: 100%']
-                                    ])
-                    @include('lib.filters.filter_buttons', ['filterName' => $filters['component']->name()])
-                </td>
+                @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_HIGHLEVEL_COMPONENT)
+           ->isNeedDisplay())
+                    <td class="sticky-col third-col group-header">
+                        Верхнеуровневый компоненты <br/>
+                        @include($filters['component']->template(), [
+                                        'filter' => $filters['component'],
+                                        'filterData' => $filters['component']->templateData(request()),
+                                        'attrs' => ['style' => 'width: 100%']
+                                        ])
+                        @include('lib.filters.filter_buttons', ['filterName' => $filters['component']->name()])
+                    </td>
+                @endif
+                    @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_HIGHLEVEL_COMPONENT_STATUS)
+      ->isNeedDisplay())
+                        <td class="sticky-col group-header" style="min-width: 150px;">
+                            Статус
+
+                            @include($filters['component_status']->template(), [
+                                               'filter' => $filters['component_status'],
+                                               'filterData' => $filters['component_status']->templateData(request()),
+                                               'attrs' => ['style' => 'width: 100%']
+                                               ])
+                            @include('lib.filters.filter_buttons', ['filterName' => $filters['component_status']->name()])
+                        </td>
+                    @endif
                 <td class="sticky-col forth-col group-header">
                     Компоненты
                 </td>
                 @foreach($report['status'] as $status => $statusData)
                     @if($fieldSet->getField($status)->isNeedDisplay())
                         <th class="not-specified status-{{$status}}"
-                            style="text-align: center; vertical-align: middle; min-width: 80px;">Не
+                            style="text-align: center; vertical-align: middle; min-width: 80px;">
+                            {{ $report['status_titles'][$status] }} -
+                            Не
                             указано
                         </th>
                         @foreach($statusData as $value => $label)
                             <th class="status-header status-{{$status}}" style="min-width: 80px;">
-                                {{ $label }}
+                                {{ $report['status_titles'][$status] }} - {{ $label }}
                             </th>
                         @endforeach
                     @endif
@@ -246,25 +297,37 @@
         </thead>
         @foreach($report['rows'] as $row)
             <tr>
-{{--                @if($fieldSet->getField('metasystem')->isNeedDisplay())--}}
-                    <td class="sticky-col zero-col">
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_METASYSTEM)
+               ->isNeedDisplay())
+                    <td class="sticky-col header zero-col">
                         {{  $row['component']->metasystem?->label() }}
                     </td>
-{{--                @endif--}}
-{{--                @if($fieldSet->getField('system')->isNeedDisplay())--}}
-                    <td class="sticky-col first-col">
+                @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_SYSTEM)
+                               ->isNeedDisplay())
+                    <td class="sticky-col header first-col">
                         {{  $row['component']->system?->label() }}
                     </td>
-{{--                @endif--}}
-{{--                @if($fieldSet->getField('subsystem')->isNeedDisplay())--}}
-                    <td class="sticky-col second-col">
+                @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_SUBSYSTEM)
+                ->isNeedDisplay())
+                    <td class="sticky-col header second-col">
                         {{ $row['component']->subsystem?->label() }}
                     </td>
-{{--                @endif--}}
-                <td class="sticky-col third-col">
-                    {{ $row['component']->label() }}
-                </td>
-                <td class="sticky-col forth-col">
+                @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_HIGHLEVEL_COMPONENT)
+      ->isNeedDisplay())
+                    <td class="sticky-col  header third-col">
+                        {{ $row['component']->label() }}
+                    </td>
+                @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_HIGHLEVEL_COMPONENT_STATUS)
+  ->isNeedDisplay())
+                        <td class="sticky-col value">
+                            {{ $row['component']->statusLabel() }}
+                        </td>
+                @endif
+                <td class="sticky-col value forth-col">
                     <a class="data-link" target="_blank" href="{{ $filterUrl($row['component']->id) }}">{{
                     $row['total'] }}</a>
                 </td>
@@ -290,13 +353,29 @@
             </tr>
         @endforeach
         <tr>
-            <td class="sticky-col zero-col text-end" style="font-weight: bold; font-size: 20px;" colspan="4">Всего в
-                составе
-            </td>
-            {{--            <td class="sticky-col second-col"></td>--}}
-            {{--            <td class="sticky-col third-col">--}}
-            </td>
+            @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_METASYSTEM)
+              ->isNeedDisplay())
+                <td class="sticky-col zero-col"></td>
+            @endif
+            @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_SYSTEM)
+                           ->isNeedDisplay())
+                <td class="sticky-col first-col"></td>
+            @endif
+            @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_SUBSYSTEM)
+            ->isNeedDisplay())
+                <td class="sticky-col second-col"></td>
+            @endif
+            @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_HIGHLEVEL_COMPONENT)
+     ->isNeedDisplay())
+                <td class="sticky-col third-col"></td>
+            @endif
+                @if($fieldSet->getField(\App\Http\Controllers\PhysicalObject\PhysicalObjectReportController::FIELD_HIGHLEVEL_COMPONENT_STATUS)
+    ->isNeedDisplay())
+                    <td class="sticky-col third-col"></td>
+                @endif
             <td class="sticky-col forth-col">
+                Всего в
+                составе: <br/>
                 <a href="{{ $totalUrl }}"
                    class="data-link" target="_blank">
                     {{$report['footer']['total']}}

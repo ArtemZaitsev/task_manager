@@ -115,10 +115,14 @@ class Component extends Model
         'sz_id',
         'purchase_order_id',
         'technical_task_calculation_id',
-        'drawing_files_id'
+        'drawing_files_id',
+        'status'
     ];
 
 
+    public function statusLabel(): string {
+        return ComponentStatus::LABELS[$this->status] ?? '';
+    }
     public function constructor()
     {
         return $this->belongsTo(User::class);

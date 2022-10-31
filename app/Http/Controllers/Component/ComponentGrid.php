@@ -21,6 +21,7 @@ use App\Models\Component\ComponentManufactorStartWay;
 use App\Models\Component\ComponentManufactorStatus;
 use App\Models\Component\ComponentPurchaserStatus;
 use App\Models\Component\ComponentSourceType;
+use App\Models\Component\ComponentStatus;
 use App\Models\Component\ComponentType;
 use App\Models\Component\ComponentVersion;
 use App\Models\Component\Metasystem;
@@ -88,8 +89,8 @@ class ComponentGrid extends AbstractGrid
                 'created_at',
                 'Дата создания',
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->created_at),
-                'created_at',
-                new DateFilter('created_at'),
+                'components.created_at',
+                new DateFilter('components.created_at'),
                 false,
                 true,
                 [],
@@ -99,8 +100,19 @@ class ComponentGrid extends AbstractGrid
                 'updated_at',
                 'Дата редактирования',
                 fn(Component $entity) => DateUtils::dateToDisplayFormat($entity->updated_at),
-                'updated_at',
-                new DateFilter('updated_at'),
+                'components.updated_at',
+                new DateFilter('components.updated_at'),
+                false,
+                true,
+                [],
+                ['class' => 'text-center align-middle']
+            ),
+            new GridColumn(
+                'status',
+                'Статус ',
+                fn(Component $entity) => $entity->statusLabel(),
+                'components.updated_at',
+                new MultiSelectFilter('components.status', ComponentStatus::LABELS),
                 false,
                 true,
                 [],

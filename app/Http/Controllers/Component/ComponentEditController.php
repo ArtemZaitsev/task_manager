@@ -47,6 +47,7 @@ class ComponentEditController extends Controller
                 'manufactor_start_way',
                 'sz_id',
                 'drawing_files_id',
+                'status'
 
             ],
             ComponentVoter::ROLE_MANUFACTOR =>[
