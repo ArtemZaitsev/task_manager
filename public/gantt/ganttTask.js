@@ -503,15 +503,15 @@ Task.prototype.changeStatus = function (newStatus,forceStatusCheck) {
       if ((manuallyChanged || oldStatus != "STATUS_FAILED")) { //cannot set failed task as closed for cascade - only if changed manually
 
         //can be closed only if superiors are already done
-        var sups = task.getSuperiors();
-        for (var i = 0; i < sups.length; i++) {
-          if (sups[i].from.status != "STATUS_DONE" && cone.indexOf(sups[i].from)<0) { // è un errore se un predecessore è non chiuso ed è fuori dal cono
-            if (manuallyChanged || propagateFromParent)  //genere un errore bloccante se è cambiato a mano o se il cambiamento arriva dal parent ed ho una dipendenza fuori dal cono (altrimenti avrei un attivo figlio di un chiuso
-              task.master.setErrorOnTransaction(GanttMaster.messages["GANTT_ERROR_DEPENDS_ON_OPEN_TASK"] + "\n\"" + sups[i].from.name + "\" -> \"" + task.name + "\"");
-            todoOk = false;
-            break;
-          }
-        }
+        // var sups = task.getSuperiors();
+        // for (var i = 0; i < sups.length; i++) {
+        //   if (sups[i].from.status != "STATUS_DONE" && cone.indexOf(sups[i].from)<0) { // è un errore se un predecessore è non chiuso ed è fuori dal cono
+        //     if (manuallyChanged || propagateFromParent)  //genere un errore bloccante se è cambiato a mano o se il cambiamento arriva dal parent ed ho una dipendenza fuori dal cono (altrimenti avrei un attivo figlio di un chiuso
+        //       task.master.setErrorOnTransaction(GanttMaster.messages["GANTT_ERROR_DEPENDS_ON_OPEN_TASK"] + "\n\"" + sups[i].from.name + "\" -> \"" + task.name + "\"");
+        //     todoOk = false;
+        //     break;
+        //   }
+        // }
 
         if (todoOk) {
           // set progress to 100% if needed by settings
@@ -542,14 +542,14 @@ Task.prototype.changeStatus = function (newStatus,forceStatusCheck) {
         //can be active only if superiors are already done, not only on this task, but also on ancestors superiors
         var sups = task.getSuperiors();
 
-        for (var i = 0; i < sups.length; i++) {
-          if (sups[i].from.status != "STATUS_DONE") {
-            if (manuallyChanged || propagateFromChildren)
-              task.master.setErrorOnTransaction(GanttMaster.messages["GANTT_ERROR_DEPENDS_ON_OPEN_TASK"] + "\n\"" + sups[i].from.name + "\" -> \"" + task.name + "\"");
-            todoOk = false;
-            break;
-          }
-        }
+        // for (var i = 0; i < sups.length; i++) {
+        //   if (sups[i].from.status != "STATUS_DONE") {
+        //     if (manuallyChanged || propagateFromChildren)
+        //       task.master.setErrorOnTransaction(GanttMaster.messages["GANTT_ERROR_DEPENDS_ON_OPEN_TASK"] + "\n\"" + sups[i].from.name + "\" -> \"" + task.name + "\"");
+        //     todoOk = false;
+        //     break;
+        //   }
+        // }
 
         // check if parent is already active
         if (todoOk) {

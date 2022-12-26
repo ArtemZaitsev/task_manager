@@ -461,10 +461,10 @@
 {{--                <button onclick="$('#workSpace').trigger('print.gantt');return false;" class="button textual icon "--}}
 {{--                        title="Print"><span class="teamworkIcon">p</span></button>--}}
 {{--                <span class="ganttButtonSeparator"></span>--}}
-{{--                <button onclick="ge.gantt.showCriticalPath=!ge.gantt.showCriticalPath; ge.redraw();return false;"--}}
-{{--                        class="button textual icon requireCanSeeCriticalPath" title="CRITICAL_PATH"><span--}}
-{{--                        class="teamworkIcon">&pound;</span></button>--}}
-{{--                <span class="ganttButtonSeparator requireCanSeeCriticalPath"></span>--}}
+                <button onclick="ge.gantt.showCriticalPath=!ge.gantt.showCriticalPath; ge.redraw();return false;"
+                        class="button textual icon requireCanSeeCriticalPath" title="CRITICAL_PATH"><span
+                        class="teamworkIcon">&pound;</span></button>
+                <span class="ganttButtonSeparator requireCanSeeCriticalPath"></span>
                 <button onclick="ge.splitter.resize(.1);return false;" class="button textual icon"><span
                         class="teamworkIcon">F</span></button>
                 <button onclick="ge.splitter.resize(50);return false;" class="button textual icon"><span

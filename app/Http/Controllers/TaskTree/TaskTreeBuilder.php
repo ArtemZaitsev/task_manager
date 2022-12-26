@@ -62,7 +62,7 @@ SQL;
     }
 
     private function buildJsonForTasks(array $tasks, array $rootTasks) {
-        //$prevTasks = $this->buildPrevTasks($project);
+        $prevTasks = $this->buildPrevTasks($tasks);
         $rootTaskIds = array_map(fn(Task $task) => $task->id, $rootTasks);
         $rootTrees = array_map(fn(Task $task) => new TreeItem($task), $rootTasks);
 
@@ -78,14 +78,14 @@ SQL;
             $this->buildTree($treeNode, $tasksChilds);
         }
 
-        foreach ($rootTrees as $idx => $treeItem) {
-            if (!$treeItem->getData()->show_in_gantt) {
-                unset($rootTrees[$idx]);
-            }
-        }
-        foreach ($rootTrees as $treeItem) {
-            $this->clearShowInGanttTassk($treeItem);
-        }
+//        foreach ($rootTrees as $idx => $treeItem) {
+//            if (!$treeItem->getData()->show_in_gantt) {
+//                unset($rootTrees[$idx]);
+//            }
+//        }
+//        foreach ($rootTrees as $treeItem) {
+//            $this->clearShowInGanttTassk($treeItem);
+//        }
 
         foreach ($rootTrees as $treeItem) {
             $treeItem->sort(fn(Task $a, Task $b)=> $a->number <=> $b->number);
@@ -97,7 +97,7 @@ SQL;
             $tasksJson = array_merge($tasksJson, $rootTasks);
         }
 
-        //   $this->buildDepends($tasksJson, $prevTasks);
+        $this->buildDepends($tasksJson, $prevTasks);
 
         return $tasksJson;
     }
@@ -197,13 +197,13 @@ SQL;
     }
 
 
-    public function buildPrevTasks($project): array
+    public function buildPrevTasks(array $tasks): array
     {
-        $prevTasks = DB::table('tasks_prev')->whereIn('task_id', function ($query) use ($project) {
-            $query->select('tproj.task_id')
-                ->from('task_project', 'tproj')
-                ->where('tproj.project_id', $project->id);
-        })
+        $tasksIds = array_map(
+            fn(Task $task) => $task->id,
+            $tasks
+        );
+        $prevTasks = DB::table('tasks_prev')->whereIn('task_id', $tasksIds)
             ->get()
             ->toArray();
 
