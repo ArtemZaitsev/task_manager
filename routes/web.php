@@ -46,6 +46,7 @@ use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationFileDo
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationListController;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,9 @@ use Illuminate\Support\Facades\Route;
 //    Route::get('/',[MainController::class,'index'])->name('admin.index');
 //});
 
+if($this->app->environment('production')) {
+    URL::forceScheme('https');
+}
 Route::impersonate();
 
 Route::middleware(['auth'])->group(callback: function () {
