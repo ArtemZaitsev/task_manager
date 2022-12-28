@@ -63,7 +63,8 @@ use Illuminate\Support\Facades\URL;
 //    Route::get('/',[MainController::class,'index'])->name('admin.index');
 //});
 
-if (env('APP_ENV') === 'production') {
+$env = env('APP_ENV');
+if ($env === 'production') {
     URL::forceScheme('https');
 }
 Route::impersonate();
