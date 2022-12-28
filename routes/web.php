@@ -45,6 +45,7 @@ use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationEditCo
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationFileDownloadController;
 use App\Http\Controllers\TechnicalTaskCalculation\TechnicalTaskCalculationListController;
 use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
@@ -63,7 +64,7 @@ use Illuminate\Support\Facades\URL;
 //    Route::get('/',[MainController::class,'index'])->name('admin.index');
 //});
 
-$env = env('APP_ENV');
+$env = App::environment();
 if ($env === 'production') {
     URL::forceScheme('https');
 }
