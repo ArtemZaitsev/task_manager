@@ -83,6 +83,17 @@ abstract class AbstractDocumentGrid extends AbstractGrid
                 new DateFilter('date'),
                 true
             ),
+            new GridColumn(
+                'file_path',
+                'Файл',
+                fn(AbstractDocument $entity) => empty($entity->file_path) ? '' :
+                    sprintf('<a href="%s" target="_blank">%s</a>',
+                        route($this->downloadRouteName, ['id' => $entity->id]),
+                        'Файл'),
+                null,
+                null,
+                true
+            ),
         ];
     }
 

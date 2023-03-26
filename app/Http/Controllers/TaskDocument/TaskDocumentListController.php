@@ -13,7 +13,7 @@ class TaskDocumentListController extends Controller
     const RECORDS_PER_PAGE = 20;
 
     public function __construct(
-        private TaskDocumentGrid              $grid,
+        private TaskDocumentGrid  $grid,
         private TaskDocumentVoter $voter
     )
     {

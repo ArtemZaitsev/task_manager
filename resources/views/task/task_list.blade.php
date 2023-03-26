@@ -114,19 +114,19 @@
                             </div>
                         </th>
                     @endif
-{{--                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_document_id'))--}}
-{{--                        <th scope="col" class="text-center" style="min-width: 300px;">--}}
-{{--                            @include('filters.entity_filter', [--}}
-{{--                                                       'filter_name' => 'taskDocument',--}}
-{{--                                                       'filter_data' => $taskDocument,--}}
-{{--                                                       'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST--}}
-{{--                                                       ])--}}
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_document_id'))
+                        <th scope="col" class="text-center" style="min-width: 300px;">
+                            @include('filters.entity_filter', [
+                                                       'filter_name' => 'taskDocument',
+                                                       'filter_data' => $taskDocument,
+                                                       'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                                                       ])
 
-{{--                            <div scope="col" class="text-center for-headers">--}}
-{{--                                    Документ--}}
-{{--                            </div>--}}
-{{--                        </th>--}}
-{{--                    @endif--}}
+                            <div scope="col" class="text-center for-headers">
+                                    Документ
+                            </div>
+                        </th>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('base'))
                         <th scope="col" class="text-center" style="min-width: 200px;">
                             @include('filters.string_filter', [
@@ -573,13 +573,15 @@
                             'type' => $task->type,
                             ])
                     @endif
-{{--                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_document'))--}}
-{{--                        <td class="text-left align-middle"--}}
-{{--                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>--}}
-
-{{--                                {{ $task->taskDocument?->label() }}--}}
-{{--                                                    </td>--}}
-{{--                    @endif--}}
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_document'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            <a href="{{route(App\Http\Controllers\TaskDocument\TaskDocumentFileDownloadController::INDEX_ACTION,
+['id' => (int)$task->taskDocument?->id])}}" target="_blank">
+                                {{ $task->taskDocument?->label() }}
+                            </a>
+                        </td>
+                    @endif
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('base'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>

@@ -19,11 +19,11 @@ abstract class AbstractDocumentRequest extends FormRequest
     public function store(AbstractDocument $entity, FileService $fileService): void {
         $entity->fill($this->validated());
 
-//        if ($this->files->has('file')) {
-//            $file = $this->files->get('file');
-//            $fileName = $fileService->saveUploadedFile($file, $this->baseSavePath());
-//            $entity->file_path = $fileName;
-//        }
+        if ($this->files->has('file')) {
+            $file = $this->files->get('file');
+            $fileName = $fileService->saveUploadedFile($file, $this->baseSavePath());
+            $entity->file_path = $fileName;
+        }
 
         $entity->save();
     }
