@@ -16,11 +16,12 @@
 
         <div class="">
             <div class="position-absolute top-30 end-0">
-                <div>\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы
-                    <button type="button" class="btn btn-outline-success"
-                            data-text="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы"
-                            onclick="copyToClipboard(this)">Скопировать путь
-                    </button>
+                <div>
+{{--                    \\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы--}}
+{{--                    <button type="button" class="btn btn-outline-success"--}}
+{{--                            data-text="\\enovia\Projects\UMP\01__Project_management\Exchange\Протоколы"--}}
+{{--                            onclick="copyToClipboard(this)">Скопировать путь--}}
+{{--                    </button>--}}
                 </div>
             </div>
             <div class="left">
@@ -217,13 +218,13 @@
                             </div>
                         </th>
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('gantt'))
-                        <th scope="col" class="text-center" style="min-width: 170px;">
-                            <div scope="col" class="text-center for-headers">
-                                Диаграмма Гантта
-                            </div>
-                        </th>
-                    @endif
+{{--                    @if( \App\Utils\ColumnUtils::isColumnEnabled('gantt'))--}}
+{{--                        <th scope="col" class="text-center" style="min-width: 170px;">--}}
+{{--                            <div scope="col" class="text-center for-headers">--}}
+{{--                                Диаграмма Гантта--}}
+{{--                            </div>--}}
+{{--                        </th>--}}
+{{--                    @endif--}}
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                         <th scope="col" class="text-center" style="min-width: 170px;">
                             @include('filters.entity_filter', [
@@ -618,18 +619,18 @@
                             {{ $task->user?->subgroup?->title }}
                         </td>
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('gantt'))
-                        <td class="text-left align-middle"
-                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
-                            @if($task->show_in_gantt && $tasksHasChilds[$task->id])
-                                <a href="{{route(
-                                App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['task' =>
-                                $task->id])}}"
-                                   target="_blank">Ссылка</a>
-                            @endif
+{{--                    @if( \App\Utils\ColumnUtils::isColumnEnabled('gantt'))--}}
+{{--                        <td class="text-left align-middle"--}}
+{{--                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>--}}
+{{--                            @if($task->show_in_gantt && $tasksHasChilds[$task->id])--}}
+{{--                                <a href="{{route(--}}
+{{--                                App\Http\Controllers\TaskTree\TaskTreeProjectController::ROUTE_NAME, ['task' =>--}}
+{{--                                $task->id])}}"--}}
+{{--                                   target="_blank">Ссылка</a>--}}
+{{--                            @endif--}}
 
-                        </td>
-                    @endif
+{{--                        </td>--}}
+{{--                    @endif--}}
                     @if( \App\Utils\ColumnUtils::isColumnEnabled('project'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
