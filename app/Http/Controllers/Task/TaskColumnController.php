@@ -10,6 +10,7 @@ class TaskColumnController extends BaseController
     const COLUMNS = [
         'created_at' => 'Дата создания',
         'updated_at' => 'Дата редактирования',
+        'component_id' => 'Компонент',
         'priority' => 'Приоритет',
         'type' => 'Тип',
         'base' => 'Основание',
@@ -22,6 +23,8 @@ class TaskColumnController extends BaseController
         'family' => 'Семейство',
         'product' => 'Продукт',
         'physical_object' => 'Объект',
+        'task_document_id' => 'Основание',
+        'task_approve_document_id' => 'Подтверждение',
         'theme' => 'Тема',
         'main_task' => 'Основная задача',
         'coperformers' => 'Соисполнители',

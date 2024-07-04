@@ -124,7 +124,20 @@
                                                        ])
 
                             <div scope="col" class="text-center for-headers">
-                                    Документ
+                                    Основание
+                            </div>
+                        </th>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_approve_document_id'))
+                        <th scope="col" class="text-center" style="min-width: 300px;">
+                            @include('filters.entity_filter', [
+                                                       'filter_name' => 'taskApproveDocument',
+                                                       'filter_data' => $taskDocument,
+                                                       'route_name' => \App\Http\Controllers\Task\TaskController::ACTION_LIST
+                                                       ])
+
+                            <div scope="col" class="text-center for-headers">
+                                Подтверждение
                             </div>
                         </th>
                     @endif
@@ -574,12 +587,21 @@
                             'type' => $task->type,
                             ])
                     @endif
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_document'))
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_document_id'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             <a href="{{route(App\Http\Controllers\TaskDocument\TaskDocumentFileDownloadController::INDEX_ACTION,
 ['id' => (int)$task->taskDocument?->id])}}" target="_blank">
                                 {{ $task->taskDocument?->label() }}
+                            </a>
+                        </td>
+                    @endif
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('task_approve_document_id'))
+                        <td class="text-left align-middle"
+                            @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
+                            <a href="{{route(App\Http\Controllers\TaskDocument\TaskDocumentFileDownloadController::INDEX_ACTION,
+['id' => (int)$task->taskApproveDocument?->id])}}" target="_blank">
+                                {{ $task->taskApproveDocument?->label() }}
                             </a>
                         </td>
                     @endif
@@ -682,7 +704,7 @@
                         </td>
                     @endif
 
-                    @if( \App\Utils\ColumnUtils::isColumnEnabled('components'))
+                    @if( \App\Utils\ColumnUtils::isColumnEnabled('component_id'))
                         <td class="text-left align-middle"
                             @if ( count($task->logs) > 1 ) rowspan="{{ count($task->logs) }}" @endif>
                             {{ $task->component?->label() }}

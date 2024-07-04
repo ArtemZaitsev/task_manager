@@ -111,6 +111,7 @@ class Task extends Model
         'component_id',
         'show_in_gantt',
         'task_document_id',
+        'task_approve_document_id',
     ];
 
     public function user()
@@ -164,6 +165,10 @@ class Task extends Model
     }
 
     public function taskDocument(){
+        return $this->belongsTo(TaskDocument::class);
+    }
+
+    public function taskApproveDocument(){
         return $this->belongsTo(TaskDocument::class);
     }
 

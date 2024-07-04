@@ -94,6 +94,7 @@ abstract class BaseTaskRequest extends FormRequest
             'execute_time_plan' => ['nullable', 'numeric', 'min:0', 'max:10000'],
             'show_in_gantt' => ['required', 'boolean'],
             'task_document_id' => ['nullable', 'integer', Rule::exists(TaskDocument::class, 'id')],
+            'task_approve_document_id' => ['nullable', 'integer', Rule::exists(TaskDocument::class, 'id')],
         ]);
 
     }

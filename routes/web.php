@@ -66,7 +66,7 @@ use Illuminate\Support\Facades\URL;
 
 $env = App::environment();
 if ($env === 'production') {
-    URL::forceScheme('https');
+    // URL::forceScheme('https');
 }
 Route::impersonate();
 
